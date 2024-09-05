@@ -4,9 +4,7 @@ const FaqView = () => {
   return (
     <div>
       <p className="font-medium mb-4">Manage FAQs</p>
-      <div className="p-4 rounded-[8px] shadow-md">
-        <FaqForm />
-      </div>
+      <FaqForm />
     </div>
   );
 };

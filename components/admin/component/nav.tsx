@@ -80,48 +80,43 @@ const Nav = () => {
             </Button>
           </Link>
         )}
-        <div className="flex justify-between items-center gap-1">
-          <Image
-            src={user_1}
-            alt="avatar"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-          <DropdownMenu>
-            <DropdownMenuTrigger className="focus-visible:outline-none h-10">
-              <ChevronDown size={20} />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="mr-5 rounded w-[240px]">
-              <div className="flex gap-3 px-4 py-[14px]">
-                <div className="relative">
-                  <Image
-                    src={user_1}
-                    alt="avatar"
-                    width={40}
-                    height={40}
-                    className="rounded-full w-10 h-10"
-                  />
-                  <div className="bg-success w-[10px] h-[10px] rounded-full absolute bottom-1 right-0 ring-2 ring-white"></div>
-                </div>
-                <div>
-                  <p className="BodyText-Medium">Oilva Rhye</p>
-                  <p className="SmallText-Regular text-grey-70">
-                    olivia@untitledui.com
-                  </p>
-                </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="focus-visible:outline-none h-10 flex justify-between items-center gap-1">
+            <Image
+              src={user_1}
+              alt="avatar"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+            <ChevronDown size={20} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="mr-5 rounded w-[240px]">
+            <div className="flex gap-3 px-4 py-[14px]">
+              <div className="relative">
+                <Image
+                  src={user_1}
+                  alt="avatar"
+                  width={40}
+                  height={40}
+                  className="rounded-full w-10 h-10"
+                />
+                <div className="bg-success w-[10px] h-[10px] rounded-full absolute bottom-1 right-0 ring-2 ring-green-400 bg-green-400"></div>
               </div>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="BodyText-Regular px-4 py-2 cursor-pointer">
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem className="BodyText-Regular px-4 py-2 text-error flex gap-2 cursor-pointer">
-                Logout
-                <LogOut size={16} />
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+              <div>
+                <p className="BodyText-Medium">Oilva Rhye</p>
+                <p className="SmallText-Regular text-grey-70">
+                  olivia@untitledui.com
+                </p>
+              </div>
+            </div>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="BodyText-Regular px-4 py-2 text-error flex gap-2 cursor-pointer">
+              Logout
+              <LogOut size={16} />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   );

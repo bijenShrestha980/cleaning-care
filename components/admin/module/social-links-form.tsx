@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -8,7 +7,6 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -17,28 +15,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-const CustomEditor = dynamic(() => import("@/components/editor"), {
-  ssr: false,
-});
 
-const AboutForm = () => {
+const SocialLinksForm = () => {
   const router = useRouter();
 
   const formSchema = z.object({
-    heading: z.string({ required_error: "Heading is required" }),
-    detail: z.string({ required_error: "Detail is required" }),
-    description: z.string({ required_error: "Description is required" }),
-    content: z.string({
-      required_error: "Content is required",
-    }),
+    facebook: z.string().url(),
+    instagram: z.string().url(),
+    tiktok: z.string().url(),
+    youtube: z.string().url(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      heading: undefined,
-      description: undefined,
-      content: undefined,
+      facebook: "",
+      instagram: "",
+      tiktok: "",
+      youtube: "",
     },
   });
 
@@ -50,16 +44,16 @@ const AboutForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid sm:grid-cols-1 gap-4 w-full select-none"
+        className="grid sm:grid-cols-2 gap-4 w-full select-none"
       >
         <FormField
           control={form.control}
-          name="heading"
+          name="facebook"
           render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
-              <FormLabel className="font-normal text-sm">Heading</FormLabel>
+            <FormItem>
+              <FormLabel className="font-normal text-sm">Facebook</FormLabel>
               <FormControl>
-                <Input placeholder="Heading here" {...field} />
+                <Input placeholder="Facebook" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -67,12 +61,12 @@ const AboutForm = () => {
         />
         <FormField
           control={form.control}
-          name="detail"
+          name="instagram"
           render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
-              <FormLabel className="font-normal text-sm">Detail</FormLabel>
+            <FormItem>
+              <FormLabel className="font-normal text-sm">Instagram</FormLabel>
               <FormControl>
-                <Textarea placeholder="Detail here" {...field} rows={4} />
+                <Input placeholder="Instagram" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -80,35 +74,36 @@ const AboutForm = () => {
         />
         <FormField
           control={form.control}
-          name="description"
+          name="tiktok"
           render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
-              <FormLabel className="font-normal text-sm">Description</FormLabel>
+            <FormItem>
+              <FormLabel className="font-normal text-sm">Tiktok</FormLabel>
               <FormControl>
-                <Textarea placeholder="Description here" {...field} rows={4} />
+                <Input placeholder="Tiktok" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="youtube"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-normal text-sm">Youtube</FormLabel>
+              <FormControl>
+                <Input placeholder="Youtube" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
-              <FormLabel className="font-normal text-sm">Content</FormLabel>
-              <FormControl>
-                <CustomEditor placeholder="Content here" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <span />
 
         <div className="flex justify-end gap-4">
-          <Button type="submit" animation={"scale_in"} className="w-[86px]">
-            Save
+          <Button type="submit" animation={"scale_in"}>
+            Save changes
           </Button>
         </div>
       </form>
@@ -116,4 +111,4 @@ const AboutForm = () => {
   );
 };
 
-export default AboutForm;
+export default SocialLinksForm;
