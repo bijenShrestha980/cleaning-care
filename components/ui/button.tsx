@@ -29,9 +29,9 @@ const buttonVariants = cva(
       animation: {
         default: "",
         scale_in:
-          "transition-all ease-in-out dutation-200 hover:opacity-95 active:scale-95",
+          "transition-all ease-in-out duration-200 hover:opacity-95 active:scale-95",
         scale_both:
-          "transition-all ease-in-out dutation-200 hover:opacity-95 hover:scale-105 active:scale-95",
+          "transition-all ease-in-out duration-200 hover:opacity-95 hover:scale-105 active:scale-95",
       },
     },
     defaultVariants: {

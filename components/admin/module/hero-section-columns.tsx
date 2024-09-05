@@ -1,63 +1,59 @@
 "use client";
 
-import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 
-import { statuses, labels } from "@/constants/table-data";
-import { Faq } from "../data/schema";
+import { categories, statuses, labels } from "@/constants/table-data";
+import { HeroSection } from "../data/schema";
 
-export const faqColumns: ColumnDef<Faq>[] = [
+export const heroSectionColumns: ColumnDef<HeroSection>[] = [
   {
-    accessorKey: "category",
+    accessorKey: "service",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Category" />
+      <DataTableColumnHeader column={column} title="Service" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex w-[100px] items-center">
+          <span>{row.getValue("service")}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Description" />
     ),
     cell: ({ row }) => {
       const label = labels.find(
-        (label) => label.value === row.original.category
+        (label) => label.value === row.original.description
       );
 
       return (
         <div className="flex space-x-2">
           {label && <Badge variant="outline">{1}</Badge>}
           <span className="max-w-[500px] truncate font-normal text-[13px]">
-            {row.getValue("category")}
+            {row.getValue("description")}
           </span>
         </div>
       );
     },
   },
   {
-    accessorKey: "question",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Question" />
-    ),
-    cell: ({ row }) => {
-      const label = labels.find(
-        (label) => label.value === row.original.question
-      );
-
-      return (
-        <div className="flex space-x-2">
-          {label && <Badge variant="outline">{1}</Badge>}
-          <span className="max-w-[500px] truncate font-normal text-[13px]">
-            {row.getValue("question")}
-          </span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "status",
+    accessorKey: "catStatus",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
       const status = statuses.find(
-        (status) => status.value === row.getValue("status")
+        (status) => status.value === row.getValue("catStatus")
       );
 
       if (!status) {
@@ -87,7 +83,7 @@ export const faqColumns: ColumnDef<Faq>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/settings/faqs/view-faqs`}
+          href={`/admin/dashboard/settings/landing-page/view-hero-section`}
         >
           View
         </Link>

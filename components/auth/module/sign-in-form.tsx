@@ -110,7 +110,7 @@ const SignInForm = () => {
         </Link>
         <Button
           type="submit"
-          variant={"secondary"}
+          // variant={"secondary"}
           animation={"scale_in"}
           size={"lg"}
           className="w-full"

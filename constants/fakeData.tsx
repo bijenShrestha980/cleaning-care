@@ -1,5 +1,82 @@
-import { Faq, Testimonial } from "@/components/admin/data/schema";
+import {
+  Category,
+  Faq,
+  HeroSection,
+  Testimonial,
+  Type,
+} from "@/components/admin/data/schema";
 import { user_1, user_2, user_3, user_4 } from "./images";
+
+const heroSectionData: HeroSection[] = [
+  {
+    service: "Service 1",
+    description: "We provide best parcel and dispatch service",
+    order: "1",
+    catStatus: "active",
+  },
+];
+
+const categoryData: Category[] = [
+  {
+    category: "Bedroom",
+    status: "active",
+  },
+  {
+    category: "Bathrom",
+    status: "active",
+  },
+  {
+    category: "Kitchen",
+    status: "inactive",
+  },
+];
+
+const typeData: Type[] = [
+  {
+    type: "Bed & Bath",
+    status: "active",
+    types: [
+      {
+        category: "Bedroom",
+        count: 3,
+      },
+      {
+        category: "Bathroom",
+        count: 2,
+      },
+    ],
+  },
+  {
+    type: "Kitchen & Barbeque",
+    status: "active",
+    types: [
+      {
+        category: "Bedroom",
+        count: 1,
+      },
+    ],
+  },
+  {
+    type: "Apartment",
+    status: "inactive",
+    types: [
+      {
+        category: "Bedroom",
+        count: 1,
+      },
+    ],
+  },
+  {
+    type: "Unit",
+    status: "active",
+    types: [
+      {
+        category: "Bedroom",
+        count: 1,
+      },
+    ],
+  },
+];
 
 const testimonialData: Testimonial[] = [
   {
@@ -56,4 +133,4 @@ const faqData: Faq[] = [
   },
 ];
 
-export { testimonialData, faqData };
+export { heroSectionData, categoryData, typeData, testimonialData, faqData };
