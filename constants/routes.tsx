@@ -26,12 +26,12 @@ const adminRoutes = [
             sidebar: true,
             notificationCount: 0,
           },
-          {
-            name: "Types",
-            path: "/types",
-            sidebar: true,
-            notificationCount: 0,
-          },
+          // {
+          //   name: "Types",
+          //   path: "/types",
+          //   sidebar: true,
+          //   notificationCount: 0,
+          // },
           {
             name: "Service List",
             path: "/service-list",

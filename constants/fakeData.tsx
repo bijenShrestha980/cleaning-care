@@ -2,6 +2,7 @@ import {
   Category,
   Faq,
   HeroSection,
+  Service,
   Testimonial,
   Type,
 } from "@/components/admin/data/schema";
@@ -78,6 +79,25 @@ const typeData: Type[] = [
   },
 ];
 
+const serviceData: Service[] = [
+  {
+    name: "Bed & Bath",
+    status: "active",
+    detail: "Sparkling every corners, for happy surrounding",
+    description: "We provide best parcel and dispatch service",
+    categories: [
+      {
+        value: "bedroom",
+        label: "Bedroom",
+      },
+      {
+        value: "bathroom",
+        label: "Bathroom",
+      },
+    ],
+  },
+];
+
 const testimonialData: Testimonial[] = [
   {
     id: 1,
@@ -133,4 +153,11 @@ const faqData: Faq[] = [
   },
 ];
 
-export { heroSectionData, categoryData, typeData, testimonialData, faqData };
+export {
+  heroSectionData,
+  categoryData,
+  typeData,
+  serviceData,
+  testimonialData,
+  faqData,
+};

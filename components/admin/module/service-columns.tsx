@@ -4,19 +4,42 @@ import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { Type } from "../data/schema";
+import { Service } from "../data/schema";
 import { statuses } from "@/constants/table-data";
+import { Badge } from "@/components/ui/badge";
 
-export const serviceColumns: ColumnDef<Type>[] = [
+export const serviceColumns: ColumnDef<Service>[] = [
   {
-    accessorKey: "type",
+    accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Type" />
+      <DataTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex items-center">
-          <span>{row.getValue("type")}</span>
+          <span>{row.getValue("name")}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: "categories",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Categories" />
+    ),
+    cell: ({ row }) => {
+      console.log(row.getValue("categories"));
+      return (
+        <div className="flex items-center gap-1">
+          {/* @ts-ignore */}
+          {row.getValue("categories")?.map((category) => (
+            <Badge key={category.value} variant={"outline"}>
+              {category.label}
+            </Badge>
+          ))}
         </div>
       );
     },
