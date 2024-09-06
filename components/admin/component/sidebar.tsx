@@ -1,8 +1,8 @@
 "use client";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, createContext, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -13,19 +13,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { adminRoutes } from "@/constants/routes";
 import { formatToCapitalize } from "@/lib/format-to-capitalize";
+import { SidebarContext } from "@/provider/sidebar-provider";
 
 const Sidebar = () => {
   const pathname = usePathname();
-  const [openSidenav, setOpenSidenav] = useState(true);
-
+  let { openSidenav } = useContext(SidebarContext);
   return (
     <aside
       className={`${
-        openSidenav ? "translate-x-2 translate-y-2" : "-translate-x-80"
+        openSidenav ? "translate-x-0" : "-translate-x-80"
       } fixed inset-0 z-50 h-[calc(100vh-32px)] w-72 transition-transform duration-300 xl:translate-x-0 xl:translate-y-0 bg-primary my-4 ml-4 px-4 py-6 rounded-xl`}
     >
       <div className="px-2">
-        <h5 className="text-primary-foreground my-[10px]">Cleaning Care</h5>
+        <div className="flex justify-between items-center">
+          <h5 className="text-primary-foreground my-[10px]">Cleaning Care</h5>
+          {/* <Button
+              variant={"link"}
+              animation={"scale_in"}
+              type="button"
+              className="p-0 m-0"
+              onClick={() => setOpenSidenav(!openSidenav)}
+            >
+              <Menu size={20} className="mr-2 text-primary-foreground" />
+            </Button> */}
+        </div>
         <div className="relative">
           <Input
             placeholder="Search"
