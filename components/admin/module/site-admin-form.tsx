@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { User } from "lucide-react";
-import CustomMap from "@/components/map";
+// import CustomMap from "@/components/map";
 
 const SiteAdminForm = () => {
   const router = useRouter();
@@ -246,7 +246,7 @@ const SiteAdminForm = () => {
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="contact"
           render={({ field }) => (
@@ -258,7 +258,7 @@ const SiteAdminForm = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <span />
         <span />
