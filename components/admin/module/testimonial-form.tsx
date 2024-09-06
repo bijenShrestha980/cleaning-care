@@ -65,7 +65,10 @@ const TestimonialForm = () => {
                   </FormLabel>
 
                   <div className="flex items-center gap-3 mt-2">
-                    <User size={24} className="text-[#A7B2C3]" />
+                    <User
+                      size={24}
+                      className="hidden sm:block text-[#A7B2C3]"
+                    />
                     <FormControl>
                       <Input
                         type="file"
@@ -79,7 +82,7 @@ const TestimonialForm = () => {
                             file ? URL.createObjectURL(file) : null
                           );
                         }}
-                        className="w-fit"
+                        // className="w-fit"
                       />
                     </FormControl>
                   </div>

@@ -178,7 +178,7 @@ const ServiceForm = () => {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">
                 Service name
               </FormLabel>
@@ -196,7 +196,7 @@ const ServiceForm = () => {
           control={form.control}
           name="status"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Status</FormLabel>
               <FormControl>
                 <Select
@@ -226,7 +226,7 @@ const ServiceForm = () => {
             </FormItem>
           )}
         />
-        <div className="space-y-2">
+        <div className="space-y-2 col-span-2 sm:col-span-1">
           <FormLabel className="font-normal text-sm">Categories</FormLabel>
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -280,12 +280,12 @@ const ServiceForm = () => {
             </PopoverContent>
           </Popover>
         </div>
-        <span />
+        <span className="hidden sm:block" />
         <FormField
           control={form.control}
           name="detail"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">
                 Short Detail
               </FormLabel>
@@ -304,7 +304,7 @@ const ServiceForm = () => {
           control={form.control}
           name="description"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Description</FormLabel>
               <FormControl>
                 <Textarea
@@ -323,7 +323,7 @@ const ServiceForm = () => {
           control={form.control}
           name="sectionOne.title"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">
                 Section One Title
               </FormLabel>
@@ -398,7 +398,7 @@ const ServiceForm = () => {
           control={form.control}
           name="sectionOne.description"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">
                 Section One Description
               </FormLabel>
@@ -414,12 +414,12 @@ const ServiceForm = () => {
           )}
         />
         <Separator className="col-span-2 my-4" />
-        <div className="space-y-2">
+        <div className="space-y-2 col-span-2 sm:col-span-1">
           <FormField
             control={form.control}
             name="sectionTwo.title"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="col-span-2 sm:col-span-1">
                 <FormLabel className="font-normal text-sm">
                   Section Two Section Title
                 </FormLabel>
@@ -435,7 +435,7 @@ const ServiceForm = () => {
             control={form.control}
             name="sectionTwo.description"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="col-span-2 sm:col-span-1">
                 <FormLabel className="font-normal text-sm">
                   Section Two Description
                 </FormLabel>
@@ -486,6 +486,7 @@ const ServiceForm = () => {
                 "
                     >
                       <Button
+                        type="button"
                         className="w-fit"
                         variant={"outline"}
                         animation={"scale_in"}
@@ -500,7 +501,7 @@ const ServiceForm = () => {
                   control={form.control}
                   name={`sectionTwo.features.${index}.title`}
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 sm:col-span-1">
                       <FormLabel className="font-normal text-sm">
                         Title
                       </FormLabel>
@@ -516,7 +517,7 @@ const ServiceForm = () => {
                   control={form.control}
                   name={`sectionTwo.features.${index}.description`}
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 sm:col-span-1">
                       <FormLabel className="font-normal text-sm">
                         Description
                       </FormLabel>
@@ -598,7 +599,7 @@ const ServiceForm = () => {
           </div>
         </div>
         <Separator className="col-span-2 my-4" />
-        <div className="space-y-2">
+        <div className="space-y-2 col-span-2 sm:col-span-1">
           <FormField
             control={form.control}
             name="sectionThree.title"
@@ -668,6 +669,7 @@ const ServiceForm = () => {
                 "
                     >
                       <Button
+                        type="button"
                         className="w-fit"
                         variant={"outline"}
                         animation={"scale_in"}

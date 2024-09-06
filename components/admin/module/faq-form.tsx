@@ -54,7 +54,7 @@ const FaqForm = () => {
           control={form.control}
           name="category"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Category</FormLabel>
               <FormControl>
                 <Select
@@ -122,7 +122,7 @@ const FaqForm = () => {
           control={form.control}
           name="status"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Status</FormLabel>
               <FormControl>
                 <Select

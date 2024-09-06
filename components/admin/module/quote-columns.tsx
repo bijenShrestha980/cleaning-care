@@ -79,7 +79,6 @@ export const quoteColumns: ColumnDef<Quote>[] = [
       <DataTableColumnHeader column={column} title="Categories" />
     ),
     cell: ({ row }) => {
-      console.log(row.getValue("categories"));
       return (
         <div className="flex items-center gap-1">
           {/* @ts-ignore */}

@@ -60,7 +60,7 @@ const HeroSectionForm = () => {
           control={form.control}
           name="service"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Service</FormLabel>
               <FormControl>
                 <Select
@@ -177,7 +177,7 @@ const HeroSectionForm = () => {
           control={form.control}
           name="catStatus"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Status</FormLabel>
               <FormControl>
                 <Select

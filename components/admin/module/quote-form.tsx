@@ -54,7 +54,7 @@ const QuotForm = () => {
             <div className="flex flex-col gap-2">
               <span className="flex w-full">
                 <p className="w-1/5">Name</p>
-                <span className="font-semibold w-4/5">
+                <span className="font-semibold w-4/5 text-end sm:text-start">
                   {data.firstName}
                   &nbsp;
                   {data.lastName}
@@ -62,22 +62,30 @@ const QuotForm = () => {
               </span>
               <span className="flex w-full">
                 <p className="w-1/5">Email</p>
-                <span className="font-semibold w-4/5">{data.email}</span>
+                <span className="font-semibold w-4/5 text-end sm:text-start">
+                  {data.email}
+                </span>
               </span>
               <span className="flex w-full">
                 <p className="w-1/5">Phone: </p>
-                <span className="font-semibold w-4/5">{data.phone}</span>
+                <span className="font-semibold w-4/5 text-end sm:text-start">
+                  {data.phone}
+                </span>
               </span>
               <span className="flex w-full">
                 <p className="w-1/5">Address</p>
-                <span className="font-semibold w-4/5">{data.address}</span>
+                <span className="font-semibold w-4/5 text-end sm:text-start">
+                  {data.address}
+                </span>
               </span>
               <span className="flex w-full">
                 <p className="w-1/5">Postal code</p>
-                <span className="font-semibold w-4/5">{data.postalCode}</span>
+                <span className="font-semibold w-4/5 text-end sm:text-start">
+                  {data.postalCode}
+                </span>
               </span>
-              <span className="flex w-full">
-                <p className="w-1/5">Message</p>
+              <span className="flex flex-col md:flex-row w-full">
+                <p className="w-1/5">Message:</p>
                 <span className="w-4/5">{data.message}</span>
               </span>
             </div>
@@ -102,7 +110,7 @@ const QuotForm = () => {
                 ))}
               </div>
             </div>
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-2 mt-2">
               Total cost :<h4>$ 140</h4>
             </span>
           </div>
