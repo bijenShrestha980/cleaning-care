@@ -84,7 +84,7 @@ const DescriptionForm = () => {
           control={form.control}
           name="image"
           render={({ field: { ref, name, onBlur, onChange } }) => (
-            <FormItem className="col-span-2 2xl:col-span-1">
+            <FormItem className="col-span-2 sm:col-span-1">
               <div className="flex flex-col sm:flex-row gap-12">
                 <span>
                   <FormLabel className="font-normal text-sm">
@@ -92,7 +92,7 @@ const DescriptionForm = () => {
                   </FormLabel>
 
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
+                    <div className="w-[50px] h-[50px] rounded-lg hidden sm:flex items-center justify-center bg-[#ecedee] overflow-hidden">
                       <User className="text-[#596579] h-6 w-6" />
                     </div>
                     <FormControl>
@@ -108,7 +108,7 @@ const DescriptionForm = () => {
                             file ? URL.createObjectURL(file) : null
                           );
                         }}
-                        className="w-fit"
+                        // className="w-fit"
                       />
                     </FormControl>
                   </div>
@@ -140,7 +140,7 @@ const DescriptionForm = () => {
 
         <span />
         <span />
-        <div className="flex justify-end gap-4">
+        <div className="flex flex-wrap justify-end gap-4">
           <Button variant={"ghost"} animation={"scale_in"} className="w-[86px]">
             Delete
           </Button>
