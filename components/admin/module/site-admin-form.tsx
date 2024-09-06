@@ -142,7 +142,7 @@ const SiteAdminForm = () => {
                   </FormLabel>
 
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
+                    <div className="w-[50px] h-[50px] rounded-lg hidden sm:flex items-center justify-center bg-[#ecedee] overflow-hidden">
                       <User className="text-[#596579] h-6 w-6" />
                     </div>
                     <FormControl>
@@ -158,7 +158,7 @@ const SiteAdminForm = () => {
                             file ? URL.createObjectURL(file) : null
                           );
                         }}
-                        className="w-fit"
+                        // className="w-fit"
                       />
                     </FormControl>
                   </div>
@@ -200,7 +200,7 @@ const SiteAdminForm = () => {
                   </FormLabel>
 
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
+                    <div className="w-[50px] h-[50px] rounded-lg hidden sm:flex items-center justify-center bg-[#ecedee] overflow-hidden">
                       <User className="text-[#596579] h-6 w-6" />
                     </div>
                     <FormControl>
@@ -216,7 +216,7 @@ const SiteAdminForm = () => {
                             file ? URL.createObjectURL(file) : null
                           );
                         }}
-                        className="w-fit"
+                        // className="w-fit"
                       />
                     </FormControl>
                   </div>
