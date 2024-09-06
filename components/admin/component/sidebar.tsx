@@ -108,6 +108,7 @@ const Sidebar = () => {
                                             ? "bg-[#343030]"
                                             : ""
                                         }`}
+                                        onClick={() => setOpenSidenav(false)}
                                       >
                                         <p
                                           color="inherit"
@@ -138,6 +139,7 @@ const Sidebar = () => {
                                       ? "bg-[#343030] border border-[#8E7755]"
                                       : ""
                                   }`}
+                                  onClick={() => setOpenSidenav(false)}
                                 >
                                   {icon}
                                   <p
