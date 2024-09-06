@@ -2,7 +2,7 @@
 import React, { Fragment, createContext, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Menu, Search } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -17,7 +17,7 @@ import { SidebarContext } from "@/provider/sidebar-provider";
 
 const Sidebar = () => {
   const pathname = usePathname();
-  let { openSidenav } = useContext(SidebarContext);
+  let { openSidenav, setOpenSidenav } = useContext(SidebarContext);
   return (
     <aside
       className={`${
@@ -27,15 +27,15 @@ const Sidebar = () => {
       <div className="px-2">
         <div className="flex justify-between items-center">
           <h5 className="text-primary-foreground my-[10px]">Cleaning Care</h5>
-          {/* <Button
-              variant={"link"}
-              animation={"scale_in"}
-              type="button"
-              className="p-0 m-0"
-              onClick={() => setOpenSidenav(!openSidenav)}
-            >
-              <Menu size={20} className="mr-2 text-primary-foreground" />
-            </Button> */}
+          <Button
+            variant={"link"}
+            animation={"scale_in"}
+            type="button"
+            className="p-0 m-0"
+            onClick={() => setOpenSidenav(!openSidenav)}
+          >
+            <X size={20} className="mr-2 text-primary-foreground" />
+          </Button>
         </div>
         <div className="relative">
           <Input
