@@ -31,7 +31,7 @@ const Sidebar = () => {
             variant={"link"}
             animation={"scale_in"}
             type="button"
-            className="p-0 m-0"
+            className="p-0 m-0 flex xl:hidden"
             onClick={() => setOpenSidenav(!openSidenav)}
           >
             <X size={20} className="mr-2 text-primary-foreground" />
