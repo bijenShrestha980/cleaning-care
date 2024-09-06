@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 
-import { categories, statuses, labels } from "@/constants/table-data";
+import { statuses, labels } from "@/constants/table-data";
 import { HeroSection } from "../data/schema";
 
 export const heroSectionColumns: ColumnDef<HeroSection>[] = [
