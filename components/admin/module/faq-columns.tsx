@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 
-import { statuses, labels } from "@/constants/table-data";
+import { statuses } from "@/constants/table-data";
 import { Faq } from "../data/schema";
 
 export const faqColumns: ColumnDef<Faq>[] = [
@@ -16,13 +15,8 @@ export const faqColumns: ColumnDef<Faq>[] = [
       <DataTableColumnHeader column={column} title="Category" />
     ),
     cell: ({ row }) => {
-      const label = labels.find(
-        (label) => label.value === row.original.category
-      );
-
       return (
         <div className="flex space-x-2">
-          {label && <Badge variant="outline">{1}</Badge>}
           <span className="max-w-[500px] truncate font-normal text-[13px]">
             {row.getValue("category")}
           </span>
@@ -36,13 +30,8 @@ export const faqColumns: ColumnDef<Faq>[] = [
       <DataTableColumnHeader column={column} title="Question" />
     ),
     cell: ({ row }) => {
-      const label = labels.find(
-        (label) => label.value === row.original.question
-      );
-
       return (
         <div className="flex space-x-2">
-          {label && <Badge variant="outline">{1}</Badge>}
           <span className="max-w-[500px] truncate font-normal text-[13px]">
             {row.getValue("question")}
           </span>
