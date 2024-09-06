@@ -1,9 +1,9 @@
 "use client";
-import Image from "next/image";
+import { useContext } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ChevronDown, LogOut, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ChevronDown, LogOut, Menu } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,9 +21,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { user_1 } from "@/constants/images";
+import { Button } from "@/components/ui/button";
+import { SidebarContext } from "@/provider/sidebar-provider";
 
 const Nav = () => {
   const pathname = usePathname();
+  let { openSidenav, setOpenSidenav } = useContext(SidebarContext);
 
   return (
     <nav className="flex justify-between items-center mb-8">
@@ -80,6 +83,16 @@ const Nav = () => {
             </Button>
           </Link>
         )} */}
+
+        <Button
+          variant={"link"}
+          animation={"scale_in"}
+          type="button"
+          className="p-0 m-0 flex xl:hidden"
+          onClick={() => setOpenSidenav(!openSidenav)}
+        >
+          <Menu size={20} className="mr-2 text-primary" />
+        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger className="focus-visible:outline-none h-10 flex justify-between items-center gap-1">
             <Image
@@ -111,9 +124,14 @@ const Nav = () => {
               </div>
             </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="BodyText-Regular px-4 py-2 text-error flex gap-2 cursor-pointer">
-              Logout
-              <LogOut size={16} />
+            <DropdownMenuItem>
+              <Link
+                href="/admin"
+                className="BodyText-Regular px-4 py-2 text-error flex items-center gap-2 cursor-pointer"
+              >
+                Logout
+                <LogOut size={16} />
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
