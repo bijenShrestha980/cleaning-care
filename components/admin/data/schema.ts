@@ -33,7 +33,7 @@ export const serviceSchema = z.object({
       image: z.custom<StaticImageData>((v) => v instanceof File) || z.string(),
     })
     .optional(),
-  feature: z
+  sectionTwo: z
     .strictObject({
       title: z.string(),
       description: z.string(),
@@ -47,7 +47,7 @@ export const serviceSchema = z.object({
       ),
     })
     .optional(),
-  sectionTwo: z
+  sectionThree: z
     .strictObject({
       title: z.string(),
       description: z.string(),
