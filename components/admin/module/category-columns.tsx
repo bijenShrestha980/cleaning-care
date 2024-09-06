@@ -25,6 +25,22 @@ export const categoryColumns: ColumnDef<Category>[] = [
     },
   },
   {
+    accessorKey: "price",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Price" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex w-[80%] items-center">
+          <span>$ {row.getValue("price")}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
     accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />

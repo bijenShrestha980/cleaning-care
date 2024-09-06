@@ -2,6 +2,7 @@ import {
   Category,
   Faq,
   HeroSection,
+  Quote,
   Service,
   Testimonial,
   Type,
@@ -20,14 +21,17 @@ const heroSectionData: HeroSection[] = [
 const categoryData: Category[] = [
   {
     category: "Bedroom",
+    price: 20,
     status: "active",
   },
   {
     category: "Bathrom",
+    price: 60,
     status: "active",
   },
   {
     category: "Kitchen",
+    price: 80,
     status: "inactive",
   },
 ];
@@ -153,6 +157,30 @@ const faqData: Faq[] = [
   },
 ];
 
+const quoteData: Quote[] = [
+  {
+    firstName: "John",
+    lastName: "Doe",
+    email: "john@gmail.com",
+    phone: "4421525",
+    address: "1234 Main Street",
+    postalCode: "425",
+    message:
+      "ouh, I need a bedroom ouh, I need a bedroom ouh, I need a bedroomouh, I need a bedroomouh, I need a bedroomouh, I need a bouh, I need a bedroomedroomouh, I need a bedroomouh, I need a bedroomouh, I need a bedroom",
+    quoteStatus: "accepted",
+    categories: [
+      {
+        label: "Bedroom",
+        value: 1,
+      },
+      {
+        label: "Bathroom",
+        value: 2,
+      },
+    ],
+  },
+];
+
 export {
   heroSectionData,
   categoryData,
@@ -160,4 +188,5 @@ export {
   serviceData,
   testimonialData,
   faqData,
+  quoteData,
 };

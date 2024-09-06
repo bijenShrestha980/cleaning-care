@@ -1,4 +1,4 @@
-import { HandPlatter, LayoutDashboard, Settings } from "lucide-react";
+import { HandPlatter, LayoutDashboard, Quote, Settings } from "lucide-react";
 
 const adminRoutes = [
   {
@@ -11,7 +11,12 @@ const adminRoutes = [
         path: "/",
         sidebar: true,
       },
-
+      {
+        icon: <Quote width={20} height={20} />,
+        name: "Quotes",
+        path: "/quote",
+        sidebar: true,
+      },
       {
         icon: <HandPlatter width={20} height={20} />,
         name: "Service Details",

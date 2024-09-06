@@ -33,13 +33,14 @@ const CategoryForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       category: "",
+      price: undefined,
       status: "active",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    router.push("/admin/art-details/categories");
+    router.push("/admin/dashboard/service/categories");
   }
 
   return (
@@ -58,6 +59,28 @@ const CategoryForm = () => {
               </FormLabel>
               <FormControl>
                 <Input placeholder="Bedroom" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-normal text-sm">Price ($)</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Price"
+                  {...field}
+                  // type="number"
+                  onChange={(event) => field.onChange(+event.target.value)}
+                  onWheel={() =>
+                    document.activeElement instanceof HTMLElement &&
+                    document.activeElement.blur()
+                  }
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -97,6 +120,7 @@ const CategoryForm = () => {
             </FormItem>
           )}
         />
+        <span />
         <span />
         <div className="flex justify-end gap-4">
           <Button variant={"ghost"} animation={"scale_in"} className="w-[86px]">

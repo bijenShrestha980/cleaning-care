@@ -72,14 +72,14 @@ const Nav = () => {
         </Breadcrumb>
       </div>
       <div className="flex justify-between items-center gap-5">
-        {pathname.split("/").length === 4 && (
+        {/* {pathname.split("/").length === 4 && (
           <Link href="/artists/dashboard/art-details/add-art">
             <Button variant={"default"} animation={"scale_in"}>
               <Plus size={20} className="mr-2" />
               Add Art
             </Button>
           </Link>
-        )}
+        )} */}
         <DropdownMenu>
           <DropdownMenuTrigger className="focus-visible:outline-none h-10 flex justify-between items-center gap-1">
             <Image
