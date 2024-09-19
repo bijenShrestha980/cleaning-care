@@ -54,50 +54,48 @@ export function Navbar() {
             <NavigationMenuTrigger className="flex sm:gap-2 items-center hover:bg-transparent">
               <span className="SmallText-Reg-Cap">Menu</span>
             </NavigationMenuTrigger>
-            <NavigationMenuContent className="m-0">
-              <ul className="w-[300px] flex flex-col md:flex-row justify-between p-4">
-                <li>
-                  <Link href="/about-us" legacyBehavior passHref>
-                    <NavigationMenuLink
-                      className={navigationMenuTriggerStyle()}
-                    >
-                      About us
-                    </NavigationMenuLink>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact-us" legacyBehavior passHref>
-                    <NavigationMenuLink
-                      className={navigationMenuTriggerStyle()}
-                    >
-                      Contact
-                    </NavigationMenuLink>
-                  </Link>
-                </li>
-                <li>
-                  <Accordion type="single" collapsible>
-                    <AccordionItem
-                      value="item-1"
-                      className="no-underline border-none"
-                    >
-                      <AccordionTrigger className="no-underline focus:no-underline px-4 py-2 font-medium text-xl">
-                        Services
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <ul className="grid w-full gap-1 px-1 md:grid-cols-1">
-                          {components.map((component) => (
-                            <ListItem
-                              key={component.title}
-                              title={component.title}
-                              href={component.href}
-                            />
-                          ))}
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </li>
-              </ul>
+            <NavigationMenuContent className="m-0 flex flex-col">
+              <Link
+                href="/about-us"
+                legacyBehavior
+                passHref
+                className="h-11 w-full"
+              >
+                <NavigationMenuLink className="px-4 py-2 h-11 w-full font-medium text-xl">
+                  About us
+                </NavigationMenuLink>
+              </Link>
+              <Link
+                href="/contact-us"
+                legacyBehavior
+                passHref
+                className="h-11 w-full"
+              >
+                <NavigationMenuLink className="px-4 py-2 h-11 w-full font-medium text-xl">
+                  Contact
+                </NavigationMenuLink>
+              </Link>
+              <Accordion type="single" collapsible>
+                <AccordionItem
+                  value="item-1"
+                  className="no-underline border-none"
+                >
+                  <AccordionTrigger className="no-underline focus:no-underline px-4 py-2 font-medium text-xl">
+                    Services
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul className="grid w-full gap-1 px-1 md:grid-cols-1">
+                      {components.map((component) => (
+                        <ListItem
+                          key={component.title}
+                          title={component.title}
+                          href={component.href}
+                        />
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </NavigationMenuContent>
           </NavigationMenuItem>
         </NavigationMenuList>
