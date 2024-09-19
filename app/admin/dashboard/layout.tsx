@@ -3,7 +3,7 @@ import Sidebar from "@/components/admin/component/sidebar";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="h-dvh font-karla">
+    <div className="h-dvh font-inter">
       <Sidebar />
       <div className="p-5 xl:ml-80">
         <Nav />
