@@ -54,7 +54,7 @@ export function Navbar() {
             <NavigationMenuTrigger className="flex sm:gap-2 items-center hover:bg-transparent">
               <span className="SmallText-Reg-Cap">Menu</span>
             </NavigationMenuTrigger>
-            <NavigationMenuContent className="m-0 flex flex-col">
+            <NavigationMenuContent className="m-0 flex flex-col w-[200px]">
               <Link
                 href="/about-us"
                 legacyBehavior
@@ -78,7 +78,7 @@ export function Navbar() {
               <Accordion type="single" collapsible>
                 <AccordionItem
                   value="item-1"
-                  className="no-underline border-none"
+                  className="no-underline focus:no-underline border-none"
                 >
                   <AccordionTrigger className="no-underline focus:no-underline px-4 py-2 font-medium text-xl">
                     Services
