@@ -12,17 +12,17 @@ const fontInter = FontInter({
 const montserratSans = localFont({
   src: "./fonts/Montserrat-VF.ttf",
   variable: "--font-montserrat-sans",
-  weight: "100 900 300 400 500 600 700 800 900",
+  weight: "100 200 300 400 500 600 700 800 900",
 });
 const montserratItalic = localFont({
   src: "./fonts/Montserrat-Italic-VF.ttf",
   variable: "--font-montserrat-italic",
-  weight: "100 900 300 400 500 600 700 800 900",
+  weight: "100 200 300 400 500 600 700 800 900",
 });
 const bricolageGrotesqueSans = localFont({
   src: "./fonts/BricolageGrotesque-VF.ttf",
   variable: "--font-bricolageGrotesque-sans",
-  weight: "100 900 300 400 500 600 700 800 900",
+  weight: "100 200 300 400 500 600 700 800 900",
 });
 
 export const metadata: Metadata = {

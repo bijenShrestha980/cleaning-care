@@ -20,7 +20,7 @@ const ContactUs = () => {
         />
         <div className="w-full h-full absolute top-0 -z-10 bg-transbg" />
         <div className="w-full h-full absolute top-0 left-0 flex flex-col justify-center items-center text-center px-4">
-          <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[64px] leading-10 md:leading-[72px] font-bricolageGrotesque mb-3">
+          <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[64px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3">
             Contact Us
           </h1>
           <p className="text-primary-foreground text-md md:text-2xl mb-9">
