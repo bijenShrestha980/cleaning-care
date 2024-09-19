@@ -12,7 +12,13 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        karla: ["var(--font-inter)", ...fontFamily.sans],
+        inter: ["var(--font-inter)", ...fontFamily.sans],
+        montserratSans: ["var(--font-montserrat-sans)", ...fontFamily.sans],
+        montserratItalic: ["var(--font-montserrat-italic)", ...fontFamily.sans],
+        bricolageGrotesqueSans: [
+          "var(--font-bricolageGrotesque-sans)",
+          ...fontFamily.sans,
+        ],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -43,6 +49,10 @@ const config: Config = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -54,6 +64,11 @@ const config: Config = {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
+        },
+        transbg: {
+          "90": "rgba(31, 28, 28, 0.9)",
+          DEFAULT: "rgba(0, 0, 0, 0.4)",
+          foreground: "rgba(255, 255, 255, 0.4)",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

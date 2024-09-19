@@ -34,6 +34,8 @@
     --primary-foreground: 0 0% 98%;
     --secondary: 237 53% 55.1%;
     --secondary-foreground: 0 0% 98%;
+    --success: 86, 53%, 51%, 1;
+    --success-foreground: 0 0% 98%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
     --accent: 0 0% 96.1%;
@@ -62,6 +64,8 @@
     --primary-foreground: 0 0% 9%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
+    --success: 86, 53%, 51%, 1;
+    --success-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
     --accent: 0 0% 14.9%;
