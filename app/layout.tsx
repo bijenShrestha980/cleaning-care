@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter as FontInter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-import "react-quill/dist/quill.snow.css";
+// import "react-quill/dist/quill.snow.css";
 
 const fontInter = FontInter({
   subsets: ["latin"],
