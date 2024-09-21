@@ -17,9 +17,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-const CustomEditor = dynamic(() => import("@/components/editor"), {
-  ssr: false,
-});
+// const CustomEditor = dynamic(() => import("@/components/editor"), {
+//   ssr: false,
+// });
 
 const AboutForm = () => {
   const router = useRouter();
@@ -99,7 +99,7 @@ const AboutForm = () => {
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Content</FormLabel>
               <FormControl>
-                <CustomEditor placeholder="Content here" {...field} />
+                {/* <CustomEditor placeholder="Content here" {...field} /> */}
               </FormControl>
               <FormMessage />
             </FormItem>
