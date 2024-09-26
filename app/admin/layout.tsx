@@ -1,4 +1,4 @@
-import SidebarProvider from "@/provider/sidebar-provider";
+import SidebarProvider from "@/providers/sidebar-provider";
 
 export default function RootLayout({
   children,

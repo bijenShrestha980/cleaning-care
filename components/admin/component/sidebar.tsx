@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { adminRoutes } from "@/constants/routes";
 import { formatToCapitalize } from "@/lib/format-to-capitalize";
-import { SidebarContext } from "@/provider/sidebar-provider";
+import { SidebarContext } from "@/providers/sidebar-provider";
 
 const Sidebar = () => {
   const pathname = usePathname();

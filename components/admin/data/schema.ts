@@ -9,21 +9,22 @@ export const heroSectionSchema = z.object({
   image: z.custom<File>((v) => v instanceof File).optional(),
 });
 
-export const categorySchema = z.object({
-  category: z
-    .string({
-      required_error: "Category is required",
-    })
-    .min(1, {
-      message: "Category is required",
-    }),
-  price: z
-    .number({
-      required_error: "Price is required",
-    })
-    .min(1)
-    .max(1000000),
+export const serviceCategorySchema = z.object({
+  category_name: z
+    .string()
+    .min(2, { message: "Category name is required." })
+    .trim(),
   status: z.enum(["active", "inactive"]),
+  items: z.array(
+    z.object({
+      item_name: z
+        .string()
+        .min(2, { message: "Item name is required." })
+        .trim(),
+      price: z.number().min(1),
+      status: z.enum(["active", "inactive"]),
+    })
+  ),
 });
 
 export const typeSchema = z.object({
@@ -130,7 +131,7 @@ export const quoteSchema = z.object({
 
 export type HeroSection = z.infer<typeof heroSectionSchema>;
 
-export type Category = z.infer<typeof categorySchema>;
+export type ServiceCategory = z.infer<typeof serviceCategorySchema>;
 
 export type Type = z.infer<typeof typeSchema>;
 
