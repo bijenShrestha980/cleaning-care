@@ -1,4 +1,4 @@
-import CategoryForm from "@/components/admin/module/category-form";
+import CategoryForm from "@/features/service-categories/components/category-form";
 
 const ViewCategory = () => {
   return (

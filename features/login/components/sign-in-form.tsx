@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, LoaderCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,16 +17,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-// import { useLogin } from "@/feature/auth/api/use-login";
+import { useLogin } from "@/features/login/api/use-login";
 
 const SignInForm = () => {
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-
-  // const { mutate: login, data, isPending, context } = useLogin();
+  const { mutate: login, isPending } = useLogin();
 
   const formSchema = z.object({
-    email: z.string().email(),
+    email: z.string().email({ message: "Please enter a valid email." }).trim(),
     password: z
       .string({
         required_error: "Password is required",
@@ -46,8 +44,7 @@ const SignInForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // login(values);
-    router.push("/admin/dashboard");
+    login(values);
   }
 
   return (
@@ -114,8 +111,13 @@ const SignInForm = () => {
           animation={"scale_in"}
           size={"lg"}
           className="w-full"
+          disabled={isPending}
         >
-          Sign In
+          {isPending ? (
+            <LoaderCircle className="animate-spin" width={20} height={20} />
+          ) : (
+            "Sign In"
+          )}
         </Button>
       </form>
     </Form>

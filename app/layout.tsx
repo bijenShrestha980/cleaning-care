@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter as FontInter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
+import TanstackProvider from "@/providers/tanstack-provider";
 // import "react-quill/dist/quill.snow.css";
 
 const fontInter = FontInter({
@@ -41,7 +43,8 @@ export default function RootLayout({
       <body
         className={`${fontInter.variable} ${montserratSans.variable} ${montserratItalic.variable} ${bricolageGrotesqueSans.variable} min-h-screen bg-background antialiased`}
       >
-        {children}
+        <TanstackProvider>{children}</TanstackProvider>
+        <Toaster />
       </body>
     </html>
   );

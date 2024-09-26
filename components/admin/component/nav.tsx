@@ -22,7 +22,7 @@ import {
 
 import { user_1 } from "@/constants/images";
 import { Button } from "@/components/ui/button";
-import { SidebarContext } from "@/provider/sidebar-provider";
+import { SidebarContext } from "@/providers/sidebar-provider";
 
 const Nav = () => {
   const pathname = usePathname();
