@@ -3,32 +3,37 @@ import { useRouter } from "next/navigation";
 
 import { toast } from "@/hooks/use-toast";
 import { axios } from "@/lib/axios";
-import { ServiceCategory } from "@/components/admin/data/schema";
+import { Service } from "@/components/admin/data/schema";
 
-const postServiceCategory = async (data: ServiceCategory) => {
-  const response = await axios.post("/service-category", data);
+const postService = async ({
+  data,
+  id,
+}: {
+  data: Service;
+  id: number | string;
+}) => {
+  const response = await axios.post(`/service/${id}`, data);
   return response.data;
 };
 
-export const useCreateServiceCategory = () => {
+export const useUpdateService = (id: number | string | undefined) => {
   const router = useRouter();
 
   return useMutation({
-    mutationKey: ["service-category"],
-    mutationFn: postServiceCategory,
+    mutationKey: ["service", id],
+    mutationFn: postService,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
         toast({
           title: "Error",
-          description: data?.message,
+          description: data?.error,
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/service/categories");
+        router.push("/admin/dashboard/service/service-list");
       }
     },
     onError: (error) => {
-      console.log("first", error);
       toast({
         title: "Error",
         //@ts-ignore

@@ -8,6 +8,39 @@ declare module "axios" {
   }
 }
 
+const baseUrlLocal =
+  process.env.NODE_ENV === "development"
+    ? process.env.api_dev || ""
+    : process.env.api_prod || "";
+
+// Axios instance
+export const axiosLocal = Axios.create({
+  baseURL: baseUrlLocal,
+});
+
+axiosLocal.interceptors.request.use(
+  async (config: InternalAxiosRequestConfig) => {
+    config.headers.Accept = "application/json";
+    return config;
+  }
+);
+
+// Axios response interceptor for handling errors and responses
+axiosLocal.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    toast({
+      title: "Error",
+      description: error?.response?.data?.title || error?.message,
+      variant: "destructive",
+    });
+
+    return Promise.reject(error);
+  }
+);
+
 // In-memory session cache
 let cachedSession: { token: string; expiresAt: number } | null = null;
 
@@ -18,34 +51,18 @@ export const verifySession = async (): Promise<{ token: string } | null> => {
     return { token: cachedSession.token };
   }
 
-  const baseUrl =
-    process.env.NODE_ENV === "development"
-      ? process.env.api_dev || ""
-      : process.env.api_prod || "";
+  const response = await axiosLocal.get("/session");
+  const session = response.data.session;
 
-  try {
-    const response = await Axios.get(baseUrl);
-    const session = response.data.session;
-
-    if (session?.token) {
-      // Cache the session and set an expiration (e.g., 1 hour from now)
-      cachedSession = {
-        token: session.token,
-        expiresAt: Date.now() + 60 * 60 * 1000, // 1 hour expiry
-      };
-    }
-
-    return session;
-  } catch (error) {
-    console.error("Session verification failed:", error);
-
-    toast({
-      title: "Sign in failed",
-      variant: "destructive",
-    });
-
-    return null; // Return null when session verification fails
+  if (session?.token) {
+    // Cache the session and set an expiration (e.g., 1 hour from now)
+    cachedSession = {
+      token: session.token,
+      expiresAt: Date.now() + 60 * 60 * 1000, // 1 hour expiry
+    };
   }
+
+  return session;
 };
 
 // Axios instance
@@ -54,7 +71,6 @@ export const axios = Axios.create({
 });
 
 // Axios request interceptor for adding token to Authorization header
-
 axios.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   const session = await verifySession();
 

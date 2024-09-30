@@ -1,13 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
-import { Check, ChevronsUpDown, Trash2, User } from "lucide-react";
+import { set, z } from "zod";
+import {
+  Check,
+  ChevronsUpDown,
+  LoaderCircle,
+  Trash2,
+  User,
+} from "lucide-react";
 
+import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -40,100 +48,96 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import Loading from "@/components/ui/loading";
+import Error from "@/components/ui/error";
+import { Service, serviceSchema } from "@/components/admin/data/schema";
+import { useCreateService } from "@/features/services/api/use-create-service";
+import { useUpdateService } from "@/features/services/api/use-update-service";
+import { useDeleteService } from "@/features/services/api/use-delete-service";
+import { useAllServiceCategory } from "@/features/service-categories/api/use-service-categories";
 import { cn } from "@/lib/utils";
-import { serviceSchema } from "../data/schema";
 import { user_1 } from "@/constants/images";
 
-const categories = [
-  {
-    value: "bedroom",
-    label: "Bedroom",
-  },
-  {
-    value: "kitchen",
-    label: "Kitchen",
-  },
-  {
-    value: "bathroom",
-    label: "Bathroom",
-  },
-  {
-    value: "living-room",
-    label: "Living Room",
-  },
-  {
-    value: "dining-room",
-    label: "Dining Room",
-  },
-  {
-    value: "laundry",
-    label: "Laundry",
-  },
-  {
-    value: "garage",
-    label: "Garage",
-  },
-  {
-    value: "office",
-    label: "Office",
-  },
-  {
-    value: "commercial",
-    label: "Commercial",
-  },
-  {
-    value: "industrial",
-    label: "Industrial",
-  },
-  {
-    value: "other",
-    label: "Other",
-  },
-];
-
-const ServiceForm = () => {
-  const router = useRouter();
+const ServiceForm = ({
+  service,
+  id,
+}: {
+  service?: Service;
+  id?: string | number;
+}) => {
+  const {
+    service_name,
+    short_description,
+    long_description,
+    status,
+    banner_image,
+    service_category_id,
+    section_one_title,
+    section_one_description,
+    section_one_image,
+    section_two_title,
+    section_two_description,
+    service_items,
+  } = service || {};
   const [open, setOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<
+    {
+      value: string;
+      label: string;
+      id?: string;
+    }[]
+  >([]);
+  const [selectedCategories, setSelectedCategories] = useState<string>("");
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [featurePreview, setFeaturePreview] = useState<string[]>([]);
+
+  const { mutate: createService, isPending: createIsPending } =
+    useCreateService();
+  const { mutate: updateService, isPending: updateIsPending } =
+    useUpdateService(id);
+  const { mutate: deleteStyle, isPending: deleteIsPending } =
+    useDeleteService();
+  const {
+    data: serviceCategoriesData,
+    isPending: serviceCategoriesIsPending,
+    isError: serviceCategoriesIsError,
+  } = useAllServiceCategory();
 
   const formSchema = serviceSchema;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      detail: "",
-      description: "",
-      status: "active",
-      categories: undefined,
-      sectionOne: {
-        title: "",
-        description: "",
-        image: undefined,
-      },
-      sectionTwo: {
-        title: "",
-        description: "",
-        features: [
-          {
-            title: "",
-            description: "",
-            image: undefined,
-          },
-        ],
-      },
-      sectionThree: {
-        title: "",
-        description: "",
-        features: [
-          {
-            title: "",
-            description: "",
-          },
-        ],
-      },
+      service_name: service_name || "",
+      short_description: short_description || "",
+      long_description: long_description || "",
+      status: status || "active",
+      banner_image: banner_image || undefined,
+      service_category_id: service_category_id || undefined,
+      // categories: undefined,
+      section_one_title: section_one_title || "",
+      section_one_description: section_one_description || "",
+      section_one_image: section_one_image || undefined,
+      section_two_title: section_two_title || "",
+      section_two_description: section_two_description || "",
+      service_items: service_items || [
+        {
+          item_name: "",
+          short_description: "",
+          icon: undefined,
+        },
+      ],
+      // sectionThree: {
+      //   title: "",
+      //   description: "",
+      //   features: [
+      //     {
+      //       title: "",
+      //       description: "",
+      //     },
+      //   ],
+      // },
     },
   });
 
@@ -142,32 +146,91 @@ const ServiceForm = () => {
     append: sectionTwoAppend,
     remove: sectionTwoRemove,
   } = useFieldArray({
-    name: "sectionTwo.features",
+    name: "service_items",
     control: form.control,
   });
 
-  const {
-    fields: sectionThreeFields,
-    append: sectionThreeAppend,
-    remove: sectionThreeRemove,
-  } = useFieldArray({
-    name: "sectionThree.features",
-    control: form.control,
-  });
+  // const {
+  //   fields: sectionThreeFields,
+  //   append: sectionThreeAppend,
+  //   remove: sectionThreeRemove,
+  // } = useFieldArray({
+  //   name: "sectionThree.features",
+  //   control: form.control,
+  // });
+
+  useEffect(() => {
+    const data: { value: string; label: string; id?: string }[] = [];
+    if (
+      serviceCategoriesData &&
+      !serviceCategoriesIsPending &&
+      !serviceCategoriesIsError
+    ) {
+      serviceCategoriesData.map((category) =>
+        data.push({
+          value: category.category_name,
+          label: category.category_name,
+          id: category.id?.toLocaleString(),
+        })
+      );
+    }
+    setCategories(data);
+  }, [
+    serviceCategoriesData,
+    serviceCategoriesIsPending,
+    serviceCategoriesIsError,
+  ]);
 
   const handleSelect = (value: string) => {
-    if (selectedCategories.includes(value)) {
-      setSelectedCategories(selectedCategories.filter((c) => c !== value));
+    setSelectedCategories(value);
+    setOpen(false);
+  };
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const formData = new FormData();
+    (Object.keys(values) as Array<keyof typeof values>).map((key) => {
+      if (key === "service_items") {
+        values[key].map((item: any, index: number) => {
+          Object.keys(item).map((itemKey) => {
+            if (itemKey === "icon") {
+              formData.append(`service_items[${index}][icon]`, item[itemKey]);
+            } else {
+              formData.append(
+                `service_items[${index}][${itemKey}]`,
+                item[itemKey]
+              );
+            }
+          });
+        });
+      } else {
+        const value = values[key];
+        if (value !== undefined) {
+          formData.append(
+            key,
+            value instanceof Blob ? value : value.toString()
+          );
+        }
+      }
+    });
+
+    if (id) {
+      updateService({
+        // @ts-ignore
+        data: formData,
+        id,
+      });
     } else {
-      setSelectedCategories([...selectedCategories, value]);
+      // @ts-ignore
+      createService(formData);
     }
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    router.push("/admin/dashboard/service/service-list");
+  if (serviceCategoriesIsPending) {
+    return <Loading />;
   }
-
+  if (serviceCategoriesIsError) {
+    return <Error />;
+  }
   return (
     <Form {...form}>
       <form
@@ -176,7 +239,7 @@ const ServiceForm = () => {
       >
         <FormField
           control={form.control}
-          name="name"
+          name="service_name"
           render={({ field }) => (
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">
@@ -190,6 +253,121 @@ const ServiceForm = () => {
               </FormControl>
               <FormMessage />
             </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="banner_image"
+          render={({ field: { ref, name, onBlur, onChange } }) => (
+            <FormItem className="col-span-2 2xl:col-span-1">
+              <div className="flex flex-col sm:flex-row gap-12">
+                <span>
+                  <FormLabel className="font-normal text-sm">
+                    Banner image
+                  </FormLabel>
+
+                  <div className="flex items-center gap-3 mt-2">
+                    <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
+                      <User className="text-[#596579] h-6 w-6" />
+                    </div>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        ref={ref}
+                        name={name}
+                        onBlur={onBlur}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          onChange(e.target.files?.[0]);
+                          setBannerPreview(
+                            file ? URL.createObjectURL(file) : null
+                          );
+                        }}
+                        className="w-fit"
+                      />
+                    </FormControl>
+                  </div>
+                </span>
+                <div className="flex flex-col items-center">
+                  <Label className="font-normal text-sm">Image (Preview)</Label>
+                  {bannerPreview ? (
+                    <Image
+                      src={bannerPreview}
+                      alt="logo"
+                      width={64}
+                      height={64}
+                      className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
+                    />
+                  ) : (
+                    <User
+                      size={64}
+                      className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
+                    />
+                  )}
+                </div>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="service_category_id"
+          render={({ field: { onChange } }) => (
+            <div className="space-y-2 col-span-2 sm:col-span-1">
+              <FormLabel className="font-normal text-sm">Categories</FormLabel>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-full h-fit px-3 py-3 justify-between"
+                  >
+                    <div className="w-fit overflow-hidden">
+                      {selectedCategories
+                        ? categories.find(
+                            (category) => category.value === selectedCategories
+                          )?.label
+                        : "Select category..."}
+                    </div>
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="md:w-[292px] xl:w-[452px] 2xl:w-[580px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search category..." />
+                    <CommandList>
+                      <CommandEmpty>No category found.</CommandEmpty>
+                      <CommandGroup>
+                        {categories.map((category) => (
+                          <CommandItem
+                            key={category.value}
+                            // value={category.value}
+                            onSelect={() => {
+                              if (category.id) {
+                                handleSelect(category.value);
+                                onChange(category.id);
+                              }
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                selectedCategories === category.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {category.label}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
           )}
         />
         <FormField
@@ -226,64 +404,9 @@ const ServiceForm = () => {
             </FormItem>
           )}
         />
-        <div className="space-y-2 col-span-2 sm:col-span-1">
-          <FormLabel className="font-normal text-sm">Categories</FormLabel>
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={open}
-                className="w-full h-fit px-3 py-3 justify-between"
-              >
-                <div className="w-fit overflow-hidden">
-                  {selectedCategories.length > 0
-                    ? selectedCategories
-                        .map(
-                          (item) =>
-                            categories.find(
-                              (category) => category.value === item
-                            )?.label
-                        )
-                        .join(", ")
-                    : "Select category..."}
-                </div>
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="md:w-[400px] p-0">
-              <Command>
-                <CommandInput placeholder="Search category..." />
-                <CommandList>
-                  <CommandEmpty>No category found.</CommandEmpty>
-                  <CommandGroup>
-                    {categories.map((category) => (
-                      <CommandItem
-                        key={category.value}
-                        value={category.value}
-                        onSelect={() => handleSelect(category.value)}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            selectedCategories.includes(category.value)
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                        {category.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
-        </div>
-        <span className="hidden sm:block" />
         <FormField
           control={form.control}
-          name="detail"
+          name="short_description"
           render={({ field }) => (
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">
@@ -302,7 +425,7 @@ const ServiceForm = () => {
         />
         <FormField
           control={form.control}
-          name="description"
+          name="long_description"
           render={({ field }) => (
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Description</FormLabel>
@@ -321,7 +444,7 @@ const ServiceForm = () => {
         <Separator className="col-span-2 my-4" />
         <FormField
           control={form.control}
-          name="sectionOne.title"
+          name="section_one_title"
           render={({ field }) => (
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">
@@ -339,7 +462,7 @@ const ServiceForm = () => {
         />
         <FormField
           control={form.control}
-          name="sectionOne.image"
+          name="section_one_image"
           render={({ field: { ref, name, onBlur, onChange } }) => (
             <FormItem className="col-span-2 2xl:col-span-1">
               <div className="flex flex-col sm:flex-row gap-12">
@@ -371,9 +494,7 @@ const ServiceForm = () => {
                   </div>
                 </span>
                 <div className="flex flex-col items-center">
-                  <FormLabel className="font-normal text-sm">
-                    Image (Preview)
-                  </FormLabel>
+                  <Label className="font-normal text-sm">Image (Preview)</Label>
                   {logoPreview ? (
                     <Image
                       src={logoPreview}
@@ -396,7 +517,7 @@ const ServiceForm = () => {
         />
         <FormField
           control={form.control}
-          name="sectionOne.description"
+          name="section_one_description"
           render={({ field }) => (
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">
@@ -417,7 +538,7 @@ const ServiceForm = () => {
         <div className="space-y-2 col-span-2 sm:col-span-1">
           <FormField
             control={form.control}
-            name="sectionTwo.title"
+            name="section_two_title"
             render={({ field }) => (
               <FormItem className="col-span-2 sm:col-span-1">
                 <FormLabel className="font-normal text-sm">
@@ -433,7 +554,7 @@ const ServiceForm = () => {
           <span />
           <FormField
             control={form.control}
-            name="sectionTwo.description"
+            name="section_two_description"
             render={({ field }) => (
               <FormItem className="col-span-2 sm:col-span-1">
                 <FormLabel className="font-normal text-sm">
@@ -450,7 +571,7 @@ const ServiceForm = () => {
               </FormItem>
             )}
           />
-          <div className="col-span-1 pt-4">
+          <div className="col-span-3 pt-4">
             <div className="flex justify-between mb-4">
               <FormLabel className="font-semibold text-sm active:scale-95">
                 Section Two Features
@@ -461,16 +582,16 @@ const ServiceForm = () => {
                 size={"sm"}
                 onClick={() =>
                   sectionTwoAppend({
-                    title: "",
-                    description: "",
-                    image: user_1,
+                    item_name: "",
+                    short_description: "",
+                    icon: null,
                   })
                 }
               >
                 Add Feature
               </Button>
             </div>
-            {sectionTwoFields.map((field, index) => (
+            {sectionTwoFields.map((_, index) => (
               <div
                 key={index}
                 className={`grid lg:grid-cols-2 gap-4 mb-4 pb-4 ${
@@ -499,7 +620,7 @@ const ServiceForm = () => {
                 )}
                 <FormField
                   control={form.control}
-                  name={`sectionTwo.features.${index}.title`}
+                  name={`service_items.${index}.item_name`}
                   render={({ field }) => (
                     <FormItem className="col-span-2 sm:col-span-1">
                       <FormLabel className="font-normal text-sm">
@@ -515,7 +636,7 @@ const ServiceForm = () => {
 
                 <FormField
                   control={form.control}
-                  name={`sectionTwo.features.${index}.description`}
+                  name={`service_items.${index}.short_description`}
                   render={({ field }) => (
                     <FormItem className="col-span-2 sm:col-span-1">
                       <FormLabel className="font-normal text-sm">
@@ -534,7 +655,7 @@ const ServiceForm = () => {
                 />
                 <FormField
                   control={form.control}
-                  name={`sectionTwo.features.${index}.image`}
+                  name={`service_items.${index}.icon`}
                   render={({ field: { ref, name, onBlur, onChange } }) => (
                     <FormItem className="col-span-2">
                       <div className="flex flex-col sm:flex-row gap-12">
@@ -571,9 +692,9 @@ const ServiceForm = () => {
                           </div>
                         </span>
                         <div className="flex flex-col items-center">
-                          <FormLabel className="font-normal text-sm">
+                          <Label className="font-normal text-sm">
                             Image (Preview)
-                          </FormLabel>
+                          </Label>
                           {featurePreview[index] ? (
                             <Image
                               src={featurePreview[index]}
@@ -598,7 +719,7 @@ const ServiceForm = () => {
             ))}
           </div>
         </div>
-        <Separator className="col-span-2 my-4" />
+        {/* <Separator className="col-span-2 my-4" />
         <div className="space-y-2 col-span-2 sm:col-span-1">
           <FormField
             control={form.control}
@@ -720,23 +841,49 @@ const ServiceForm = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
         <span />
         <span />
 
-        <div className="flex justify-end gap-4">
-          <Button variant={"ghost"} animation={"scale_in"} className="w-[86px]">
-            Delete
-          </Button>
+        <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-xl">
+          {id && (
+            <Button
+              variant={"ghost"}
+              animation={"scale_in"}
+              className="w-[86px]"
+              disabled={createIsPending || updateIsPending || deleteIsPending}
+              type="button"
+              onClick={() => deleteStyle(id)}
+            >
+              {deleteIsPending ? (
+                <LoaderCircle className="animate-spin" width={20} height={20} />
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          )}
+          <Link href="/admin/dashboard/service/service-list">
+            <Button
+              variant={"outline"}
+              animation={"scale_in"}
+              className="w-[86px]"
+              disabled={createIsPending || updateIsPending || deleteIsPending}
+              type="button"
+            >
+              Cancle
+            </Button>
+          </Link>
           <Button
-            variant={"outline"}
+            type="submit"
             animation={"scale_in"}
             className="w-[86px]"
+            disabled={createIsPending || updateIsPending || deleteIsPending}
           >
-            Cancle
-          </Button>
-          <Button type="submit" animation={"scale_in"} className="w-[86px]">
-            Save
+            {createIsPending || updateIsPending ? (
+              <LoaderCircle className="animate-spin" width={20} height={20} />
+            ) : (
+              "Save"
+            )}
           </Button>
         </div>
       </form>

@@ -10,14 +10,14 @@ import { Badge } from "@/components/ui/badge";
 
 export const serviceColumns: ColumnDef<Service>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "service_name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex items-center">
-          <span>{row.getValue("name")}</span>
+          <span>{row.getValue("service_name")}</span>
         </div>
       );
     },
@@ -25,28 +25,28 @@ export const serviceColumns: ColumnDef<Service>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  {
-    accessorKey: "categories",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Categories" />
-    ),
-    cell: ({ row }) => {
-      console.log(row.getValue("categories"));
-      return (
-        <div className="flex items-center gap-1">
-          {/* @ts-ignore */}
-          {row.getValue("categories")?.map((category) => (
-            <Badge key={category.value} variant={"outline"}>
-              {category.label}
-            </Badge>
-          ))}
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
+  // {
+  //   accessorKey: "categories",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Categories" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     console.log(row.getValue("categories"));
+  //     return (
+  //       <div className="flex items-center gap-1">
+  //         {/* @ts-ignore */}
+  //         {row.getValue("categories")?.map((category) => (
+  //           <Badge key={category.value} variant={"outline"}>
+  //             {category.label}
+  //           </Badge>
+  //         ))}
+  //       </div>
+  //     );
+  //   },
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue(id));
+  //   },
+  // },
   {
     accessorKey: "status",
     header: ({ column }) => (
@@ -80,7 +80,7 @@ export const serviceColumns: ColumnDef<Service>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/service/service-list/view-service`}
+          href={`/admin/dashboard/service/service-list/${row.original.id}`}
         >
           View
         </Link>

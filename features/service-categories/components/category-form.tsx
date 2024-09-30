@@ -1,9 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
+import { LoaderCircle, Trash2 } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,20 +23,38 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { serviceCategorySchema } from "@/components/admin/data/schema";
-import { Trash2 } from "lucide-react";
+import {
+  ServiceCategory,
+  serviceCategorySchema,
+} from "@/components/admin/data/schema";
+import { useCreateServiceCategory } from "@/features/service-categories/api/use-create-service-category";
+import { useUpdateServiceCategory } from "@/features/service-categories/api/use-update-service-category";
+import { useDeleteServiceCategory } from "@/features/service-categories/api/use-delete-service-category";
 
-const CategoryForm = () => {
-  const router = useRouter();
+const CategoryForm = ({
+  serviceCategory,
+  id,
+}: {
+  serviceCategory?: ServiceCategory;
+  id?: string | number;
+}) => {
+  const { category_name, status, items } = serviceCategory || {};
+
+  const { mutate: createServiceCategory, isPending: createIsPending } =
+    useCreateServiceCategory();
+  const { mutate: updateServiceCategory, isPending: updateIsPending } =
+    useUpdateServiceCategory(id);
+  const { mutate: deleteStyle, isPending: deleteIsPending } =
+    useDeleteServiceCategory();
 
   const formSchema = serviceCategorySchema;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      category_name: "",
-      status: "active",
-      items: [
+      category_name: category_name || "",
+      status: status || "active",
+      items: items || [
         {
           item_name: "",
           price: 0,
@@ -55,8 +74,11 @@ const CategoryForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    router.push("/admin/dashboard/service/categories");
+    if (id) {
+      updateServiceCategory({ data: values, id });
+    } else {
+      createServiceCategory(values);
+    }
   }
 
   return (
@@ -135,7 +157,7 @@ const CategoryForm = () => {
           {itemFields.map((_, index) => (
             <div
               key={index}
-              className={`grid sm:grid-cols-2 gap-4 mb-4 pb-5 ${
+              className={`grid sm:grid-cols-2 gap-4 mb-4 pb-5 animate-in slide-in-from-top ${
                 index !== itemFields.length - 1 ? "border-b" : ""
               }`}
             >
@@ -241,19 +263,45 @@ const CategoryForm = () => {
         </div>
 
         <span />
-        <div className="flex justify-end gap-4">
-          <Button variant={"ghost"} animation={"scale_in"} className="w-[86px]">
-            Delete
-          </Button>
+        <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-xl">
+          {id && (
+            <Button
+              variant={"ghost"}
+              animation={"scale_in"}
+              className="w-[86px]"
+              disabled={createIsPending || updateIsPending || deleteIsPending}
+              type="button"
+              onClick={() => deleteStyle(id)}
+            >
+              {deleteIsPending ? (
+                <LoaderCircle className="animate-spin" width={20} height={20} />
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          )}
+          <Link href="/admin/dashboard/service/categories">
+            <Button
+              variant={"outline"}
+              animation={"scale_in"}
+              className="w-[86px]"
+              disabled={createIsPending || updateIsPending || deleteIsPending}
+              type="button"
+            >
+              Cancle
+            </Button>
+          </Link>
           <Button
-            variant={"outline"}
+            type="submit"
             animation={"scale_in"}
             className="w-[86px]"
+            disabled={createIsPending || updateIsPending || deleteIsPending}
           >
-            Cancle
-          </Button>
-          <Button type="submit" animation={"scale_in"} className="w-[86px]">
-            Save
+            {createIsPending || updateIsPending ? (
+              <LoaderCircle className="animate-spin" width={20} height={20} />
+            ) : (
+              "Save"
+            )}
           </Button>
         </div>
       </form>

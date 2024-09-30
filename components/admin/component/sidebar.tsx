@@ -50,7 +50,7 @@ const Sidebar = () => {
           />
         </div>
       </div>
-      <div className="no-scrollbar mt-6 h-[calc(100vh-183px)] xl:h-[calc(100vh-163px)] overflow-y-auto scroll-hide">
+      <div className="no-scrollbar mt-6 h-[calc(100vh-191px)] overflow-y-auto pb-6">
         {adminRoutes.map(({ layout, pages, sidebar }, key) => (
           <Fragment key={key}>
             {sidebar && (

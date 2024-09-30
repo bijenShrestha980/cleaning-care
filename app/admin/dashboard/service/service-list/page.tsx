@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
-import { serviceData } from "@/constants/fakeData";
-import { serviceColumns } from "@/components/admin/module/service-columns";
+import ServicesDetails from "@/features/services/components/services-details";
 
 const Services = () => {
   return (
@@ -17,7 +15,7 @@ const Services = () => {
           </Button>
         </Link>
       </div>
-      <DataTable data={serviceData} columns={serviceColumns} />
+      <ServicesDetails />
     </section>
   );
 };

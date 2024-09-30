@@ -1,8 +1,8 @@
-import ServiceForm from "@/components/admin/module/service-form";
+import ServiceForm from "@/features/services/components/service-form";
 
 const ViewService = () => {
   return (
-    <div>
+    <div className="pb-5">
       <p className="font-medium mb-4">View service</p>
       <ServiceForm />
     </div>

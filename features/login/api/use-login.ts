@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import { toast } from "@/hooks/use-toast";
-import { axios } from "@/lib/axios";
+import { axios, axiosLocal } from "@/lib/axios";
 
 interface LoginDTO {
   email: string;
@@ -15,22 +15,11 @@ const login = async (credentials: LoginDTO) => {
 };
 
 const createSession = async (data: any) => {
-  const baseUrl =
-    process.env.NODE_ENV === "development"
-      ? process.env.api_dev || ""
-      : process.env.api_prod || "";
-  try {
-    const response = await axios.post(baseUrl, {
-      data,
-    });
-    return response.data;
-  } catch (error) {
-    console.log("first", error);
-    toast({
-      title: "Sign in failed",
-      variant: "destructive",
-    });
-  }
+  const response = await axiosLocal.post("/session", {
+    data,
+  });
+  // console.log("first", response);
+  return response.data;
 };
 
 export const useLogin = () => {
