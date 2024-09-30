@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, LoaderCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,63 +16,29 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { changePasswordSchema } from "@/components/admin/data/schema";
+import { useCreateChangePassword } from "@/features/change-password/api/use-create-change-password";
 
 const ChangePasswordForm = () => {
-  const router = useRouter();
+  const { mutate: createChangePassword, isPending: createIsPending } =
+    useCreateChangePassword();
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setConfirmShowPassword] = useState(false);
 
-  const formSchema = z
-    .object({
-      oldPassword: z
-        .string({
-          required_error: "Old Password is required",
-        })
-        .min(1, {
-          message: "Old Password is required",
-        })
-        .max(100),
-      password: z
-        .string({
-          required_error: "New Password is required",
-        })
-        .min(1, {
-          message: "New Password is required",
-        })
-        .max(100)
-        .refine(
-          (value) =>
-            /^(?=.*\d)(?=.*[!@#$%^&_*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(
-              value
-            ),
-          {
-            message:
-              "New Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
-          }
-        ),
-      confirmPassword: z
-        .string({
-          required_error: "Confirm Password is required",
-        })
-        .max(100),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: "Passwords do not match",
-      path: ["confirmPassword"],
-    });
+  const formSchema = changePasswordSchema;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      oldPassword: "",
-      password: "",
-      confirmPassword: "",
+      current_password: "",
+      new_password: "",
+      new_password_confirmation: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    createChangePassword(values);
   }
 
   return (
@@ -84,16 +49,16 @@ const ChangePasswordForm = () => {
       >
         <FormField
           control={form.control}
-          name="oldPassword"
+          name="current_password"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="font-normal text-sm">
-                Old password
+                Current password
               </FormLabel>
               <FormControl>
                 <div className="w-full md:w-[527px] relative">
                   <Input
-                    placeholder="Old password"
+                    placeholder="Current password"
                     {...field}
                     type={showOldPassword ? "text" : "password"}
                   />
@@ -122,7 +87,7 @@ const ChangePasswordForm = () => {
         />
         <FormField
           control={form.control}
-          name="password"
+          name="new_password"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="font-normal text-sm">
@@ -160,7 +125,7 @@ const ChangePasswordForm = () => {
         />
         <FormField
           control={form.control}
-          name="confirmPassword"
+          name="new_password_confirmation"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="font-normal text-sm">
@@ -200,8 +165,16 @@ const ChangePasswordForm = () => {
         <span />
 
         <div className="flex justify-end gap-4">
-          <Button type="submit" animation={"scale_in"}>
-            Save changes
+          <Button
+            type="submit"
+            animation={"scale_in"}
+            disabled={createIsPending}
+          >
+            {createIsPending ? (
+              <LoaderCircle className="animate-spin" width={20} height={20} />
+            ) : (
+              "Save changes"
+            )}
           </Button>
         </div>
       </form>

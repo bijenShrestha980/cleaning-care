@@ -212,6 +212,50 @@ export const quoteSchema = z.object({
   ]),
 });
 
+export const socialLinksSchema = z.object({
+  facebook: z.string().url(),
+  instagram: z.string().url(),
+  twitter: z.string().url(),
+  youtube: z.string().url(),
+});
+
+export const changePasswordSchema = z
+  .object({
+    current_password: z
+      .string({
+        required_error: "Current Password is required",
+      })
+      .min(1, {
+        message: "Current Password is required",
+      })
+      .max(100),
+    new_password: z
+      .string({
+        required_error: "New Password is required",
+      })
+      .min(1, {
+        message: "New Password is required",
+      })
+      .max(100)
+      .refine(
+        (value) =>
+          /^(?=.*\d)(?=.*[!@#$%^&_*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value),
+        {
+          message:
+            "New Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
+        }
+      ),
+    new_password_confirmation: z
+      .string({
+        required_error: "Confirm Password is required",
+      })
+      .max(100),
+  })
+  .refine((data) => data.new_password === data.new_password_confirmation, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
 export type HeroSection = z.infer<typeof heroSectionSchema>;
 
 export type ServiceCategory = z.infer<typeof serviceCategorySchema>;
@@ -225,3 +269,7 @@ export type Testimonial = z.infer<typeof testimonialSchema>;
 export type Faq = z.infer<typeof faqSchema>;
 
 export type Quote = z.infer<typeof quoteSchema>;
+
+export type SocialLinks = z.infer<typeof socialLinksSchema>;
+
+export type ChangePassword = z.infer<typeof changePasswordSchema>;

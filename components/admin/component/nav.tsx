@@ -1,9 +1,7 @@
 "use client";
-import { useContext } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronDown, Home, LogOut, Menu } from "lucide-react";
+import { ChevronDown, Home, LogOut } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,14 +19,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { user_1 } from "@/constants/images";
-import { Button } from "@/components/ui/button";
-import { SidebarContext } from "@/providers/sidebar-provider";
 import { axiosLocal } from "@/lib/axios";
+import SidebarToggle from "./sidebar-toggle";
 
 const Nav = () => {
   const pathname = usePathname();
   const router = useRouter();
-  let { openSidenav, setOpenSidenav } = useContext(SidebarContext);
 
   const logout = async () => {
     await axiosLocal.get("/logout");
@@ -42,24 +38,7 @@ const Nav = () => {
           {pathname.split("/")[2]?.split("-").join(" ")}
         </h1>
         <div className="flex justify-between items-center gap-2 md:gap-5">
-          {/* {pathname.split("/").length === 4 && (
-          <Link href="/artists/dashboard/art-details/add-art">
-            <Button variant={"default"} animation={"scale_in"}>
-              <Plus size={20} className="mr-2" />
-              Add Art
-            </Button>
-          </Link>
-        )} */}
-
-          <Button
-            variant={"link"}
-            animation={"scale_in"}
-            type="button"
-            className="p-0 m-0 flex xl:hidden"
-            onClick={() => setOpenSidenav(!openSidenav)}
-          >
-            <Menu size={20} className="mr-2 text-primary" />
-          </Button>
+          <SidebarToggle icon="menu" />
           <DropdownMenu>
             <DropdownMenuTrigger className="focus-visible:outline-none h-10 flex justify-between items-center gap-1">
               <Image

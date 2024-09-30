@@ -1,5 +1,5 @@
 "use client";
-import React, { Fragment, createContext, useContext, useState } from "react";
+import React, { Fragment, useContext } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, Search, X } from "lucide-react";
@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { adminRoutes } from "@/constants/routes";
 import { formatToCapitalize } from "@/lib/format-to-capitalize";
 import { SidebarContext } from "@/providers/sidebar-provider";
+import SidebarToggle from "./sidebar-toggle";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -27,15 +28,7 @@ const Sidebar = () => {
       <div className="px-2">
         <div className="flex justify-between items-center">
           <h5 className="text-primary-foreground my-[10px]">Cleaning Care</h5>
-          <Button
-            variant={"link"}
-            animation={"scale_in"}
-            type="button"
-            className="p-0 m-0 flex xl:hidden"
-            onClick={() => setOpenSidenav(!openSidenav)}
-          >
-            <X size={20} className="mr-2 text-primary-foreground" />
-          </Button>
+          <SidebarToggle icon="X" />
         </div>
         <div className="relative">
           <Input
