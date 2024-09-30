@@ -845,7 +845,7 @@ const ServiceForm = ({
         <span />
         <span />
 
-        <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-xl">
+        <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-md">
           {id && (
             <Button
               variant={"ghost"}
@@ -862,11 +862,14 @@ const ServiceForm = ({
               )}
             </Button>
           )}
-          <Link href="/admin/dashboard/service/service-list">
+          <Link
+            href="/admin/dashboard/service/service-list"
+            className="w-full sm:w-[86px]"
+          >
             <Button
               variant={"outline"}
               animation={"scale_in"}
-              className="w-[86px]"
+              className="w-full sm:w-[86px]"
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
             >
@@ -876,7 +879,7 @@ const ServiceForm = ({
           <Button
             type="submit"
             animation={"scale_in"}
-            className="w-[86px]"
+            className="w-full sm:w-[86px]"
             disabled={createIsPending || updateIsPending || deleteIsPending}
           >
             {createIsPending || updateIsPending ? (

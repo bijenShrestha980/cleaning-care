@@ -1,15 +1,28 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SiteAdminForm from "@/components/admin/module/site-admin-form";
-import SocialLinksForm from "@/components/admin/module/social-links-form";
-import ChangePasswordForm from "@/components/admin/module/change-password-form";
+import ChangePasswordForm from "@/features/change-password/components/change-password-form";
+import { KeyRound, Link, ShieldBan } from "lucide-react";
+import SocialLinksForm from "@/features/social-links/components/social-links-form";
 
 const Fundamental = () => {
   return (
     <Tabs defaultValue="site&admin">
-      <TabsList className="inline gap-1 space-y-2 md:space-y-0">
-        <TabsTrigger value="site&admin">Site & Admin</TabsTrigger>
-        <TabsTrigger value="socialLinks">Social links</TabsTrigger>
-        <TabsTrigger value="changePassword">Change password</TabsTrigger>
+      <TabsList className="inline gap-2">
+        <TabsTrigger value="site&admin" className="gap-2 w-fit md:w-[220px]">
+          <ShieldBan size={15} />
+          <p className="hidden md:block">Site & Admin</p>
+        </TabsTrigger>
+        <TabsTrigger value="socialLinks" className="gap-2 w-fit md:w-[220px]">
+          <Link size={15} />
+          <p className="hidden md:block">Social links</p>
+        </TabsTrigger>
+        <TabsTrigger
+          value="changePassword"
+          className="gap-2 w-fit md:w-[220px]"
+        >
+          <KeyRound size={15} />
+          <p className="hidden md:block">Change password</p>
+        </TabsTrigger>
       </TabsList>
       <TabsContent
         value="site&admin"

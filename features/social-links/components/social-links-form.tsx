@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { LoaderCircle } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -15,29 +15,62 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { socialLinksSchema } from "@/components/admin/data/schema";
+import { useCreateSocialLinks } from "@/features/social-links/api/use-create-social-link";
+import { useAllSocialLinks } from "@/features/social-links/api/use-social-link";
+import Loading from "@/components/ui/loading";
+import Error from "@/components/ui/error";
 
 const SocialLinksForm = () => {
-  const router = useRouter();
+  const {
+    data: socialLinks,
+    isPending: socialLinksIsPending,
+    isError: socialLinksIsError,
+  } = useAllSocialLinks();
 
-  const formSchema = z.object({
-    facebook: z.string().url(),
-    instagram: z.string().url(),
-    tiktok: z.string().url(),
-    youtube: z.string().url(),
-  });
+  if (socialLinksIsPending) {
+    return <Loading />;
+  }
+  if (socialLinksIsError) {
+    return <Error />;
+  }
+  return (
+    <FormComponent
+      facebook={socialLinks[0]?.facebook}
+      instagram={socialLinks[0]?.instagram}
+      twitter={socialLinks[0]?.twitter}
+      youtube={socialLinks[0]?.youtube}
+    />
+  );
+};
+const FormComponent = ({
+  facebook,
+  instagram,
+  twitter,
+  youtube,
+}: {
+  facebook?: string;
+  instagram?: string;
+  twitter?: string;
+  youtube?: string;
+}) => {
+  const { mutate: createSocialLinks, isPending: createIsPending } =
+    useCreateSocialLinks();
+
+  const formSchema = socialLinksSchema;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      facebook: "",
-      instagram: "",
-      tiktok: "",
-      youtube: "",
+      facebook: facebook || "",
+      instagram: instagram || "",
+      twitter: twitter || "",
+      youtube: youtube || "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    createSocialLinks(values);
   }
 
   return (
@@ -74,12 +107,12 @@ const SocialLinksForm = () => {
         />
         <FormField
           control={form.control}
-          name="tiktok"
+          name="twitter"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-normal text-sm">Tiktok</FormLabel>
+              <FormLabel className="font-normal text-sm">Twitter</FormLabel>
               <FormControl>
-                <Input placeholder="Tiktok" {...field} />
+                <Input placeholder="Twitter" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -102,8 +135,16 @@ const SocialLinksForm = () => {
         <span />
 
         <div className="flex justify-end gap-4">
-          <Button type="submit" animation={"scale_in"}>
-            Save changes
+          <Button
+            type="submit"
+            animation={"scale_in"}
+            disabled={createIsPending}
+          >
+            {createIsPending ? (
+              <LoaderCircle className="animate-spin" width={20} height={20} />
+            ) : (
+              "Save changes"
+            )}
           </Button>
         </div>
       </form>

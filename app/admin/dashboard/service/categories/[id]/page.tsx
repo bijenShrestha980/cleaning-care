@@ -19,7 +19,7 @@ const ViewServiceCategory = ({ params }: { params: { id: number } }) => {
     return <Error />;
   }
   return (
-    <div>
+    <div className="pb-5">
       <p className="font-medium mb-4">View style</p>
       <CategoryForm
         serviceCategory={{
