@@ -3,20 +3,21 @@
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Category } from "../data/schema";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { Badge } from "@/components/ui/badge";
 import { statuses } from "@/constants/table-data";
+import { ServiceCategory } from "../data/schema";
 
-export const categoryColumns: ColumnDef<Category>[] = [
+export const categoryColumns: ColumnDef<ServiceCategory>[] = [
   {
-    accessorKey: "category",
+    accessorKey: "category_name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Category" />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex w-[80%] items-center">
-          <span>{row.getValue("category")}</span>
+          <span>{row.getValue("category_name")}</span>
         </div>
       );
     },
@@ -25,14 +26,22 @@ export const categoryColumns: ColumnDef<Category>[] = [
     },
   },
   {
-    accessorKey: "price",
+    accessorKey: "servicecategoryitems",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Price" />
+      <DataTableColumnHeader column={column} title="Items" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[80%] items-center">
-          <span>$ {row.getValue("price")}</span>
+        <div className="flex items-center gap-1">
+          {row
+            .getValue("servicecategoryitems")
+            // @ts-ignore
+            ?.slice(0, 3)
+            .map((category: { item_name: string }) => (
+              <Badge key={category.item_name} variant={"outline"}>
+                {category.item_name}
+              </Badge>
+            ))}
         </div>
       );
     },
@@ -73,7 +82,7 @@ export const categoryColumns: ColumnDef<Category>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/service/categories/view-category`}
+          href={`/admin/dashboard/service/categories/${row.original.id}`}
         >
           View
         </Link>

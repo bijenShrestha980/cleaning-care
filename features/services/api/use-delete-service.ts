@@ -1,21 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-
-import { toast } from "@/hooks/use-toast";
 import { axios } from "@/lib/axios";
-import { ServiceCategory } from "@/components/admin/data/schema";
+import { toast } from "@/hooks/use-toast";
 
-const postServiceCategory = async (data: ServiceCategory) => {
-  const response = await axios.post("/service-category", data);
+const deleteService = async (id: number | string) => {
+  const response = await axios.delete(`/service/${id}`);
   return response.data;
 };
 
-export const useCreateServiceCategory = () => {
+export const useDeleteService = () => {
   const router = useRouter();
-
   return useMutation({
-    mutationKey: ["service-category"],
-    mutationFn: postServiceCategory,
+    mutationKey: ["all-services"],
+    mutationFn: deleteService,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
         toast({
@@ -24,7 +21,11 @@ export const useCreateServiceCategory = () => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/service/categories");
+        toast({
+          title: "Deleted Successfully",
+          variant: "default",
+        });
+        router.push("/admin/dashboard/service/service-list");
       }
     },
     onError: (error) => {

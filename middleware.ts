@@ -5,7 +5,7 @@ import { decrypt } from "@/lib/session";
 // 1. Specify protected and public routes
 const protectedRoutesPrefix = "/admin/dashboard";
 // const protectedRoutes = ["/admin/dashboard"];
-const publicRoutes = ["/admin", "/"];
+const publicRoutes = ["/admin"];
 
 export default async function middleware(req: NextRequest) {
   // 2. Check if the current route is protected or public
@@ -19,7 +19,7 @@ export default async function middleware(req: NextRequest) {
 
   // 5. Redirect to / if the user is not authenticated
   if (isProtectedRoute && !session?.data) {
-    return NextResponse.redirect(new URL("/", req.nextUrl));
+    return NextResponse.redirect(new URL("/admin", req.nextUrl));
   }
 
   // 6. Redirect to /dashboard if the user is authenticated

@@ -60,6 +60,7 @@ export function deleteSession() {
 }
 
 export async function logout() {
+  console.log("delete");
   deleteSession();
   redirect("/");
 }

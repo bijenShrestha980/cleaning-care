@@ -30,14 +30,14 @@ export const useUpdateServiceCategory = (id: number | string | undefined) => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/service/service-list");
+        router.push("/admin/dashboard/service/categories");
       }
     },
     onError: (error) => {
-      console.log("first", error);
       toast({
         title: "Error",
-        description: error?.message,
+        //@ts-ignore
+        description: error?.response?.data?.message || error.message,
         variant: "destructive",
       });
     },

@@ -2,7 +2,7 @@
 import { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown, Home, LogOut, Menu } from "lucide-react";
 import {
   Breadcrumb,
@@ -23,10 +23,17 @@ import {
 import { user_1 } from "@/constants/images";
 import { Button } from "@/components/ui/button";
 import { SidebarContext } from "@/providers/sidebar-provider";
+import { axiosLocal } from "@/lib/axios";
 
 const Nav = () => {
   const pathname = usePathname();
+  const router = useRouter();
   let { openSidenav, setOpenSidenav } = useContext(SidebarContext);
+
+  const logout = async () => {
+    await axiosLocal.get("/logout");
+    router.refresh();
+  };
 
   return (
     <nav className="mb-8">
@@ -84,14 +91,12 @@ const Nav = () => {
                 </div>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link
-                  href="/admin"
-                  className="BodyText-Regular px-4 py-2 text-error flex items-center gap-2 cursor-pointer"
-                >
-                  Logout
-                  <LogOut size={16} />
-                </Link>
+              <DropdownMenuItem
+                className="BodyText-Regular px-4 py-2 text-error flex gap-2 cursor-pointer"
+                onClick={() => logout()}
+              >
+                Logout
+                <LogOut size={16} />
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -25,15 +25,15 @@ export const useDeleteServiceCategory = () => {
           title: "Deleted Successfully",
           variant: "default",
         });
-        router.push("/admin/dashboard/service/service-list");
+        router.push("/admin/dashboard/service/categories");
       }
     },
     onError: (error) => {
       console.log("first", error);
-      //@ts-ignore
       toast({
         title: "Error",
-        description: error?.message,
+        //@ts-ignore
+        description: error?.response?.data?.message || error.message,
         variant: "destructive",
       });
     },
