@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { User } from "lucide-react";
-// import CustomMap from "@/components/map";
+import GoogleMapComponent from "@/components/map";
 
 const SiteAdminForm = () => {
   const router = useRouter();
@@ -246,19 +246,19 @@ const SiteAdminForm = () => {
           )}
         />
 
-        {/* <FormField
+        <FormField
           control={form.control}
           name="contact"
           render={({ field }) => (
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Location</FormLabel>
               <FormControl>
-                <CustomMap width="38.8vw" height="40vh" />
+                <GoogleMapComponent />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
 
         <span />
         <span />

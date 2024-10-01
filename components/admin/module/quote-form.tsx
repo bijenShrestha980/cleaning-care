@@ -23,19 +23,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { categorySchema } from "../data/schema";
 import { quoteData } from "@/constants/fakeData";
+import { serviceCategorySchema } from "../data/schema";
 
 const QuotForm = () => {
   const router = useRouter();
 
-  const formSchema = categorySchema;
+  const formSchema = serviceCategorySchema;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      category: "",
-      price: undefined,
+      category_name: "",
       status: "active",
     },
   });

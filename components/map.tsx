@@ -1,41 +1,29 @@
-// "use client";
-// import ReactMapboxGl, {
-//   Layer,
-//   Feature,
-//   ZoomControl,
-//   ScaleControl,
-//   Marker,
-// } from "react-mapbox-gl";
-// import "mapbox-gl/dist/mapbox-gl.css";
-// import { user_1 } from "@/constants/images";
-// import Image from "next/image";
+"use client";
+import React from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import Loading from "./ui/loading";
 
-// const Map = ReactMapboxGl({
-//   accessToken: process.env.map || "",
-// });
+const containerStyle = {
+  width: "100%",
+  height: "400px",
+};
 
-// const CustomMap = ({ width = "100vw", height = "100vh" }) => {
-//   return (
-//     <Map
-//       style="mapbox://styles/bijen/cl4887nzz003u15p1s53vhbhy"
-//       containerStyle={{
-//         height,
-//         width,
-//       }}
-//       center={[85.352, 27.721]}
-//       zoom={[13]}
-//     >
-//       <Layer type="symbol" id="marker" layout={{ "icon-image": "harbor-15" }}>
-//         <Feature coordinates={[85.352, 27.721]} />
-//       </Layer>
-//       <Marker coordinates={[-0.2416815, 51.5285582]} anchor="bottom">
-//         <Image src={user_1} alt="user" width={32} height={32} />
-//       </Marker>
-//       <ZoomControl />
+const center = {
+  lat: 37.437041393899676,
+  lng: -4.191635586788259,
+};
 
-//       <ScaleControl />
-//     </Map>
-//   );
-// };
+const GoogleMapComponent = () => {
+  return (
+    <LoadScript
+      googleMapsApiKey={process.env.google_api_key || ""}
+      loadingElement={<Loading />}
+    >
+      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
+        <Marker position={center} />
+      </GoogleMap>
+    </LoadScript>
+  );
+};
 
-// export default CustomMap;
+export default GoogleMapComponent;
