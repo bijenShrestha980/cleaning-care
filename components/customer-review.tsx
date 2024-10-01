@@ -1,5 +1,5 @@
 import React from "react";
-import CustomMap from "./custom-map";
+import GoogleMapComponent from "./map";
 
 const CustomerReview = () => {
   return (
@@ -13,7 +13,7 @@ const CustomerReview = () => {
         </p>
       </div>
       <div className="grid lg:grid-cols-2 items-center gap-[72px] w-full">
-        <CustomMap className="w-full h-[365px] rounded-xl" />
+        <GoogleMapComponent />
         <div className="grid md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-8">
           <div>
             <p className="font-semibold text-base text-primary opacity-50 uppercase">
