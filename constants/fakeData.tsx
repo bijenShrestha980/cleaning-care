@@ -1,5 +1,4 @@
 import {
-  Category,
   Faq,
   HeroSection,
   Quote,
@@ -15,24 +14,6 @@ const heroSectionData: HeroSection[] = [
     description: "We provide best parcel and dispatch service",
     order: "1",
     catStatus: "active",
-  },
-];
-
-const categoryData: Category[] = [
-  {
-    category: "Bedroom",
-    price: 20,
-    status: "active",
-  },
-  {
-    category: "Bathrom",
-    price: 60,
-    status: "active",
-  },
-  {
-    category: "Kitchen",
-    price: 80,
-    status: "inactive",
   },
 ];
 
@@ -78,25 +59,6 @@ const typeData: Type[] = [
       {
         category: "Bedroom",
         count: 1,
-      },
-    ],
-  },
-];
-
-const serviceData: Service[] = [
-  {
-    name: "Bed & Bath",
-    status: "active",
-    detail: "Sparkling every corners, for happy surrounding",
-    description: "We provide best parcel and dispatch service",
-    categories: [
-      {
-        value: "bedroom",
-        label: "Bedroom",
-      },
-      {
-        value: "bathroom",
-        label: "Bathroom",
       },
     ],
   },
@@ -181,12 +143,4 @@ const quoteData: Quote[] = [
   },
 ];
 
-export {
-  heroSectionData,
-  categoryData,
-  typeData,
-  serviceData,
-  testimonialData,
-  faqData,
-  quoteData,
-};
+export { heroSectionData, typeData, testimonialData, faqData, quoteData };
