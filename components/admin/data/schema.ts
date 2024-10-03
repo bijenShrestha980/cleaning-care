@@ -6,11 +6,29 @@ const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3MB in bytes
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png"];
 
 export const heroSectionSchema = z.object({
-  service: z.string(),
-  description: z.string(),
-  order: z.string(),
-  catStatus: z.enum(["active", "inactive"]),
-  image: z.custom<File>((v) => v instanceof File).optional(),
+  title: z.string().min(1, { message: "Title is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+  order: z.string().min(1, { message: "Order is required" }),
+  status: z.enum(["active", "inactive"]),
+  hero_image: z
+    .union([
+      z.instanceof(File, {
+        message: "Image is required",
+      }),
+      z.string().optional(),
+    ])
+    .refine(
+      (file) => file instanceof File && file.size <= MAX_FILE_SIZE,
+      `Image size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB.`
+    )
+    .refine(
+      (file) =>
+        file instanceof File && ACCEPTED_IMAGE_TYPES.includes(file.type),
+      `Only the following image types are allowed: ${ACCEPTED_IMAGE_TYPES.join(
+        ", "
+      )}.`
+    ),
+  hero_image_url: z.string().optional(),
 });
 
 export const serviceCategorySchema = z.object({
@@ -31,7 +49,7 @@ export const serviceCategorySchema = z.object({
         .min(1, {
           message: "Price is required",
         })
-        .max(1000000, {
+        .max(9999, {
           message: "Price is too high",
         }),
       status: z.enum(["active", "inactive"]),
@@ -44,14 +62,7 @@ export const serviceCategorySchema = z.object({
           .string()
           .min(2, { message: "Item name is required." })
           .trim(),
-        price: z
-          .number()
-          .min(1, {
-            message: "Price is required",
-          })
-          .max(1000000, {
-            message: "Price is too high",
-          }),
+        price: z.string(),
         status: z.enum(["active", "inactive"]),
       })
     )
@@ -108,7 +119,10 @@ export const serviceSchema = z.object({
       `Only the following image types are allowed: ${ACCEPTED_IMAGE_TYPES.join(
         ", "
       )}.`
-    ),
+    )
+    .nullable(),
+  banner_image_url: z.string().optional(),
+  section_one_image_url: z.string().optional(),
   // categories: z.array(z.object({ value: z.string(), label: z.string() })),
   section_one_title: z.string().min(1, {
     message: "Title is required",
@@ -129,7 +143,8 @@ export const serviceSchema = z.object({
       `Only the following image types are allowed: ${ACCEPTED_IMAGE_TYPES.join(
         ", "
       )}.`
-    ),
+    )
+    .nullable(),
   section_two_title: z.string().min(1, {
     message: "Title is required",
   }),
@@ -161,6 +176,34 @@ export const serviceSchema = z.object({
         .nullable(),
     })
   ),
+  serviceitems: z
+    .array(
+      z.strictObject({
+        item_name: z.string().min(1, {
+          message: "Name is required",
+        }),
+        short_description: z.string().min(1, {
+          message: "Description is required",
+        }),
+        icon: z
+          .instanceof(File, {
+            message: "Image is required",
+          })
+          .refine(
+            (file) => file.size <= MAX_FILE_SIZE,
+            `Image size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB.`
+          )
+          .refine(
+            (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
+            `Only the following image types are allowed: ${ACCEPTED_IMAGE_TYPES.join(
+              ", "
+            )}.`
+          )
+          .nullable(),
+        icon_url: z.string().optional(),
+      })
+    )
+    .optional(),
   // sectionThree: z
   //   .strictObject({
   //     title: z.string(),
@@ -190,26 +233,68 @@ export const faqSchema = z.object({
 });
 
 export const quoteSchema = z.object({
-  firstName: z.string().min(1, {
-    message: "First name is required",
+  full_name: z.string().min(1, {
+    message: "Full name is required",
   }),
-  lastName: z.string(),
-  email: z.string().email(),
-  phone: z.string(),
-  address: z.string(),
-  postalCode: z.string(),
-  message: z.string(),
-  categories: z.array(
-    z.object({ label: z.string(), value: z.number().min(1) })
-  ),
-  quoteStatus: z.enum([
-    "pending",
-    "processing",
-    "accepted",
-    "in-progress",
-    "rejected",
-    "completed",
+  email: z
+    .string()
+    .min(1, {
+      message: "Email is required",
+    })
+    .email(),
+  phone_number: z.string().optional(),
+  address: z.string().min(1, {
+    message: "Address is required",
+  }),
+  postal_code: z.string(),
+  quote: z.string().min(1, {
+    message: "Quote is required",
+  }),
+  service_category_ids: z.array(z.number()).optional(),
+  quoteStatus: z
+    .enum([
+      "pending",
+      "processing",
+      "accepted",
+      "in-progress",
+      "rejected",
+      "completed",
+    ])
+    .optional(),
+});
+
+export const siteAdminSchema = z.object({
+  site_title: z.string().min(1, { message: "Site title is required" }),
+  site_address: z.string().min(1, { message: "Site address is required" }),
+  email1: z.string().email(),
+  email2: z.union([z.literal(""), z.string().email()]),
+  contact_number1: z.string().min(1, { message: "Contact number is required" }),
+  contact_number2: z.string().optional(),
+  open_day: z.string(),
+  open_time: z.string(),
+  site_logo: z.union([
+    z
+      .instanceof(File, {
+        message: "Image is required",
+      })
+      .refine(
+        (file) => file.size <= MAX_FILE_SIZE,
+        `Image size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB.`
+      )
+      .refine(
+        (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
+        `Only the following image types are allowed: ${ACCEPTED_IMAGE_TYPES.join(
+          ", "
+        )}.`
+      )
+      .nullable(),
+    z.string(),
   ]),
+  copyright: z.string().min(1, { message: "Copy right is required" }),
+  google_map: z.string().min(1, { message: "Location is required" }),
+  term_condition: z.string().optional(),
+  privacy_policy: z.string().optional(),
+  license: z.string().optional(),
 });
 
 export const socialLinksSchema = z.object({
@@ -269,6 +354,8 @@ export type Testimonial = z.infer<typeof testimonialSchema>;
 export type Faq = z.infer<typeof faqSchema>;
 
 export type Quote = z.infer<typeof quoteSchema>;
+
+export type SiteAdmin = z.infer<typeof siteAdminSchema>;
 
 export type SocialLinks = z.infer<typeof socialLinksSchema>;
 

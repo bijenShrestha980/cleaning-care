@@ -1,9 +1,9 @@
 import Image from "next/image";
-import React from "react";
-import { banner1 } from "@/constants/images";
-import { Button } from "./ui/button";
 import Link from "next/link";
+import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
+import { banner1 } from "@/constants/images";
+import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 
 const Footer = () => {
   return (
@@ -20,9 +20,7 @@ const Footer = () => {
               Using our simple booking form you can have your clean booked in
               under 60 seconds.
             </p>
-            <Button variant="success" size="lg" className="mb-16">
-              Get service quote
-            </Button>
+            <QuoteDialogue />
             <p className="font-semibold text-primary-foreground text-2xl ms:text-4xl text-center leading-[30px] md:leading-[43px]">
               Or call our friendly team
             </p>

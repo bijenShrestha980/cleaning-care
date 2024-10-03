@@ -10,30 +10,14 @@ import { Badge } from "@/components/ui/badge";
 
 export const quoteColumns: ColumnDef<Quote>[] = [
   {
-    accessorKey: "firstName",
+    accessorKey: "full_name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="First Name" />
+      <DataTableColumnHeader column={column} title="Full Name" />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex w-[80%] items-center">
-          <span>{row.getValue("firstName")}</span>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: "lastName",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Last Name" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex w-[80%] items-center">
-          <span>{row.getValue("lastName")}</span>
+          <span>{row.getValue("full_name")}</span>
         </div>
       );
     },

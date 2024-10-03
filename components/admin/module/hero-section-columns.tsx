@@ -11,14 +11,14 @@ import { HeroSection } from "../data/schema";
 
 export const heroSectionColumns: ColumnDef<HeroSection>[] = [
   {
-    accessorKey: "service",
+    accessorKey: "title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Service" />
+      <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex w-[100px] items-center">
-          <span>{row.getValue("service")}</span>
+          <span>{row.getValue("title")}</span>
         </div>
       );
     },
@@ -39,7 +39,7 @@ export const heroSectionColumns: ColumnDef<HeroSection>[] = [
       return (
         <div className="flex space-x-2">
           {label && <Badge variant="outline">{1}</Badge>}
-          <span className="max-w-[500px] truncate font-normal text-[13px]">
+          <span className="max-w-[500px] truncate font-normal text-[13px] line-clamp-1">
             {row.getValue("description")}
           </span>
         </div>
@@ -47,13 +47,13 @@ export const heroSectionColumns: ColumnDef<HeroSection>[] = [
     },
   },
   {
-    accessorKey: "catStatus",
+    accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
       const status = statuses.find(
-        (status) => status.value === row.getValue("catStatus")
+        (status) => status.value === row.getValue("status")
       );
 
       if (!status) {
@@ -83,7 +83,7 @@ export const heroSectionColumns: ColumnDef<HeroSection>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/settings/landing-page/view-hero-section`}
+          href={`/admin/dashboard/settings/landing-page/${row.original.id}`}
         >
           View
         </Link>

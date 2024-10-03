@@ -2,11 +2,9 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { heroSectionColumns } from "@/components/admin/module/hero-section-columns";
 import DescriptionForm from "@/components/admin/module/description-form";
-import { heroSectionData } from "@/constants/fakeData";
+import HeroSectionDetails from "@/features/hero-sections/components/hero-section-details";
 
 const LandingPage = () => {
   return (
@@ -21,14 +19,14 @@ const LandingPage = () => {
       >
         <div className="flex flex-col gap-4">
           <div className="w-full flex justify-end">
-            <Link href="/admin/dashboard/settings/landing-page/view-hero-section">
+            <Link href="/admin/dashboard/settings/landing-page/add-hero-section">
               <Button animation={"scale_in"}>
                 <Plus size={20} className="mr-2" />
                 Add
               </Button>
             </Link>
           </div>
-          <DataTable data={heroSectionData} columns={heroSectionColumns} />
+          <HeroSectionDetails />
         </div>
       </TabsContent>
       <TabsContent

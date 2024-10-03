@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Image from "next/image";
-import { User } from "lucide-react";
+import { LoaderCircle, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -25,29 +25,50 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { heroSectionSchema } from "../data/schema";
-import { Textarea } from "@/components/ui/textarea";
+import { HeroSection, heroSectionSchema } from "@/components/admin/data/schema";
+import { useCreateHeroSection } from "../api/use-create-hero-section";
+import { useUpdateHeroSection } from "../api/use-update-hero-section";
+import { useDeleteHeroSection } from "../api/use-delete-hero-section";
+import Link from "next/link";
 
-const HeroSectionForm = () => {
-  const router = useRouter();
+const HeroSectionForm = ({
+  heroSection,
+  id,
+}: {
+  heroSection?: HeroSection;
+  id?: string | number;
+}) => {
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
-  const [profilePreview, setProfilePreview] = useState<string | null>(null);
+  const { mutate: createHeroSection, isPending: createIsPending } =
+    useCreateHeroSection();
+  const { mutate: updateHeroSection, isPending: updateIsPending } =
+    useUpdateHeroSection(id);
+  const { mutate: deleteHeroSection, isPending: deleteIsPending } =
+    useDeleteHeroSection();
 
   const formSchema = heroSectionSchema;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      service: "",
+      title: "",
       description: "",
       order: "",
-      catStatus: "active",
-      image: undefined,
+      status: "active",
+      hero_image: undefined,
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    const formData = new FormData();
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value as any);
+    });
+    if (id) {
+      updateHeroSection({ data: formData as any, id });
+    } else {
+      createHeroSection(formData as any);
+    }
   }
 
   return (
@@ -58,27 +79,12 @@ const HeroSectionForm = () => {
       >
         <FormField
           control={form.control}
-          name="service"
+          name="title"
           render={({ field }) => (
             <FormItem className="col-span-2 sm:col-span-1">
-              <FormLabel className="font-normal text-sm">Service</FormLabel>
+              <FormLabel className="font-normal text-sm">Title</FormLabel>
               <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="border-[#A7B2C3] focus:bg-transparent [&>svg]:opacity-100 [&>svg]:text-[#5065F6]">
-                    <SelectValue placeholder="Service" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem
-                      value="category1"
-                      className="text-[#374253] focus:bg-grey-40"
-                    >
-                      Service 1
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                <Input placeholder="Title" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -117,13 +123,13 @@ const HeroSectionForm = () => {
 
         <FormField
           control={form.control}
-          name="image"
+          name="hero_image"
           render={({ field: { ref, name, onBlur, onChange } }) => (
             <FormItem className="col-span-2 2xl:col-span-1">
               <div className="flex flex-col sm:flex-row gap-12">
                 <span>
                   <FormLabel className="font-normal text-sm">
-                    Site logo
+                    Hero image
                   </FormLabel>
 
                   <div className="flex items-center gap-3 mt-2">
@@ -175,7 +181,7 @@ const HeroSectionForm = () => {
 
         <FormField
           control={form.control}
-          name="catStatus"
+          name="status"
           render={({ field }) => (
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Status</FormLabel>
@@ -210,19 +216,48 @@ const HeroSectionForm = () => {
 
         <span />
         <span />
-        <div className="flex justify-end gap-4">
-          <Button variant={"ghost"} animation={"scale_in"} className="w-[86px]">
-            Delete
-          </Button>
+        <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-md">
+          {id && (
+            <Button
+              variant={"ghost"}
+              animation={"scale_in"}
+              className="w-[86px]"
+              disabled={createIsPending || updateIsPending || deleteIsPending}
+              type="button"
+              onClick={() => deleteHeroSection(id)}
+            >
+              {deleteIsPending ? (
+                <LoaderCircle className="animate-spin" width={20} height={20} />
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          )}
+          <Link
+            href="/admin/dashboard/settings/landing-page"
+            className="w-full sm:w-[86px]"
+          >
+            <Button
+              variant={"outline"}
+              animation={"scale_in"}
+              className="w-[86px]"
+              disabled={createIsPending || updateIsPending || deleteIsPending}
+              type="button"
+            >
+              Cancle
+            </Button>
+          </Link>
           <Button
-            variant={"outline"}
+            type="submit"
             animation={"scale_in"}
             className="w-[86px]"
+            disabled={createIsPending || updateIsPending || deleteIsPending}
           >
-            Cancle
-          </Button>
-          <Button type="submit" animation={"scale_in"} className="w-[86px]">
-            Save
+            {createIsPending || updateIsPending ? (
+              <LoaderCircle className="animate-spin" width={20} height={20} />
+            ) : (
+              "Save"
+            )}
           </Button>
         </div>
       </form>

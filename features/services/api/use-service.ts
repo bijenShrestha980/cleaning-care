@@ -4,7 +4,14 @@ import { createQueryParams } from "@/lib/create-query-params";
 import { QueryParams } from "@/types";
 import { Service } from "@/components/admin/data/schema";
 
-const getAllService = async (query?: QueryParams) => {
+const getAllServices = async (query?: QueryParams) => {
+  const response = await axios.get(
+    `/get-all-services?${createQueryParams(query || {})}`
+  );
+  return response.data as Service[];
+};
+
+const getServices = async (query?: QueryParams) => {
   const response = await axios.get(
     `/service?${createQueryParams(query || {})}`
   );
@@ -12,14 +19,20 @@ const getAllService = async (query?: QueryParams) => {
 };
 
 const getService = async (id: number) => {
-  const response = (await axios.get(`/show/${id}`)) as Service;
-  return response;
+  const response = await axios.get(`/service/${id}`);
+  return response.data as Service;
 };
 
-export const useAllService = (query?: QueryParams) =>
+export const useAllServices = (query?: QueryParams) =>
+  useQuery({
+    queryKey: ["services", query],
+    queryFn: () => getAllServices(query || {}),
+  });
+
+export const useServices = (query?: QueryParams) =>
   useQuery({
     queryKey: ["service", query],
-    queryFn: () => getAllService(query || {}),
+    queryFn: () => getServices(query || {}),
   });
 
 export const useService = (id: number) =>

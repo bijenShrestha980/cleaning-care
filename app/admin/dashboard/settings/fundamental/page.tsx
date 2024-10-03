@@ -1,8 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SiteAdminForm from "@/components/admin/module/site-admin-form";
 import ChangePasswordForm from "@/features/change-password/components/change-password-form";
 import { KeyRound, Link, ShieldBan } from "lucide-react";
 import SocialLinksForm from "@/features/social-links/components/social-links-form";
+import SiteAdminForm from "@/features/fundamentals/components/site-admin-form";
 
 const Fundamental = () => {
   return (

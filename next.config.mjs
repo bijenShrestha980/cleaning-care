@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "api.cleaningcare.au",
+        port: "",
+        pathname: "/storage/**",
+      },
+    ],
+  },
   env: {
     map: process.env.MapboxAccessToken,
     url: process.env.BASE_URL,
