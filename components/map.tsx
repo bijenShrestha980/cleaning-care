@@ -19,9 +19,11 @@ const GoogleMapComponent = () => {
       googleMapsApiKey={process.env.google_api_key || ""}
       loadingElement={<Loading />}
     >
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
-        <Marker position={center} />
-      </GoogleMap>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={10}
+      ></GoogleMap>
     </LoadScript>
   );
 };

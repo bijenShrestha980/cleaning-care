@@ -1,28 +1,27 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import { toast } from "@/hooks/use-toast";
 import { axios } from "@/lib/axios";
-import { ServiceCategory } from "@/components/admin/data/schema";
+import { HeroSection } from "@/components/admin/data/schema";
 
-const postServiceCategory = async ({
+const postHeroSection = async ({
   data,
   id,
 }: {
-  data: ServiceCategory;
+  data: HeroSection;
   id: number | string;
 }) => {
-  const response = await axios.post(`/service-category/${id}`, data);
+  const response = await axios.post(`/hero-sections/${id}`, data);
   return response.data;
 };
 
-export const useUpdateServiceCategory = (id: number | string | undefined) => {
-  const queryClient = useQueryClient();
+export const useUpdateHeroSection = (id: number | string | undefined) => {
   const router = useRouter();
 
   return useMutation({
-    mutationKey: ["service-category", id],
-    mutationFn: postServiceCategory,
+    mutationKey: ["hero-sections", id],
+    mutationFn: postHeroSection,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
         toast({
@@ -31,10 +30,7 @@ export const useUpdateServiceCategory = (id: number | string | undefined) => {
           variant: "destructive",
         });
       } else {
-        // if (id !== undefined) {
-        //   queryClient.invalidateQueries(["service-category", id]);
-        // }
-        router.push("/admin/dashboard/service/categories");
+        router.push("/admin/dashboard/settings/landing-page");
       }
     },
     onError: (error) => {

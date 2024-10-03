@@ -5,6 +5,7 @@ import RequestCallbackForm from "@/components/request-callback-form";
 import CustomerReview from "@/components/customer-review";
 import { banner1 } from "@/constants/images";
 import { dollar, leaf, like, shield, timer } from "@/constants/icons";
+import ServicesSection from "@/features/services/components/services-section";
 
 const services = [
   {
@@ -73,26 +74,7 @@ export default function Home() {
               service.
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-10">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="p-6 flex flex-col items-center gap-2 md:gap-4"
-              >
-                <Image
-                  src={service.img}
-                  alt="Residential Cleaning"
-                  className="rounded-full w-[225px] h-[225px] object-cover object-center"
-                />
-                <h5 className="text-primary text-lg md:text-2xl font-medium text-center">
-                  {service.title}
-                </h5>
-                <p className="text-base md:text-lg text-primary opacity-50 text-center">
-                  {service.description}
-                </p>
-              </div>
-            ))}
-          </div>
+          <ServicesSection />
         </section>
         <Divider />
         {/* Why Choose Us */}

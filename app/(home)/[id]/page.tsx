@@ -1,47 +1,12 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import Divider from "@/components/ui/divider";
-import { banner1 } from "@/constants/images";
+"use client";
 import { CheckCheck } from "lucide-react";
-
-const services = [
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-];
+import Image from "next/image";
+import Divider from "@/components/ui/divider";
+import { Skeleton } from "@/components/ui/skeleton";
+import Error from "@/components/ui/error";
+import { banner1 } from "@/constants/images";
+import { useService } from "@/features/services/api/use-service";
+import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 
 const howToBook = [
   {
@@ -66,59 +31,82 @@ const howToBook = [
   },
 ];
 
-const Service = () => {
+const Service = ({ params }: { params: { id: number } }) => {
+  const { data: serviceData, isPending, isError } = useService(params.id);
+
+  if (isError) {
+    return <Error />;
+  }
   return (
     <main className="-translate-y-[104px]">
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">
-        <Image
-          src={banner1}
-          alt={"banner"}
-          // width={1366}
-          // height={740}
-          priority={true}
-          sizes="calc(100vw + 16px)"
-          className="h-full w-full absolute top-0 object-cover object-center -z-20"
-        />
+        {isPending ? (
+          <Skeleton className="h-[200px] md:h-[530px] w-full -z-20" />
+        ) : (
+          <Image
+            src={serviceData?.banner_image_url || banner1}
+            alt={"banner"}
+            priority={true}
+            sizes="calc(100vw + 16px)"
+            layout="fill"
+            className="h-full w-full absolute top-0 object-cover object-center -z-20"
+          />
+        )}
         <div className="w-full h-full absolute top-0 -z-10 bg-transbg" />
         <div className="w-full h-full absolute top-5 left-0 flex flex-col justify-center items-center text-center px-4">
-          <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[64px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3">
-            Houses/Apartment/Unit Cleaning
-          </h1>
-          <p className="text-primary-foreground text-md md:text-2xl mb-9">
-            Sparkling every corners, for happy surrounding
-          </p>
-          <Button variant="success" size="lg">
-            Get service quote
-          </Button>
+          {isPending ? (
+            <Skeleton className="h-[72px] w-full md:w-[700px] mb-3" />
+          ) : (
+            <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[64px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3">
+              {serviceData?.service_name}
+            </h1>
+          )}
+          {isPending ? (
+            <Skeleton className="h-[32px] w-full md:w-[500px] mb-9" />
+          ) : (
+            <p className="text-primary-foreground text-md md:text-2xl mb-9">
+              {serviceData?.short_description}
+            </p>
+          )}
+          <QuoteDialogue
+            service_category_id={
+              serviceData?.service_category_id
+                ? Number(serviceData.service_category_id)
+                : undefined
+            }
+          />
         </div>
       </div>
       <div className="p-5 md:p-10 flex flex-col items-center">
-        <p className="mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic">
-          “Your kitchen is the heart of your home, where meals are prepared and
-          memories are made. At Cleaning Care, we offer comprehensive kitchen
-          cleaning services designed to keep your kitchen spotless, hygienic,
-          and welcoming.”
-        </p>
+        {isPending ? (
+          <Skeleton className="h-[28px] w-full md:w-[500px] mt-14" />
+        ) : (
+          <p className="mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic">
+            {serviceData?.long_description}
+          </p>
+        )}
         <Divider />
         <section className="w-full flex flex-col xl:flex-row items-end lg:items-start justify-between gap-4 lg:gap-16">
           <div className="w-full">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 max-w-[800px]">
-              Why hire us for Houses/Apartment/Unit Cleaning?
-            </h4>
-            <p className="text-[#191919] opacity-60 text-base md:text-xl">
-              Our team of experienced professionals is skilled in handling all
-              types of kitchen cleaning tasks with precision and care, ensuring
-              your space is spotless and hygienic. We prioritize your health and
-              the environment by using eco-friendly, non-toxic cleaning products
-              that are both effective and safe. Understanding the demands of a
-              busy lifestyle, we offer flexible scheduling options to
-              accommodate your needs. We are committed to delivering exceptional
-              results and ensuring your complete satisfaction with our services,
-              giving you peace of mind and a sparkling clean kitchen.
-            </p>
+            {isPending ? (
+              <Skeleton className="h-[72px] w-full md:w-[400px] mb-3" />
+            ) : (
+              <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 max-w-[800px]">
+                {serviceData?.section_one_title}
+              </h4>
+            )}
+            {isPending ? (
+              Array.from({ length: 3 }).map((_, index) => (
+                <Skeleton className="h-[20px] w-full mb-3" key={index} />
+              ))
+            ) : (
+              <p className="text-[#191919] opacity-60 text-base md:text-xl">
+                {serviceData?.section_one_description}
+              </p>
+            )}
           </div>
           <Image
-            src={banner1}
+            src={serviceData?.section_one_image_url || banner1}
             alt="logo"
             width={521}
             height={460}
@@ -129,34 +117,47 @@ const Service = () => {
         {/* Overview of Services */}
         <section className="flex flex-col items-center">
           <div className="mb-12 max-w-[765px] flex flex-col items-center">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
-              Our Service Include
-            </h4>
-            <p className="text-[#191919] opacity-60 text-base md:text-xl text-center">
-              An overview section highlighting the main services offered by the
-              cleaning company, including icons/images and descriptions for each
-              service.
-            </p>
+            {isPending ? (
+              <Skeleton className="h-[36px] w-full md:w-[400px] mb-3" />
+            ) : (
+              <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
+                {serviceData?.section_two_title}
+              </h4>
+            )}
+            {isPending ? (
+              <Skeleton className="h-[20px] w-full" />
+            ) : (
+              <p className="text-[#191919] opacity-60 text-base md:text-xl text-center">
+                {serviceData?.section_two_description}
+              </p>
+            )}
           </div>
           <div className="w-full flex flex-wrap items-center justify-center gap-4 md:gap-12">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="w-[252px] p-2 flex flex-col items-center gap-2 md:gap-4"
-              >
-                <Image
-                  src={service.img}
-                  alt="Residential Cleaning"
-                  className="rounded-full w-[149px] h-[149px] object-cover object-center"
-                />
-                <h5 className="text-[#191919] opacity-60 text-base md:text-xl font-semibold text-center">
-                  {service.title}
-                </h5>
-                <p className="text-sm md:text-base text-[#191919] opacity-60 text-center">
-                  {service.description}
-                </p>
-              </div>
-            ))}
+            {isPending
+              ? Array.from({ length: 3 }).map((_, index) => (
+                  <Skeleton className="h-[369px] w-[252px] mb-3" key={index} />
+                ))
+              : serviceData?.serviceitems &&
+                serviceData?.serviceitems.map((service, index) => (
+                  <div
+                    key={index}
+                    className="w-[252px] p-2 flex flex-col items-center gap-2 md:gap-4"
+                  >
+                    <Image
+                      src={service.icon_url || banner1}
+                      alt="Residential Cleaning"
+                      width={149}
+                      height={149}
+                      className="rounded-full w-[149px] h-[149px] object-cover object-center"
+                    />
+                    <h5 className="text-[#191919] opacity-60 text-base md:text-xl font-semibold text-center">
+                      {service.item_name}
+                    </h5>
+                    <p className="text-sm md:text-base text-[#191919] opacity-60 text-center">
+                      {service.short_description}
+                    </p>
+                  </div>
+                ))}
           </div>
         </section>
         <Divider />

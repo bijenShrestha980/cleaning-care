@@ -2,10 +2,10 @@
 import { DataTable } from "@/components/ui/data-table";
 import Loading from "@/components/ui/loading";
 import { serviceColumns } from "@/components/admin/module/service-columns";
-import { useAllService } from "@/features/services/api/use-service";
+import { useServices } from "@/features/services/api/use-service";
 
 const ServicesDetails = () => {
-  const { data: servicesData, isPending } = useAllService();
+  const { data: servicesData, isPending } = useServices();
 
   if (isPending) {
     return <Loading />;

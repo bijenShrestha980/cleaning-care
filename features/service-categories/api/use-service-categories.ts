@@ -12,8 +12,8 @@ const getAllServiceCategory = async (query?: QueryParams) => {
 };
 
 const getServiceCategory = async (id: number) => {
-  const response = (await axios.get(`/show-category/${id}`)) as ServiceCategory;
-  return response;
+  const response = await axios.get(`/service-category/${id}`);
+  return response.data as ServiceCategory;
 };
 
 export const useAllServiceCategory = (query?: QueryParams) =>

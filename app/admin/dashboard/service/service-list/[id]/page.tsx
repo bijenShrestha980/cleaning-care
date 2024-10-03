@@ -23,20 +23,27 @@ const ViewService = ({ params }: { params: { id: number } }) => {
           short_description: serviceData?.short_description ?? "",
           long_description: serviceData?.long_description ?? "",
           status: serviceData?.status ?? "active",
-          service_category_id: serviceData?.service_category_id ?? null,
-          banner_image: serviceData?.banner_image ?? "",
+          service_category_id:
+            serviceData?.service_category_id.toString() ?? null,
+          banner_image: serviceData?.banner_image ?? null,
           section_one_title: serviceData?.section_one_title ?? "",
           section_one_description: serviceData?.section_one_description ?? "",
-          section_one_image: serviceData?.section_one_image ?? "",
+          section_one_image: serviceData?.section_one_image ?? null,
           section_two_title: serviceData?.section_two_title ?? "",
           section_two_description: serviceData?.section_two_description ?? "",
-          service_items: serviceData?.service_items ?? [
-            {
-              item_name: "",
-              price: 0,
-              status: "active",
-            },
-          ],
+          service_items: serviceData?.serviceitems
+            ? serviceData?.serviceitems.map((item) => ({
+                item_name: item.item_name,
+                short_description: item.short_description,
+                icon: item.icon ?? null,
+              }))
+            : [
+                {
+                  item_name: "",
+                  short_description: "",
+                  icon: null,
+                },
+              ],
         }}
         id={serviceData?.id}
       />

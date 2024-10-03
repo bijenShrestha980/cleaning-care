@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -22,19 +21,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { logo } from "@/constants/images";
-
-const components: { title: string; href: string }[] = [
-  {
-    title: "Houses/Apartment/Unit Cleaning",
-    href: "/Houses",
-  },
-  {
-    title: "Rangehood Cleaning",
-    href: "/Rangehood Cleaning",
-  },
-];
+import { useServices } from "@/features/services/api/use-service";
+import { Skeleton } from "./ui/skeleton";
+import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 
 export function Navbar() {
+  const { data: servicesData, isPending } = useServices();
   return (
     <div className="max-w-full flex items-center justify-between py-3 px-10">
       <NavigationMenu>
@@ -85,13 +77,18 @@ export function Navbar() {
                   </AccordionTrigger>
                   <AccordionContent>
                     <ul className="grid w-full gap-1 px-1 md:grid-cols-1">
-                      {components.map((component) => (
-                        <ListItem
-                          key={component.title}
-                          title={component.title}
-                          href={component.href}
-                        />
-                      ))}
+                      {isPending ? (
+                        <Skeleton className="h-[40px] w-full" />
+                      ) : (
+                        servicesData &&
+                        servicesData.map((component) => (
+                          <ListItem
+                            key={component.id}
+                            title={component.service_name}
+                            href={component.id?.toString()}
+                          />
+                        ))
+                      )}
                     </ul>
                   </AccordionContent>
                 </AccordionItem>
@@ -114,13 +111,18 @@ export function Navbar() {
             <NavigationMenuTrigger>Services</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-1 ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  />
-                ))}
+                {isPending ? (
+                  <Skeleton className="h-[40px] w-full" />
+                ) : (
+                  servicesData &&
+                  servicesData.map((component) => (
+                    <ListItem
+                      key={component.id}
+                      title={component.service_name}
+                      href={component.id?.toString()}
+                    />
+                  ))
+                )}
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
@@ -139,9 +141,7 @@ export function Navbar() {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem className="hidden lg:block">
-            <Button variant="success" size="lg" className="ml-2">
-              Get service quote
-            </Button>
+            <QuoteDialogue />
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>

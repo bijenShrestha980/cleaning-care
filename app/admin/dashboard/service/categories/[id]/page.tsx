@@ -9,10 +9,11 @@ const ViewServiceCategory = ({ params }: { params: { id: number } }) => {
   const {
     data: serviceCategoryData,
     isPending,
+    isFetching,
     isError,
   } = useServiceCategory(params.id);
 
-  if (isPending) {
+  if (isPending || isFetching) {
     return <Loading />;
   }
   if (isError) {
@@ -25,13 +26,19 @@ const ViewServiceCategory = ({ params }: { params: { id: number } }) => {
         serviceCategory={{
           category_name: serviceCategoryData?.category_name ?? "",
           status: serviceCategoryData?.status ?? "active",
-          items: serviceCategoryData?.items ?? [
-            {
-              item_name: "",
-              price: 0,
-              status: "active",
-            },
-          ],
+          items: serviceCategoryData?.servicecategoryitems
+            ? serviceCategoryData?.servicecategoryitems.map((item) => ({
+                item_name: item.item_name,
+                price: parseInt(item.price),
+                status: item.status,
+              }))
+            : [
+                {
+                  item_name: "",
+                  price: 0,
+                  status: "active",
+                },
+              ],
         }}
         id={serviceCategoryData?.id}
       />

@@ -63,9 +63,9 @@ const Nav = () => {
                   <div className="bg-success w-[10px] h-[10px] rounded-full absolute bottom-1 right-0 ring-2 ring-green-400 bg-green-400"></div>
                 </div>
                 <div>
-                  <p className="BodyText-Medium">Oilva Rhye</p>
+                  <p className="BodyText-Medium">Admin</p>
                   <p className="SmallText-Regular text-grey-70">
-                    olivia@untitledui.com
+                    Cleaning care
                   </p>
                 </div>
               </div>

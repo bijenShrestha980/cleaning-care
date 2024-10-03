@@ -3,10 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
-import { set, z } from "zod";
+import { z } from "zod";
 import {
   Check,
   ChevronsUpDown,
@@ -113,19 +112,22 @@ const ServiceForm = ({
       short_description: short_description || "",
       long_description: long_description || "",
       status: status || "active",
-      banner_image: banner_image || undefined,
+      banner_image: null,
       service_category_id: service_category_id || undefined,
-      // categories: undefined,
       section_one_title: section_one_title || "",
       section_one_description: section_one_description || "",
-      section_one_image: section_one_image || undefined,
+      section_one_image: null,
       section_two_title: section_two_title || "",
       section_two_description: section_two_description || "",
-      service_items: service_items || [
+      service_items: service_items?.map((item) => ({
+        item_name: item.item_name,
+        short_description: item.short_description,
+        icon: null,
+      })) || [
         {
           item_name: "",
           short_description: "",
-          icon: undefined,
+          icon: null,
         },
       ],
       // sectionThree: {
@@ -188,42 +190,52 @@ const ServiceForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
-    (Object.keys(values) as Array<keyof typeof values>).map((key) => {
-      if (key === "service_items") {
-        values[key].map((item: any, index: number) => {
-          Object.keys(item).map((itemKey) => {
-            if (itemKey === "icon") {
-              formData.append(`service_items[${index}][icon]`, item[itemKey]);
-            } else {
-              formData.append(
-                `service_items[${index}][${itemKey}]`,
-                item[itemKey]
-              );
-            }
-          });
-        });
-      } else {
-        const value = values[key];
-        if (value !== undefined) {
-          formData.append(
-            key,
-            value instanceof Blob ? value : value.toString()
-          );
-        }
+    formData.append("id", id?.toString() || "");
+    formData.append("service_name", values.service_name);
+    formData.append("short_description", values.short_description);
+    formData.append("long_description", values.long_description);
+    formData.append("status", values.status);
+    formData.append("service_category_id", values.service_category_id);
+    if (values.banner_image) {
+      formData.append("banner_image", values.banner_image);
+    }
+    formData.append("section_one_title", values.section_one_title);
+    formData.append("section_one_description", values.section_one_description);
+    if (values.section_one_image) {
+      formData.append("section_one_image", values.section_one_image);
+    }
+    formData.append("section_two_title", values.section_two_title);
+    formData.append("section_two_description", values.section_two_description);
+    values.service_items.map((item, index) => {
+      formData.append(`service_items[${index}][item_name]`, item.item_name);
+      formData.append(
+        `service_items[${index}][short_description]`,
+        item.short_description
+      );
+      if (item.icon) {
+        formData.append(`service_items[${index}][icon]`, item.icon);
       }
     });
 
     if (id) {
       updateService({
-        // @ts-ignore
-        data: formData,
+        data: formData as any,
         id,
       });
     } else {
-      // @ts-ignore
-      createService(formData);
+      createService(formData as any);
     }
   };
+
+  useEffect(() => {
+    if (form.getValues("service_category_id")) {
+      categories.map((category) => {
+        if (category.id == form.getValues("service_category_id")) {
+          setSelectedCategories(category.value);
+        }
+      });
+    }
+  }, [categories, form]);
 
   if (serviceCategoriesIsPending) {
     return <Loading />;
