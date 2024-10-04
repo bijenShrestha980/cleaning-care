@@ -16,34 +16,36 @@ const CustomerReview = () => {
         <div>
           <GoogleMapComponent />
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-8">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-8">
           <div>
             <p className="font-semibold text-base text-primary opacity-50 uppercase">
               Office hours
             </p>
-            <p className="text-xl text-primary">Monday - Friday</p>
-            <p className="text-xl text-primary">8:00 am - 6:00 pm</p>
+            <p className="etxt-md md:text-xl text-primary">Monday - Friday</p>
+            <p className="etxt-md md:text-xl text-primary">8:00 am - 6:00 pm</p>
           </div>
           <div>
             <p className="font-semibold text-base text-primary opacity-50 uppercase">
               Office Address
             </p>
-            <p className="text-xl text-primary">
+            <p className="etxt-md md:text-xl text-primary">
               123 Clean St, Sydney, NSW 2000, Australia
             </p>
           </div>
-          <div>
+          <div className="w-full">
             <p className="font-semibold text-base text-primary opacity-50 uppercase">
               Email
             </p>
-            <p className="text-xl text-primary">contact@cleaningcompany.com</p>
+            <p className="etxt-md md:text-xl text-primary">
+              contact@cleaningcompany.com
+            </p>
           </div>
           <div>
             <p className="font-semibold text-base text-primary opacity-50 uppercase">
               Get in Touch
             </p>
-            <p className="text-xl text-primary">+61 1234 5678</p>
-            <p className="text-xl text-primary">+61 1234 5678</p>
+            <p className="etxt-md md:text-xl text-primary">+61 1234 5678</p>
+            <p className="etxt-md md:text-xl text-primary">+61 1234 5678</p>
           </div>
         </div>
       </div>

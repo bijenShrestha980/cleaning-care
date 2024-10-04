@@ -30,12 +30,14 @@ const ServicesSection = () => {
     isError: servicesIsError,
   } = useServices();
 
-  console.log(servicess);
   return (
-    <div className="flex flex-wrap justify-center gap-10">
+    <div className="w-full flex flex-wrap justify-center gap-4 md:gap-10">
       {servicesIsPending
         ? Array.from({ length: 3 }).map((_, index) => (
-            <Skeleton className="h-[365px] w-[470px] mb-3" key={index} />
+            <Skeleton
+              className="h-[365px] w-full md:w-[470px] mb-3"
+              key={index}
+            />
           ))
         : services &&
           services.slice(0, 3).map((service, index) => (
