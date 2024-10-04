@@ -1,11 +1,15 @@
 import {
   AlarmClockCheck,
+  BadgeDollarSign,
   Ban,
   CircleCheck,
   CircleDashed,
   ClipboardCheck,
   LoaderCircle,
   ShieldCheck,
+  SquareUser,
+  UserRoundCheck,
+  UserRoundPlus,
   X,
 } from "lucide-react";
 
@@ -39,33 +43,33 @@ export const statuses = [
 
 export const quoteStatuses = [
   {
-    value: "pending",
-    label: "Pending",
-    icon: CircleDashed,
+    value: "received_from_user",
+    label: "Received from user",
+    icon: UserRoundPlus,
   },
   {
-    value: "processing",
-    label: "Processing",
+    value: "quote_sent_to_user",
+    label: "Quote sent to user",
+    icon: UserRoundCheck,
+  },
+  {
+    value: "work_in_progress",
+    label: "Work in progress",
     icon: LoaderCircle,
-  },
-  {
-    value: "accepted",
-    label: "Accepted",
-    icon: ClipboardCheck,
-  },
-  {
-    value: "in_progress",
-    label: "In Progress",
-    icon: AlarmClockCheck,
-  },
-  {
-    value: "rejected",
-    label: "Rejected",
-    icon: X,
   },
   {
     value: "completed",
     label: "Completed",
     icon: ShieldCheck,
+  },
+  {
+    value: "invoice_sent",
+    label: "Invoice sent",
+    icon: ClipboardCheck,
+  },
+  {
+    value: "payment_complete",
+    label: "Payment complete",
+    icon: BadgeDollarSign,
   },
 ];

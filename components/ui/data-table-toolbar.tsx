@@ -22,6 +22,36 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 flex-wrap items-center gap-2">
+        {table.getColumn("category_name") && (
+          <Input
+            placeholder="Filter categories..."
+            value={
+              (table.getColumn("category_name")?.getFilterValue() as string) ??
+              ""
+            }
+            onChange={(event) =>
+              table
+                .getColumn("category_name")
+                ?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] lg:w-[250px]"
+          />
+        )}
+        {table.getColumn("service_name") && (
+          <Input
+            placeholder="Filter services..."
+            value={
+              (table.getColumn("service_name")?.getFilterValue() as string) ??
+              ""
+            }
+            onChange={(event) =>
+              table
+                .getColumn("service_name")
+                ?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] lg:w-[250px]"
+          />
+        )}
         {table.getColumn("name") && (
           <Input
             placeholder="Filter names..."
@@ -32,14 +62,14 @@ export function DataTableToolbar<TData>({
             className="h-8 w-[150px] lg:w-[250px]"
           />
         )}
-        {table.getColumn("firstName") && (
+        {table.getColumn("full_name") && (
           <Input
-            placeholder="Filter first names..."
+            placeholder="Filter full name..."
             value={
-              (table.getColumn("firstName")?.getFilterValue() as string) ?? ""
+              (table.getColumn("full_name")?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
-              table.getColumn("firstName")?.setFilterValue(event.target.value)
+              table.getColumn("full_name")?.setFilterValue(event.target.value)
             }
             className="h-8 w-[150px] lg:w-[250px]"
           />

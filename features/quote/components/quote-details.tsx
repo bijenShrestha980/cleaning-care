@@ -18,7 +18,16 @@ const QuoteDetails = () => {
   if (quoteIsError) {
     return <Error />;
   }
-  return <DataTable data={quoteData} columns={quoteColumns} />;
+  return (
+    <DataTable
+      data={quoteData?.map((quote) => ({
+        ...quote,
+        quoteStatus: quote.status,
+        status: undefined,
+      }))}
+      columns={quoteColumns}
+    />
+  );
 };
 
 export default QuoteDetails;

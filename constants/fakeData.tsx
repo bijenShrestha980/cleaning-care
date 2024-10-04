@@ -8,15 +8,6 @@ import {
 } from "@/components/admin/data/schema";
 import { user_1, user_2, user_3, user_4 } from "./images";
 
-const heroSectionData: HeroSection[] = [
-  {
-    service: "Service 1",
-    description: "We provide best parcel and dispatch service",
-    order: "1",
-    catStatus: "active",
-  },
-];
-
 const typeData: Type[] = [
   {
     type: "Bed & Bath",
@@ -119,28 +110,4 @@ const faqData: Faq[] = [
   },
 ];
 
-const quoteData: Quote[] = [
-  {
-    firstName: "John",
-    lastName: "Doe",
-    email: "john@gmail.com",
-    phone: "4421525",
-    address: "1234 Main Street",
-    postalCode: "425",
-    message:
-      "ouh, I need a bedroom ouh, I need a bedroom ouh, I need a bedroomouh, I need a bedroomouh, I need a bedroomouh, I need a bouh, I need a bedroomedroomouh, I need a bedroomouh, I need a bedroomouh, I need a bedroom",
-    quoteStatus: "accepted",
-    categories: [
-      {
-        label: "Bedroom",
-        value: 1,
-      },
-      {
-        label: "Bathroom",
-        value: 2,
-      },
-    ],
-  },
-];
-
-export { heroSectionData, typeData, testimonialData, faqData, quoteData };
+export { typeData, testimonialData, faqData };

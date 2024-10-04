@@ -6,6 +6,7 @@ const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3MB in bytes
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png"];
 
 export const heroSectionSchema = z.object({
+  id: z.number().optional(),
   title: z.string().min(1, { message: "Title is required" }),
   description: z.string().min(1, { message: "Description is required" }),
   order: z.string().min(1, { message: "Order is required" }),
@@ -233,6 +234,7 @@ export const faqSchema = z.object({
 });
 
 export const quoteSchema = z.object({
+  id: z.number().optional(),
   full_name: z.string().min(1, {
     message: "Full name is required",
   }),
@@ -251,15 +253,24 @@ export const quoteSchema = z.object({
     message: "Quote is required",
   }),
   service_category_ids: z.array(z.number()).optional(),
-  quoteStatus: z
+  status: z
     .enum([
-      "pending",
-      "processing",
-      "accepted",
-      "in-progress",
-      "rejected",
+      "received_from_user",
+      "quote_sent_to_user",
+      "work_in_progress",
       "completed",
+      "invoice_sent",
+      "payment_complete",
     ])
+    .optional(),
+  senduserquoteservice: z
+    .array(
+      z.object({
+        id: z.number(),
+        service_category_id: z.number(),
+        send_user_quote_id: z.number(),
+      })
+    )
     .optional(),
 });
 
