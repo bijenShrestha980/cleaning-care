@@ -79,7 +79,14 @@ const Service = ({ params }: { params: { id: number } }) => {
       </div>
       <div className="p-5 md:p-10 flex flex-col items-center">
         {isPending ? (
-          <Skeleton className="h-[28px] w-full md:w-[500px] mt-14" />
+          <div className="mt-14 flex flex-col gap-2">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <Skeleton
+                className="h-[28px] w-full md:w-[400px] lg:w-[1078px]"
+                key={index}
+              />
+            ))}
+          </div>
         ) : (
           <p className="mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic">
             {serviceData?.long_description}
@@ -87,17 +94,17 @@ const Service = ({ params }: { params: { id: number } }) => {
         )}
         <Divider />
         <section className="w-full flex flex-col xl:flex-row items-end lg:items-start justify-between gap-4 lg:gap-16">
-          <div className="w-full">
+          <div className="w-full flex flex-col gap-3">
             {isPending ? (
-              <Skeleton className="h-[72px] w-full md:w-[400px] mb-3" />
+              <Skeleton className="h-[72px] w-full md:w-[700px]" />
             ) : (
-              <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 max-w-[800px]">
+              <h4 className="text-primary text-3xl md:text-[42px] font-semibold">
                 {serviceData?.section_one_title}
               </h4>
             )}
             {isPending ? (
-              Array.from({ length: 3 }).map((_, index) => (
-                <Skeleton className="h-[20px] w-full mb-3" key={index} />
+              Array.from({ length: 5 }).map((_, index) => (
+                <Skeleton className="h-[20px] w-full" key={index} />
               ))
             ) : (
               <p className="text-[#191919] opacity-60 text-base md:text-xl">
@@ -105,13 +112,17 @@ const Service = ({ params }: { params: { id: number } }) => {
               </p>
             )}
           </div>
-          <Image
-            src={serviceData?.section_one_image_url || banner1}
-            alt="logo"
-            width={521}
-            height={460}
-            className="w-full lg:w-[524px] h-full lg:h-[460px] object-cover rounded-3xl"
-          />
+          {isPending ? (
+            <Skeleton className="h-[460px] w-full lg:w-[521px]" />
+          ) : (
+            <Image
+              src={serviceData?.section_one_image_url || ""}
+              alt="logo"
+              width={521}
+              height={460}
+              className="w-full lg:w-[524px] h-full lg:h-[460px] object-cover rounded-3xl"
+            />
+          )}
         </section>
         <Divider />
         {/* Overview of Services */}
