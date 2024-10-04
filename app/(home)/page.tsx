@@ -90,7 +90,7 @@ export default function Home() {
               guarantee.
             </p>
           </div>
-          <div className="flex flex-wrap justify-center items-center gap-10">
+          <div className="flex flex-wrap justify-center items-center gap-x-56 gap-y-12 md:gap-y-20">
             {chooseUs.map((item, index) => (
               <div
                 key={index}

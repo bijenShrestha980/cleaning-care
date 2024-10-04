@@ -12,11 +12,11 @@ export const serviceColumns: ColumnDef<Service>[] = [
   {
     accessorKey: "service_name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="Service" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center">
+        <div className="flex w-[80%] items-center">
           <span>{row.getValue("service_name")}</span>
         </div>
       );

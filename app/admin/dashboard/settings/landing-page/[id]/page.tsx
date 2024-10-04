@@ -1,9 +1,9 @@
 "use client";
 
-import CategoryForm from "@/features/service-categories/components/category-form";
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
 import { useHeroSection } from "@/features/hero-sections/api/use-hero-sections";
+import HeroSectionForm from "@/features/hero-sections/components/hero-section-form";
 
 const ViewHeroSection = ({ params }: { params: { id: number } }) => {
   const {
@@ -22,7 +22,7 @@ const ViewHeroSection = ({ params }: { params: { id: number } }) => {
   return (
     <div className="pb-5">
       <p className="font-medium mb-4">View style</p>
-      <CategoryForm
+      <HeroSectionForm
         heroSection={{
           title: heroSectionData?.title,
           description: heroSectionData?.description,

@@ -58,27 +58,6 @@ export const quoteColumns: ColumnDef<Quote>[] = [
     },
   },
   {
-    accessorKey: "categories",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Categories" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center gap-1">
-          {/* @ts-ignore */}
-          {row.getValue("categories")?.map((category, index) => (
-            <Badge key={index} variant={"outline"}>
-              {category.label}
-            </Badge>
-          ))}
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
     accessorKey: "quoteStatus",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Quote Status" />
@@ -93,11 +72,13 @@ export const quoteColumns: ColumnDef<Quote>[] = [
       }
 
       return (
-        <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
+        <div className="flex w-fit items-center">
+          <Badge>
+            {status.icon && (
+              <status.icon className="mr-2 h-4 w-4 text-primary-foreground" />
+            )}
+            <span>{status.label}</span>
+          </Badge>
         </div>
       );
     },
@@ -114,7 +95,7 @@ export const quoteColumns: ColumnDef<Quote>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/quote/view-quote`}
+          href={`/admin/dashboard/quote/${row.original.id}`}
         >
           View
         </Link>
