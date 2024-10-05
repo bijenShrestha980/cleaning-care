@@ -19,16 +19,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import GoogleMapComponent from "@/components/map";
-import { siteAdminSchema } from "@/components/admin/data/schema";
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
+import { SiteAdmin, siteAdminSchema } from "@/components/admin/data/schema";
 import { useCreateFundamental } from "@/features/fundamentals/api/use-create-fundamental";
 import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 
-const SiteAdmin = () => {
+const SiteAdminComp = () => {
   const { data: fundamentals, isPending, isError } = useAllFundamental();
 
-  console.log(fundamentals);
   if (isPending) {
     return <Loading />;
   }
@@ -45,11 +44,8 @@ const SiteAdmin = () => {
       contact_number2={fundamentals[0]?.contact_number2}
       open_day={fundamentals[0]?.open_day}
       open_time={fundamentals[0]?.open_time}
-      site_logo={
-        typeof fundamentals[0]?.site_logo === "string"
-          ? fundamentals[0]?.site_logo
-          : undefined
-      }
+      site_logo={null}
+      image_url={fundamentals[0]?.image_url}
       copyright={fundamentals[0]?.copyright}
       google_map={fundamentals[0]?.google_map}
       term_condition={fundamentals[0]?.term_condition}
@@ -69,28 +65,16 @@ const SiteAdminForm = ({
   open_day,
   open_time,
   site_logo,
+  image_url,
   copyright,
   google_map,
   term_condition,
   privacy_policy,
   license,
-}: {
-  site_title?: string;
-  site_address?: string;
-  email1?: string;
-  email2?: string;
-  contact_number1?: string;
-  contact_number2?: string;
-  open_day?: string;
-  open_time?: string;
-  site_logo?: string;
-  copyright?: string;
-  google_map?: string;
-  term_condition?: string;
-  privacy_policy?: string;
-  license?: string;
-}) => {
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+}: SiteAdmin) => {
+  const [logoPreview, setLogoPreview] = useState<string | null>(
+    image_url || null
+  );
   const { mutate: createFundamental, isPending: createIsPending } =
     useCreateFundamental();
 
@@ -107,7 +91,7 @@ const SiteAdminForm = ({
       contact_number2: contact_number2 || "",
       open_day: open_day || "",
       open_time: open_time || "",
-      site_logo: site_logo || "",
+      site_logo: null,
       copyright: copyright || "",
       google_map: google_map || "",
       term_condition: term_condition || "",
@@ -283,7 +267,15 @@ const SiteAdminForm = ({
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Location</FormLabel>
               <FormControl>
-                <GoogleMapComponent />
+                <div
+                  id="map"
+                  style={{
+                    width: "100%",
+                    height: "300px",
+                  }}
+                >
+                  <GoogleMapComponent />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -371,4 +363,4 @@ const SiteAdminForm = ({
   );
 };
 
-export default SiteAdmin;
+export default SiteAdminComp;

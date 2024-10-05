@@ -161,20 +161,25 @@ export const serviceSchema = z.object({
         message: "Description is required",
       }),
       icon: z
-        .instanceof(File, {
-          message: "Image is required",
-        })
+        .union([
+          z.instanceof(File, {
+            message: "Image is required",
+          }),
+          z.string().optional(),
+        ])
         .refine(
-          (file) => file.size <= MAX_FILE_SIZE,
+          (file) => file instanceof File && file.size <= MAX_FILE_SIZE,
           `Image size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB.`
         )
         .refine(
-          (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
+          (file) =>
+            file instanceof File && ACCEPTED_IMAGE_TYPES.includes(file.type),
           `Only the following image types are allowed: ${ACCEPTED_IMAGE_TYPES.join(
             ", "
           )}.`
         )
         .nullable(),
+      icon_url: z.string().optional(),
     })
   ),
   serviceitems: z
@@ -283,6 +288,7 @@ export const siteAdminSchema = z.object({
   contact_number2: z.string().optional(),
   open_day: z.string(),
   open_time: z.string(),
+  image_url: z.string().optional(),
   site_logo: z.union([
     z
       .instanceof(File, {
