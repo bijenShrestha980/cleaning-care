@@ -9,7 +9,6 @@ import { LoaderCircle, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -21,9 +20,12 @@ import {
 import GoogleMapComponent from "@/components/map";
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
+import CustomEditor from "@/components/editor";
 import { SiteAdmin, siteAdminSchema } from "@/components/admin/data/schema";
 import { useCreateFundamental } from "@/features/fundamentals/api/use-create-fundamental";
 import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
+import { quillModules } from "@/constants/quill-module";
+import { Separator } from "@/components/ui/separator";
 
 const SiteAdminComp = () => {
   const { data: fundamentals, isPending, isError } = useAllFundamental();
@@ -47,7 +49,11 @@ const SiteAdminComp = () => {
       site_logo={null}
       image_url={fundamentals[0]?.image_url}
       copyright={fundamentals[0]?.copyright}
-      google_map={fundamentals[0]?.google_map}
+      google_map={
+        typeof fundamentals[0]?.google_map === "string"
+          ? JSON.parse(fundamentals[0]?.google_map)
+          : fundamentals[0]?.google_map
+      }
       term_condition={fundamentals[0]?.term_condition}
       privacy_policy={fundamentals[0]?.privacy_policy}
       license={fundamentals[0]?.license}
@@ -93,7 +99,10 @@ const SiteAdminForm = ({
       open_time: open_time || "",
       site_logo: null,
       copyright: copyright || "",
-      google_map: google_map || "",
+      google_map: google_map || {
+        lat: 43.734952570403,
+        lng: -79.39714192370195,
+      },
       term_condition: term_condition || "",
       privacy_policy: privacy_policy || "",
       license: license || "",
@@ -101,16 +110,27 @@ const SiteAdminForm = ({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    // console.log(values.google_map);
     const formData = new FormData();
-    Object.entries(values).forEach(([key, value]) => {
-      if (key === "site_logo") {
-        formData.append(key, value as File);
-      } else {
-        formData.append(key, value as string);
-      }
-    });
-    // @ts-ignore
-    createFundamental(formData);
+    formData.append("site_title", values.site_title);
+    formData.append("site_address", values.site_address);
+    formData.append("email1", values.email1);
+    values.email2 && formData.append("email2", values.email2);
+    formData.append("contact_number1", values.contact_number1);
+    values.contact_number2 &&
+      formData.append("contact_number2", values.contact_number2);
+    values.open_day && formData.append("open_day", values.open_day);
+    values.open_time && formData.append("open_time", values.open_time);
+    values.site_logo && formData.append("site_logo", values.site_logo);
+    formData.append("copyright", values.copyright);
+    formData.append("google_map", JSON.stringify(values.google_map));
+    values.term_condition &&
+      formData.append("term_condition", values.term_condition);
+    values.privacy_policy &&
+      formData.append("privacy_policy", values.privacy_policy);
+    values.license && formData.append("license", values.license);
+
+    createFundamental(formData as any);
   }
 
   return (
@@ -205,6 +225,20 @@ const SiteAdminForm = ({
 
         <FormField
           control={form.control}
+          name="copyright"
+          render={({ field }) => (
+            <FormItem className="col-span-2 sm:col-span-1">
+              <FormLabel className="font-normal text-sm">Copyright</FormLabel>
+              <FormControl>
+                <Input placeholder="Copyright" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="site_logo"
           render={({ field: { ref, name, onBlur, onChange } }) => (
             <FormItem className="col-span-2 2xl:col-span-1">
@@ -267,76 +301,85 @@ const SiteAdminForm = ({
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Location</FormLabel>
               <FormControl>
-                <div
-                  id="map"
-                  style={{
-                    width: "100%",
-                    height: "300px",
-                  }}
-                >
-                  <GoogleMapComponent />
-                </div>
+                <GoogleMapComponent
+                  onChange={(value) => form.setValue("google_map", value)}
+                  value={field.value}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <span />
         <span />
 
-        <FormField
-          control={form.control}
-          name="copyright"
-          render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
-              <FormLabel className="font-normal text-sm">Copyright</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Copyright" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <Separator className="col-span-2 mt-4" />
         <FormField
           control={form.control}
           name="term_condition"
           render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
+            <FormItem className="col-span-2 h-fit">
               <FormLabel className="font-normal text-sm">
                 Term & Condition
               </FormLabel>
               <FormControl>
-                <Textarea placeholder="Term & Condition" {...field} />
+                <CustomEditor
+                  placeholder="Term & Condition"
+                  {...field}
+                  theme="snow"
+                  modules={quillModules}
+                  style={{
+                    height: "300px",
+                    marginBottom: "40px",
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
+        <Separator className="col-span-2 mt-4" />
         <FormField
           control={form.control}
           name="privacy_policy"
           render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
+            <FormItem className="col-span-2 h-fit">
               <FormLabel className="font-normal text-sm">
                 Privacy policy
               </FormLabel>
               <FormControl>
-                <Textarea placeholder="Privacy policy" {...field} />
+                <CustomEditor
+                  placeholder="Privacy policy"
+                  {...field}
+                  theme="snow"
+                  modules={quillModules}
+                  style={{
+                    height: "300px",
+                    marginBottom: "40px",
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
+        <Separator className="col-span-2 mt-4" />
         <FormField
           control={form.control}
           name="license"
           render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
+            <FormItem className="col-span-2 h-fit">
               <FormLabel className="font-normal text-sm">License</FormLabel>
               <FormControl>
-                <Textarea placeholder="License" {...field} />
+                <CustomEditor
+                  placeholder="License"
+                  {...field}
+                  theme="snow"
+                  modules={quillModules}
+                  style={{
+                    height: "300px",
+                    marginBottom: "40px",
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

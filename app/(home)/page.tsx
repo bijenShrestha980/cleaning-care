@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Banner from "@/components/banner";
 import Divider from "@/components/ui/divider";
-import RequestCallbackForm from "@/components/request-callback-form";
+import RequestCallbackForm from "@/features/request-callback/components/request-callback-form";
 import CustomerReview from "@/components/customer-review";
 import { banner1 } from "@/constants/images";
 import { dollar, leaf, like, shield, timer } from "@/constants/icons";

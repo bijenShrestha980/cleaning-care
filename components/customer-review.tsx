@@ -1,7 +1,20 @@
+"use client";
 import React from "react";
 import GoogleMapComponent from "./map";
+import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
+import { Skeleton } from "./ui/skeleton";
+import Error from "./ui/error";
 
 const CustomerReview = () => {
+  const {
+    data: fundamentalData,
+    isPending: fundamentalIsPending,
+    isError: fundamentalIsError,
+  } = useAllFundamental();
+
+  if (fundamentalIsError) {
+    return <Error />;
+  }
   return (
     <section className="flex flex-col items-center">
       <div className="mb-12 max-w-[765px] flex flex-col items-center">
@@ -13,39 +26,92 @@ const CustomerReview = () => {
         </p>
       </div>
       <div className="grid lg:grid-cols-2 items-center gap-[72px] w-full">
-        <div>
-          <GoogleMapComponent />
-        </div>
+        {fundamentalIsPending ? (
+          <div className="h-[400px] w-full">
+            <Skeleton className="h-[400px] w-full" />
+          </div>
+        ) : (
+          <div>
+            <GoogleMapComponent
+              value={
+                typeof fundamentalData[0]?.google_map === "string"
+                  ? JSON.parse(fundamentalData[0]?.google_map)
+                  : fundamentalData[0]?.google_map
+              }
+            />
+          </div>
+        )}
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-8">
           <div>
             <p className="font-semibold text-base text-primary opacity-50 uppercase">
               Office hours
             </p>
-            <p className="etxt-md md:text-xl text-primary">Monday - Friday</p>
-            <p className="etxt-md md:text-xl text-primary">8:00 am - 6:00 pm</p>
+            {fundamentalIsPending ? (
+              <div className="h-[28px] w-full">
+                <Skeleton className="h-full w-full" />
+              </div>
+            ) : (
+              <>
+                <p className="text-md md:text-xl text-primary">
+                  {fundamentalData[0]?.open_day}
+                </p>
+                <p className="text-md md:text-xl text-primary">
+                  {fundamentalData[0]?.open_time}
+                </p>
+              </>
+            )}
           </div>
           <div>
             <p className="font-semibold text-base text-primary opacity-50 uppercase">
               Office Address
             </p>
-            <p className="etxt-md md:text-xl text-primary">
-              123 Clean St, Sydney, NSW 2000, Australia
-            </p>
+            {fundamentalIsPending ? (
+              <div className="h-[28px] w-full">
+                <Skeleton className="h-full w-full" />
+              </div>
+            ) : (
+              <p className="text-md md:text-xl text-primary">
+                {fundamentalData[0]?.site_address}
+              </p>
+            )}
           </div>
           <div className="w-full">
             <p className="font-semibold text-base text-primary opacity-50 uppercase">
               Email
             </p>
-            <p className="etxt-md md:text-xl text-primary">
-              contact@cleaningcompany.com
-            </p>
+            {fundamentalIsPending ? (
+              <div className="h-[28px] w-full">
+                <Skeleton className="h-full w-full" />
+              </div>
+            ) : (
+              <>
+                <p className="text-md md:text-xl text-primary">
+                  {fundamentalData[0]?.email1}
+                </p>
+                <p className="text-md md:text-xl text-primary">
+                  {fundamentalData[0]?.email2}
+                </p>
+              </>
+            )}
           </div>
           <div>
             <p className="font-semibold text-base text-primary opacity-50 uppercase">
               Get in Touch
             </p>
-            <p className="etxt-md md:text-xl text-primary">+61 1234 5678</p>
-            <p className="etxt-md md:text-xl text-primary">+61 1234 5678</p>
+            {fundamentalIsPending ? (
+              <div className="h-[28px] w-full">
+                <Skeleton className="h-full w-full" />
+              </div>
+            ) : (
+              <>
+                <p className="text-md md:text-xl text-primary">
+                  {fundamentalData[0]?.contact_number1}
+                </p>
+                <p className="text-md md:text-xl text-primary">
+                  {fundamentalData[0]?.contact_number2}
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>
