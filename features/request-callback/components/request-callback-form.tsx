@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { LoaderCircle } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,43 +16,34 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { requestCallbackSchema } from "@/components/admin/data/schema";
+import { useCreateRequestCallback } from "../api/use-create-request-callback";
 
 const RequestCallbackForm = () => {
-  const formSchema = z.object({
-    firstname: z
-      .string()
-      .min(1, {
-        message: "Firstname is required.",
-      })
-      .max(100, {
-        message: "Firstname must be at most 100 characters.",
-      }),
-    lastname: z
-      .string()
-      .min(1, {
-        message: "Lastname is required.",
-      })
-      .max(100, {
-        message: "Lastname must be at most 100 characters.",
-      }),
-    email: z.string().email(),
-    phone: z.string().optional(),
-  });
+  const {
+    mutate: createRequestCallBack,
+    isPending: createIsPending,
+    isSuccess: createIsSuccess,
+  } = useCreateRequestCallback();
+
+  const formSchema = requestCallbackSchema;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstname: "",
-      lastname: "",
+      first_name: "",
+      last_name: "",
       email: "",
-      phone: undefined,
+      phone: "",
     },
   });
 
+  useEffect(() => {
+    createIsSuccess && form.reset();
+  }, [createIsSuccess, form]);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    createRequestCallBack(values);
   }
 
   return (
@@ -70,12 +63,12 @@ const RequestCallbackForm = () => {
         >
           <FormField
             control={form.control}
-            name="firstname"
+            name="first_name"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel className="text-[#191919]">First name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter firstname" {...field} />
+                  <Input placeholder="Enter first name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -83,12 +76,12 @@ const RequestCallbackForm = () => {
           />
           <FormField
             control={form.control}
-            name="lastname"
+            name="last_name"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel className="text-[#191919]">Last name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter lastname" {...field} />
+                  <Input placeholder="Enter last name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -120,8 +113,17 @@ const RequestCallbackForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" variant={"success"}>
-            Submit
+          <Button
+            type="submit"
+            variant={"success"}
+            size={"lg"}
+            disabled={createIsPending}
+          >
+            {createIsPending ? (
+              <LoaderCircle className="animate-spin" width={20} height={20} />
+            ) : (
+              "Submit"
+            )}
           </Button>
         </form>
       </Form>

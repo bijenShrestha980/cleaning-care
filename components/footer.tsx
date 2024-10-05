@@ -20,7 +20,9 @@ const Footer = () => {
               Using our simple booking form you can have your clean booked in
               under 60 seconds.
             </p>
-            <QuoteDialogue />
+            <div className="mb-4">
+              <QuoteDialogue />
+            </div>
             <p className="font-semibold text-primary-foreground text-2xl ms:text-4xl text-center leading-[30px] md:leading-[43px]">
               Or call our friendly team
             </p>
@@ -40,12 +42,15 @@ const Footer = () => {
         <Separator className="w-full mb-6" />
         <div className="h-full lg:h-5 flex flex-col lg:flex-row justify-between items-center gap-2">
           <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-4 text-sm">
-            <Link href={"/terms"} className="underline text-primary-foreground">
+            <Link
+              href={"/terms&conditions"}
+              className="underline text-primary-foreground"
+            >
               Terms & Conditions
             </Link>
             <Separator orientation="vertical" className="hidden sm:block" />
             <Link
-              href={"/liscense"}
+              href={"/license"}
               className="underline text-primary-foreground"
             >
               License

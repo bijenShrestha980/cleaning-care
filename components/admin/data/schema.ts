@@ -1,5 +1,6 @@
 import { StaticImageData } from "next/image";
 import { z } from "zod";
+import validator from "validator";
 
 // Define the file size limit and accepted file types as constants
 const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3MB in bytes
@@ -249,7 +250,7 @@ export const quoteSchema = z.object({
       message: "Email is required",
     })
     .email(),
-  phone_number: z.string().optional(),
+  phone_number: z.string().refine(validator.isMobilePhone),
   address: z.string().min(1, {
     message: "Address is required",
   }),
@@ -308,7 +309,12 @@ export const siteAdminSchema = z.object({
     z.string(),
   ]),
   copyright: z.string().min(1, { message: "Copy right is required" }),
-  google_map: z.string().min(1, { message: "Location is required" }),
+  google_map: z
+    .object({
+      lat: z.number(),
+      lng: z.number(),
+    })
+    .optional(),
   term_condition: z.string().optional(),
   privacy_policy: z.string().optional(),
   license: z.string().optional(),
@@ -358,6 +364,15 @@ export const changePasswordSchema = z
     path: ["confirmPassword"],
   });
 
+export const requestCallbackSchema = z.object({
+  first_name: z.string().min(1, { message: "First name is required" }),
+  last_name: z.string().min(1, { message: "Last name is required" }),
+  email: z.string().email(),
+  phone: z.string().refine(validator.isMobilePhone, {
+    message: "Invalid phone number",
+  }),
+});
+
 export type HeroSection = z.infer<typeof heroSectionSchema>;
 
 export type ServiceCategory = z.infer<typeof serviceCategorySchema>;
@@ -377,3 +392,5 @@ export type SiteAdmin = z.infer<typeof siteAdminSchema>;
 export type SocialLinks = z.infer<typeof socialLinksSchema>;
 
 export type ChangePassword = z.infer<typeof changePasswordSchema>;
+
+export type RequestCallback = z.infer<typeof requestCallbackSchema>;

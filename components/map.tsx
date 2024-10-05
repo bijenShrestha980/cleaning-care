@@ -3,9 +3,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
-export default function GoogleMaps() {
+export default function GoogleMaps({
+  width,
+  height,
+  value,
+  onChange,
+}: {
+  width?: string;
+  height?: string;
+  value?: { lat: number; lng: number };
+  onChange?: (coords: { lat: number; lng: number }) => void;
+}) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [marker, setMarker] = useState<google.maps.Marker | null>(null);
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>();
 
   useEffect(() => {
     const initializeMap = async () => {
@@ -16,9 +27,9 @@ export default function GoogleMaps() {
 
       await loader.load();
 
-      const locationInMap = {
-        lat: 39.60128890889341,
-        lng: -9.069839810859907,
+      const locationInMap = value || {
+        lat: 43.734952570403,
+        lng: -79.39714192370195,
       };
 
       const options: google.maps.MapOptions = {
@@ -45,9 +56,10 @@ export default function GoogleMaps() {
       // Add drag event listener to the marker
       newMarker.addListener("dragend", (event: google.maps.MapMouseEvent) => {
         if (event.latLng) {
+          // Get latitude and longitude
           const lat = event.latLng.lat();
           const lng = event.latLng.lng();
-          console.log(`New position: Latitude: ${lat}, Longitude: ${lng}`);
+          setCoords({ lat, lng });
         }
       });
 
@@ -60,13 +72,29 @@ export default function GoogleMaps() {
           // Get latitude and longitude
           const lat = event.latLng.lat();
           const lng = event.latLng.lng();
-          console.log(`Clicked position: Latitude: ${lat}, Longitude: ${lng}`);
+          setCoords({ lat, lng });
         }
       });
     };
 
     initializeMap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <div ref={mapRef} style={{ height: "500px", width: "100%" }} />;
+  useEffect(() => {
+    if (coords && onChange) {
+      onChange(coords);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coords]);
+
+  return (
+    <div
+      ref={mapRef}
+      style={{
+        height: `${height ? `${height}px` : "400px"}`,
+        width: `${width ? `${width}px` : "100%"}`,
+      }}
+    />
+  );
 }
