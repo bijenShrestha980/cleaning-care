@@ -1,6 +1,5 @@
 import Axios, { InternalAxiosRequestConfig } from "axios";
 import { PageOptions } from "@/types";
-import { toast } from "@/hooks/use-toast";
 
 declare module "axios" {
   interface AxiosResponse {
@@ -31,12 +30,6 @@ axiosLocal.interceptors.response.use(
     return response;
   },
   (error) => {
-    toast({
-      title: "Error",
-      description: error?.response?.data?.title || error?.message,
-      variant: "destructive",
-    });
-
     return Promise.reject(error);
   }
 );
@@ -88,12 +81,6 @@ axios.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    toast({
-      title: "Error",
-      description: error?.response?.data?.title || error?.message,
-      variant: "destructive",
-    });
-
     return Promise.reject(error);
   }
 );

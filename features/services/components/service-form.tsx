@@ -55,7 +55,6 @@ import { useUpdateService } from "@/features/services/api/use-update-service";
 import { useDeleteService } from "@/features/services/api/use-delete-service";
 import { useAllServiceCategory } from "@/features/service-categories/api/use-service-categories";
 import { cn } from "@/lib/utils";
-import { user_1 } from "@/constants/images";
 
 const ServiceForm = ({
   service,
@@ -69,11 +68,11 @@ const ServiceForm = ({
     short_description,
     long_description,
     status,
-    banner_image,
+    banner_image_url,
     service_category_id,
     section_one_title,
     section_one_description,
-    section_one_image,
+    section_one_image_url,
     section_two_title,
     section_two_description,
     service_items,
@@ -87,9 +86,15 @@ const ServiceForm = ({
     }[]
   >([]);
   const [selectedCategories, setSelectedCategories] = useState<string>("");
-  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
-  const [featurePreview, setFeaturePreview] = useState<string[]>([]);
+  const [bannerPreview, setBannerPreview] = useState<string | null>(
+    banner_image_url || null
+  );
+  const [logoPreview, setLogoPreview] = useState<string | null>(
+    section_one_image_url || null
+  );
+  const [featurePreview, setFeaturePreview] = useState<
+    (string | undefined)[] | undefined
+  >(service_items?.map((item) => item.icon_url) || []);
 
   const { mutate: createService, isPending: createIsPending } =
     useCreateService();
@@ -689,14 +694,15 @@ const ServiceForm = ({
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
                                   onChange(e.target.files?.[0]);
-                                  setFeaturePreview(
-                                    file
-                                      ? [
-                                          ...featurePreview,
-                                          URL.createObjectURL(file),
-                                        ]
-                                      : []
-                                  );
+                                  featurePreview &&
+                                    setFeaturePreview(
+                                      file
+                                        ? [
+                                            ...featurePreview,
+                                            URL.createObjectURL(file),
+                                          ]
+                                        : []
+                                    );
                                 }}
                                 className="w-fit"
                               />
@@ -707,7 +713,7 @@ const ServiceForm = ({
                           <Label className="font-normal text-sm">
                             Image (Preview)
                           </Label>
-                          {featurePreview[index] ? (
+                          {featurePreview && featurePreview[index] ? (
                             <Image
                               src={featurePreview[index]}
                               alt="logo"
