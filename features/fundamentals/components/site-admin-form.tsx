@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Image from "next/image";
 import { LoaderCircle, User } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,12 +24,12 @@ import Error from "@/components/ui/error";
 import CustomEditor from "@/components/editor";
 import { SiteAdmin, siteAdminSchema } from "@/components/admin/data/schema";
 import { useCreateFundamental } from "@/features/fundamentals/api/use-create-fundamental";
-import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
+import { useFundamentals } from "@/features/fundamentals/api/use-fundamental";
 import { quillModules } from "@/constants/quill-module";
 import { Separator } from "@/components/ui/separator";
 
 const SiteAdminComp = () => {
-  const { data: fundamentals, isPending, isError } = useAllFundamental();
+  const { data: fundamentals, isPending, isError } = useFundamentals();
 
   if (isPending) {
     return <Loading />;
@@ -81,6 +82,7 @@ const SiteAdminForm = ({
   const [logoPreview, setLogoPreview] = useState<string | null>(
     image_url || null
   );
+  const [time, setTime] = useState<string[]>(["09:00", "18:00"]);
   const { mutate: createFundamental, isPending: createIsPending } =
     useCreateFundamental();
 
@@ -96,7 +98,7 @@ const SiteAdminForm = ({
       contact_number1: contact_number1 || "",
       contact_number2: contact_number2 || "",
       open_day: open_day || "",
-      open_time: open_time || "",
+      open_time: open_time || "09:00,18:00",
       site_logo: null,
       copyright: copyright || "",
       google_map: google_map || {
@@ -110,7 +112,6 @@ const SiteAdminForm = ({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // console.log(values.google_map);
     const formData = new FormData();
     formData.append("site_title", values.site_title);
     formData.append("site_address", values.site_address);
@@ -132,6 +133,10 @@ const SiteAdminForm = ({
 
     createFundamental(formData as any);
   }
+
+  useEffect(() => {
+    form.setValue("open_time", time.join(","));
+  }, [form, time]);
 
   return (
     <Form {...form}>
@@ -294,6 +299,105 @@ const SiteAdminForm = ({
             </FormItem>
           )}
         />
+        <div className="col-span-2 md:col-span-1 flex flex-col gap-4">
+          <FormField
+            control={form.control}
+            name="open_time"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-normal text-sm">Time</FormLabel>
+                <FormControl>
+                  <div className="flex gap-2">
+                    <Input
+                      type="time"
+                      className="w-fit select-none"
+                      defaultValue={form.getValues("open_time").split(",")[0]}
+                      onChange={(e) => setTime([e.target.value, time[1]])}
+                    />
+                    <Input
+                      type="time"
+                      className="w-fit select-none"
+                      defaultValue={form.getValues("open_time").split(",")[1]}
+                      onChange={(e) => setTime([time[0], e.target.value])}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="open_day"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-normal text-sm">Day</FormLabel>
+                <FormControl className="justify-start">
+                  <ToggleGroup
+                    size={"lg"}
+                    variant={"outline"}
+                    type="multiple"
+                    onValueChange={(value) =>
+                      form.setValue("open_day", value.join(","))
+                    }
+                    value={field.value.split(",")}
+                  >
+                    <ToggleGroupItem
+                      value="Sun"
+                      aria-label="Sun"
+                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      Sun
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                      value="Mon"
+                      aria-label="Mon"
+                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      Mon
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                      value="Tue"
+                      aria-label="Tue"
+                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      Tue
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                      value="Wed"
+                      aria-label="Wed"
+                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      Wed
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                      value="Thu"
+                      aria-label="Thu"
+                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      Thu
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                      value="Fri"
+                      aria-label="Fri"
+                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      Fri
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                      value="Sat"
+                      aria-label="Sat"
+                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                    >
+                      Sat
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="google_map"

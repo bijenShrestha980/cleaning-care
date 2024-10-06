@@ -4,7 +4,7 @@ import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
 import QuotActionForm from "@/features/quote/components/quote-action-form";
 import { useQuote } from "@/features/quote/api/use-user-quotes";
-import { useAllServiceCategory } from "@/features/service-categories/api/use-service-categories";
+import { useServiceCategories } from "@/features/service-categories/api/use-service-categories";
 
 const ViewQuote = ({ params }: { params: { id: number } }) => {
   const {
@@ -18,7 +18,7 @@ const ViewQuote = ({ params }: { params: { id: number } }) => {
     data: serviceCategoriesData,
     isPending: serviceCategoriesIsPending,
     isError: serviceCategoriesIsError,
-  } = useAllServiceCategory();
+  } = useServiceCategories();
 
   if (quoteIsPending || quoteIsFetching || serviceCategoriesIsPending) {
     return <Loading />;

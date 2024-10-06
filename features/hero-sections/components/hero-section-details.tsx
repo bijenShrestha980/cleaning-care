@@ -1,7 +1,7 @@
 "use client";
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
-import { useAllHeroSection } from "../api/use-hero-sections";
+import { useHeroSections } from "../api/use-hero-sections";
 import { DataTable } from "@/components/ui/data-table";
 import { heroSectionColumns } from "@/components/admin/module/hero-section-columns";
 
@@ -10,7 +10,7 @@ const HeroSectionDetails = () => {
     data: heroSectionData,
     isPending: heroSectionIsPending,
     isError: heroSectionIsError,
-  } = useAllHeroSection();
+  } = useHeroSections();
 
   if (heroSectionIsPending) {
     return <Loading />;

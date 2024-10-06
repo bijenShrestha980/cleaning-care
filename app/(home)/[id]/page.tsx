@@ -5,7 +5,10 @@ import Divider from "@/components/ui/divider";
 import { Skeleton } from "@/components/ui/skeleton";
 import Error from "@/components/ui/error";
 import { banner1 } from "@/constants/images";
-import { useService } from "@/features/services/api/use-service";
+import {
+  useService,
+  useServiceByCategoryId,
+} from "@/features/services/api/use-service";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 
 const howToBook = [
@@ -32,7 +35,11 @@ const howToBook = [
 ];
 
 const Service = ({ params }: { params: { id: number } }) => {
-  const { data: serviceData, isPending, isError } = useService(params.id);
+  const {
+    data: serviceData,
+    isPending,
+    isError,
+  } = useServiceByCategoryId(params.id);
 
   if (isError) {
     return <Error />;
@@ -77,7 +84,7 @@ const Service = ({ params }: { params: { id: number } }) => {
           />
         </div>
       </div>
-      <div className="p-5 md:p-10 flex flex-col items-center">
+      <div className="w-full p-5 md:p-10 flex flex-col items-center">
         {isPending ? (
           <div className="mt-14 flex flex-col gap-2">
             {Array.from({ length: 2 }).map((_, index) => (
@@ -126,7 +133,7 @@ const Service = ({ params }: { params: { id: number } }) => {
         </section>
         <Divider />
         {/* Overview of Services */}
-        <section className="flex flex-col items-center">
+        <section className="w-full flex flex-col items-center">
           <div className="mb-12 max-w-[765px] flex flex-col items-center">
             {isPending ? (
               <Skeleton className="h-[36px] w-full md:w-[400px] mb-3" />

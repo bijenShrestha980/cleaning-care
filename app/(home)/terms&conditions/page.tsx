@@ -7,14 +7,14 @@ import Error from "@/components/ui/error";
 import Loading from "@/components/ui/loading";
 import { banner1 } from "@/constants/images";
 import CustomEditor from "@/components/editor";
-import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
+import { useFundamentals } from "@/features/fundamentals/api/use-fundamental";
 
 const TermsConditions = () => {
   const {
     data: fundamentalData,
     isPending: fundamentalIsPending,
     isError: fundamentalIsError,
-  } = useAllFundamental();
+  } = useFundamentals();
 
   return (
     <main className="-translate-y-[104px]">

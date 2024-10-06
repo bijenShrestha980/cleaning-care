@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Error from "@/components/ui/error";
 import Loading from "@/components/ui/loading";
 import CustomEditor from "@/components/editor";
-import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
+import { useFundamentals } from "@/features/fundamentals/api/use-fundamental";
 import { banner1 } from "@/constants/images";
 
 const License = () => {
@@ -14,7 +14,7 @@ const License = () => {
     data: fundamentalData,
     isPending: fundamentalIsPending,
     isError: fundamentalIsError,
-  } = useAllFundamental();
+  } = useFundamentals();
 
   return (
     <main className="-translate-y-[104px]">

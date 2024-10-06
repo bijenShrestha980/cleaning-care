@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Circle, Star } from "lucide-react";
 // import Autoplay from "embla-carousel-autoplay";
 
-import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselApi,
@@ -12,38 +11,13 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { banner1 } from "@/constants/images";
-import { useAllHeroSection } from "@/features/hero-sections/api/use-hero-sections";
-import Loading from "./ui/loading";
+import {
+  useAllHeroSection,
+  useHeroSections,
+} from "@/features/hero-sections/api/use-hero-sections";
 import Error from "./ui/error";
 import { Skeleton } from "./ui/skeleton";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
-
-const bannarData = [
-  {
-    image: banner1,
-    title: "Caring for Cleanliness Caring for You",
-    description:
-      "Experience the joy of a spotless space with our professional cleaning services.",
-    rating: 4.1,
-    reviews: "14k",
-  },
-  {
-    image: banner1,
-    title: "Caring for Cleanliness Caring for You",
-    description:
-      "Experience the joy of a spotless space with our professional cleaning services.",
-    rating: 4.1,
-    reviews: "14k",
-  },
-  {
-    image: banner1,
-    title: "Caring for Cleanliness Caring for You",
-    description:
-      "Experience the joy of a spotless space with our professional cleaning services.",
-    rating: 4.1,
-    reviews: "14k",
-  },
-];
 
 const Banner = () => {
   const [api, setApi] = useState<CarouselApi>();
