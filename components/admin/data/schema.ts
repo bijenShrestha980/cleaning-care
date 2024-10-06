@@ -285,8 +285,15 @@ export const siteAdminSchema = z.object({
   site_address: z.string().min(1, { message: "Site address is required" }),
   email1: z.string().email(),
   email2: z.union([z.literal(""), z.string().email()]),
-  contact_number1: z.string().min(1, { message: "Contact number is required" }),
-  contact_number2: z.string().optional(),
+  contact_number1: z.string().refine(validator.isMobilePhone, {
+    message: "Invalid contact number",
+  }),
+  contact_number2: z.union([
+    z.literal(""),
+    z
+      .string()
+      .refine(validator.isMobilePhone, { message: "Invalid contact number" }),
+  ]),
   open_day: z.string(),
   open_time: z.string(),
   image_url: z.string().optional(),

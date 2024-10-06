@@ -1,34 +1,15 @@
 "use client";
 import { banner1 } from "@/constants/images";
-import { useAllServices, useServices } from "../api/use-service";
+import { useAllServices } from "../api/use-service";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
-const servicess = [
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-];
+
 const ServicesSection = () => {
   const {
     data: services,
     isPending: servicesIsPending,
     isError: servicesIsError,
-  } = useServices();
+  } = useAllServices();
 
   return (
     <div className="w-full flex flex-wrap justify-center gap-4 md:gap-10">

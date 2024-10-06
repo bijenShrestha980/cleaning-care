@@ -53,7 +53,7 @@ import { Service, serviceSchema } from "@/components/admin/data/schema";
 import { useCreateService } from "@/features/services/api/use-create-service";
 import { useUpdateService } from "@/features/services/api/use-update-service";
 import { useDeleteService } from "@/features/services/api/use-delete-service";
-import { useAllServiceCategory } from "@/features/service-categories/api/use-service-categories";
+import { useServiceCategories } from "@/features/service-categories/api/use-service-categories";
 import { cn } from "@/lib/utils";
 
 const ServiceForm = ({
@@ -106,7 +106,7 @@ const ServiceForm = ({
     data: serviceCategoriesData,
     isPending: serviceCategoriesIsPending,
     isError: serviceCategoriesIsError,
-  } = useAllServiceCategory();
+  } = useServiceCategories();
 
   const formSchema = serviceSchema;
 

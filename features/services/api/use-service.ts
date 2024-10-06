@@ -23,6 +23,11 @@ const getService = async (id: number) => {
   return response.data as Service;
 };
 
+const getServiceByCategoryId = async (id: number) => {
+  const response = await axios.get(`/get-service-by-category/${id}`);
+  return response.data as Service;
+};
+
 export const useAllServices = (query?: QueryParams) =>
   useQuery({
     queryKey: ["services", query],
@@ -39,4 +44,10 @@ export const useService = (id: number) =>
   useQuery({
     queryKey: ["service", id],
     queryFn: () => getService(id),
+  });
+
+export const useServiceByCategoryId = (id: number) =>
+  useQuery({
+    queryKey: ["service", id],
+    queryFn: () => getServiceByCategoryId(id),
   });

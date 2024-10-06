@@ -4,7 +4,14 @@ import { createQueryParams } from "@/lib/create-query-params";
 import { QueryParams } from "@/types";
 import { ServiceCategory } from "@/components/admin/data/schema";
 
-const getAllServiceCategory = async (query?: QueryParams) => {
+const getAllServiceCategories = async (query?: QueryParams) => {
+  const response = await axios.get(
+    `/get-service-category?${createQueryParams(query || {})}`
+  );
+  return response.data as ServiceCategory[];
+};
+
+const getServiceCategories = async (query?: QueryParams) => {
   const response = await axios.get(
     `/service-category?${createQueryParams(query || {})}`
   );
@@ -16,10 +23,16 @@ const getServiceCategory = async (id: number) => {
   return response.data as ServiceCategory;
 };
 
-export const useAllServiceCategory = (query?: QueryParams) =>
+export const useAllServiceCategories = (query?: QueryParams) =>
   useQuery({
     queryKey: ["service-category", query],
-    queryFn: () => getAllServiceCategory(query || {}),
+    queryFn: () => getAllServiceCategories(query || {}),
+  });
+
+export const useServiceCategories = (query?: QueryParams) =>
+  useQuery({
+    queryKey: ["service-category", query],
+    queryFn: () => getServiceCategories(query || {}),
   });
 
 export const useServiceCategory = (id: number) =>

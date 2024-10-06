@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -21,12 +22,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { logo } from "@/constants/images";
-import { useServices } from "@/features/services/api/use-service";
-import { Skeleton } from "./ui/skeleton";
+import { useAllServices } from "@/features/services/api/use-service";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 
 export function Navbar() {
-  const { data: servicesData, isPending } = useServices();
+  const { data: servicesData, isPending } = useAllServices();
   return (
     <div className="max-w-full flex items-center justify-between py-3 px-10">
       <NavigationMenu>

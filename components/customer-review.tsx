@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import GoogleMapComponent from "./map";
-import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
+import { useAllFundamentals } from "@/features/fundamentals/api/use-fundamental";
 import { Skeleton } from "./ui/skeleton";
 import Error from "./ui/error";
 
@@ -10,13 +10,13 @@ const CustomerReview = () => {
     data: fundamentalData,
     isPending: fundamentalIsPending,
     isError: fundamentalIsError,
-  } = useAllFundamental();
+  } = useAllFundamentals();
 
   if (fundamentalIsError) {
     return <Error />;
   }
   return (
-    <section className="flex flex-col items-center">
+    <section className="flex flex-col items-center w-full">
       <div className="mb-12 max-w-[765px] flex flex-col items-center">
         <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
           Contact Us
@@ -34,9 +34,9 @@ const CustomerReview = () => {
           <div>
             <GoogleMapComponent
               value={
-                typeof fundamentalData[0]?.google_map === "string"
-                  ? JSON.parse(fundamentalData[0]?.google_map)
-                  : fundamentalData[0]?.google_map
+                typeof fundamentalData?.google_map === "string"
+                  ? JSON.parse(fundamentalData?.google_map)
+                  : fundamentalData?.google_map
               }
             />
           </div>
@@ -53,10 +53,10 @@ const CustomerReview = () => {
             ) : (
               <>
                 <p className="text-md md:text-xl text-primary">
-                  {fundamentalData[0]?.open_day}
+                  {fundamentalData?.open_day.split(",").join("-")}
                 </p>
                 <p className="text-md md:text-xl text-primary">
-                  {fundamentalData[0]?.open_time}
+                  {fundamentalData?.open_time.split(",").join(" - ")}
                 </p>
               </>
             )}
@@ -71,7 +71,7 @@ const CustomerReview = () => {
               </div>
             ) : (
               <p className="text-md md:text-xl text-primary">
-                {fundamentalData[0]?.site_address}
+                {fundamentalData?.site_address}
               </p>
             )}
           </div>
@@ -86,10 +86,10 @@ const CustomerReview = () => {
             ) : (
               <>
                 <p className="text-md md:text-xl text-primary">
-                  {fundamentalData[0]?.email1}
+                  {fundamentalData?.email1}
                 </p>
                 <p className="text-md md:text-xl text-primary">
-                  {fundamentalData[0]?.email2}
+                  {fundamentalData?.email2}
                 </p>
               </>
             )}
@@ -105,10 +105,10 @@ const CustomerReview = () => {
             ) : (
               <>
                 <p className="text-md md:text-xl text-primary">
-                  {fundamentalData[0]?.contact_number1}
+                  {fundamentalData?.contact_number1}
                 </p>
                 <p className="text-md md:text-xl text-primary">
-                  {fundamentalData[0]?.contact_number2}
+                  {fundamentalData?.contact_number2}
                 </p>
               </>
             )}

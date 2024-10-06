@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import QuoteForm from "./quote-form";
-import { useAllServiceCategory } from "@/features/service-categories/api/use-service-categories";
+import { useAllServiceCategories } from "@/features/service-categories/api/use-service-categories";
 
 const QuoteDialogue = ({
   service_category_id,
@@ -24,7 +24,7 @@ const QuoteDialogue = ({
     data: serviceCategoryData,
     isPending: serviceCategoryIsPending,
     isError: serviceCategoryIsError,
-  } = useAllServiceCategory();
+  } = useAllServiceCategories();
 
   if (serviceCategoryIsPending) {
     return <Skeleton className="w-[188px] h-10" />;
