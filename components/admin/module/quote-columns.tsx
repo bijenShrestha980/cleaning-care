@@ -5,8 +5,8 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Quote } from "../data/schema";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { quoteStatuses, statuses } from "@/constants/table-data";
-import { Badge } from "@/components/ui/badge";
+import { quoteStatuses } from "@/constants/table-data";
+import { QuoteTableRowActions } from "./quote-table-row-actions";
 
 export const quoteColumns: ColumnDef<Quote>[] = [
   {
@@ -57,6 +57,35 @@ export const quoteColumns: ColumnDef<Quote>[] = [
       return value.includes(row.getValue(id));
     },
   },
+  // {
+  //   accessorKey: "quoteStatus",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Quote Status" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const status = quoteStatuses.find(
+  //       (status) => status.value === row.getValue("quoteStatus")
+  //     );
+
+  //     if (!status) {
+  //       return null;
+  //     }
+
+  //     return (
+  //       <div className="flex w-fit items-center">
+  //         <Badge>
+  //           {status.icon && (
+  //             <status.icon className="mr-2 h-4 w-4 text-primary-foreground" />
+  //           )}
+  //           <span>{status.label}</span>
+  //         </Badge>
+  //       </div>
+  //     );
+  //   },
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue(id));
+  //   },
+  // },
   {
     accessorKey: "quoteStatus",
     header: ({ column }) => (
@@ -70,20 +99,7 @@ export const quoteColumns: ColumnDef<Quote>[] = [
       if (!status) {
         return null;
       }
-
-      return (
-        <div className="flex w-fit items-center">
-          <Badge>
-            {status.icon && (
-              <status.icon className="mr-2 h-4 w-4 text-primary-foreground" />
-            )}
-            <span>{status.label}</span>
-          </Badge>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return <QuoteTableRowActions row={row} />;
     },
   },
   {

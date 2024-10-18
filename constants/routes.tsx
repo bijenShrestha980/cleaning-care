@@ -1,4 +1,11 @@
-import { HandPlatter, LayoutDashboard, Quote, Settings } from "lucide-react";
+import {
+  HandPlatter,
+  LayoutDashboard,
+  MessageCircleQuestion,
+  Quote,
+  Settings,
+  Undo2,
+} from "lucide-react";
 
 const adminRoutes = [
   {
@@ -18,6 +25,12 @@ const adminRoutes = [
         sidebar: true,
       },
       {
+        icon: <Undo2 width={20} height={20} />,
+        name: "Request Callback",
+        path: "/request-callback",
+        sidebar: true,
+      },
+      {
         icon: <HandPlatter width={20} height={20} />,
         name: "Service Details",
         path: "/service",
@@ -31,15 +44,31 @@ const adminRoutes = [
             sidebar: true,
             notificationCount: 0,
           },
-          // {
-          //   name: "Types",
-          //   path: "/types",
-          //   sidebar: true,
-          //   notificationCount: 0,
-          // },
           {
             name: "Service List",
             path: "/service-list",
+            sidebar: true,
+            notificationCount: 0,
+          },
+        ],
+      },
+      {
+        icon: <MessageCircleQuestion width={20} height={20} />,
+        name: "Why choose us",
+        path: "/why-choose-us",
+        sidebar: true,
+        level: true,
+        notification: false,
+        sub: [
+          {
+            name: "Heading",
+            path: "/heading",
+            sidebar: true,
+            notificationCount: 0,
+          },
+          {
+            name: "Features",
+            path: "/features",
             sidebar: true,
             notificationCount: 0,
           },
@@ -73,17 +102,23 @@ const adminRoutes = [
             notificationCount: 0,
           },
           {
-            name: "Testimonial",
-            path: "/testimonial",
+            name: "Bank",
+            path: "/bank",
             sidebar: true,
             notificationCount: 0,
           },
-          {
-            name: "FAQs",
-            path: "/faqs",
-            sidebar: true,
-            notificationCount: 0,
-          },
+          // {
+          //   name: "Testimonial",
+          //   path: "/testimonial",
+          //   sidebar: true,
+          //   notificationCount: 0,
+          // },
+          // {
+          //   name: "FAQs",
+          //   path: "/faqs",
+          //   sidebar: true,
+          //   notificationCount: 0,
+          // },
         ],
       },
     ],

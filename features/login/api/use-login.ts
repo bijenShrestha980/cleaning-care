@@ -18,7 +18,6 @@ const createSession = async (data: any) => {
   const response = await axiosLocal.post("/session", {
     data,
   });
-  // console.log("first", response);
   return response.data;
 };
 

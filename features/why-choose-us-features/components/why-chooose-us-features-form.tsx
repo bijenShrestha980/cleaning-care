@@ -26,38 +26,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { HeroSection, heroSectionSchema } from "@/components/admin/data/schema";
-import { useCreateHeroSection } from "../api/use-create-hero-section";
-import { useUpdateHeroSection } from "../api/use-update-hero-section";
-import { useDeleteHeroSection } from "../api/use-delete-hero-section";
+import {
+  WhyChooseUsFeatures,
+  whyChooseUsFeaturesSchema,
+} from "@/components/admin/data/schema";
+import { useUpdateWhyChooseUsFeatures } from "../api/use-update-feature";
+import { useDeleteWhyChooseUsFeatures } from "../api/use-delete-feature";
+import { useCreateWhyChooseUsFeatures } from "../api/use-create-feature";
 
-const HeroSectionForm = ({
-  heroSection,
+const FeaturesForm = ({
+  whyChooseUs,
   id,
 }: {
-  heroSection?: HeroSection;
+  whyChooseUs?: WhyChooseUsFeatures;
   id?: string | number;
 }) => {
   const [logoPreview, setLogoPreview] = useState<string | null>(
-    heroSection?.hero_image_url || null
+    whyChooseUs?.icon_url || null
   );
-  const { mutate: createHeroSection, isPending: createIsPending } =
-    useCreateHeroSection();
-  const { mutate: updateHeroSection, isPending: updateIsPending } =
-    useUpdateHeroSection(id);
-  const { mutate: deleteHeroSection, isPending: deleteIsPending } =
-    useDeleteHeroSection();
+  const { mutate: createWhyChooseUsFeatures, isPending: createIsPending } =
+    useCreateWhyChooseUsFeatures();
+  const { mutate: updateWhyChooseUsFeatures, isPending: updateIsPending } =
+    useUpdateWhyChooseUsFeatures(id);
+  const { mutate: deleteWhyChooseUsFeatures, isPending: deleteIsPending } =
+    useDeleteWhyChooseUsFeatures();
 
-  const formSchema = heroSectionSchema;
+  const formSchema = whyChooseUsFeaturesSchema;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: heroSection?.title || "",
-      description: heroSection?.description || "",
-      order: heroSection?.order || undefined,
-      status: heroSection?.status || "active",
-      hero_image: null,
+      feature_title: whyChooseUs?.feature_title || "",
+      feature_short_description: whyChooseUs?.feature_short_description || "",
+      icon: null,
     },
   });
 
@@ -66,15 +67,16 @@ const HeroSectionForm = ({
     // Object.entries(values).forEach(([key, value]) => {
     //   formData.append(key, value as any);
     // });
-    formData.append("title", values.title);
-    formData.append("description", values.description);
-    formData.append("order", values.order as any);
-    formData.append("status", values.status);
-    values.hero_image && formData.append("hero_image", values.hero_image);
+    formData.append("feature_title", values.feature_title);
+    formData.append(
+      "feature_short_description",
+      values.feature_short_description
+    );
+    values.icon && formData.append("icon", values.icon);
     if (id) {
-      updateHeroSection({ data: formData as any, id });
+      updateWhyChooseUsFeatures({ data: formData as any, id });
     } else {
-      createHeroSection(formData as any);
+      createWhyChooseUsFeatures(formData as any);
     }
   }
 
@@ -86,7 +88,7 @@ const HeroSectionForm = ({
       >
         <FormField
           control={form.control}
-          name="title"
+          name="feature_title"
           render={({ field }) => (
             <FormItem className="col-span-2 sm:col-span-1">
               <FormLabel className="font-normal text-sm">Title</FormLabel>
@@ -97,47 +99,15 @@ const HeroSectionForm = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="order"
-          render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
-              <FormLabel className="font-normal text-sm">Order</FormLabel>
-              <FormControl>
-                <Input placeholder="Order" {...field} type="number" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
-              <FormLabel className="font-normal text-sm">Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  {...field}
-                  className="border-[#A7B2C3] focus:bg-grey-30"
-                  rows={8}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         <FormField
           control={form.control}
-          name="hero_image"
+          name="icon"
           render={({ field: { ref, name, onBlur, onChange } }) => (
             <FormItem className="col-span-2 2xl:col-span-1">
               <div className="flex flex-col sm:flex-row gap-12">
                 <span>
-                  <FormLabel className="font-normal text-sm">
-                    Hero image
-                  </FormLabel>
+                  <FormLabel className="font-normal text-sm">Icon</FormLabel>
 
                   <div className="flex items-center gap-3 mt-2">
                     <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
@@ -185,44 +155,23 @@ const HeroSectionForm = ({
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
-          name="status"
+          name="feature_short_description"
           render={({ field }) => (
             <FormItem className="col-span-2 sm:col-span-1">
-              <FormLabel className="font-normal text-sm">Status</FormLabel>
+              <FormLabel className="font-normal text-sm">Description</FormLabel>
               <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className="border-[#A7B2C3] focus:bg-transparent [&>svg]:opacity-100 [&>svg]:text-[#5065F6]">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem
-                      value="active"
-                      className="text-[#374253] focus:bg-grey-40"
-                    >
-                      Active
-                    </SelectItem>
-                    <SelectItem
-                      value="inactive"
-                      className="text-[#374253] focus:bg-grey-40"
-                    >
-                      Inactive
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                <Textarea
+                  {...field}
+                  className="border-[#A7B2C3] focus:bg-grey-30"
+                  rows={8}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
-        <span />
-        <span />
         <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-md">
           {id && (
             <Button
@@ -231,7 +180,7 @@ const HeroSectionForm = ({
               className="w-[86px]"
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
-              onClick={() => deleteHeroSection(id)}
+              onClick={() => deleteWhyChooseUsFeatures(id)}
             >
               {deleteIsPending ? (
                 <LoaderCircle className="animate-spin" width={20} height={20} />
@@ -241,7 +190,7 @@ const HeroSectionForm = ({
             </Button>
           )}
           <Link
-            href="/admin/dashboard/settings/landing-page"
+            href="/admin/dashboard/why-choose-us"
             className="w-full sm:w-[86px]"
           >
             <Button
@@ -272,4 +221,4 @@ const HeroSectionForm = ({
   );
 };
 
-export default HeroSectionForm;
+export default FeaturesForm;
