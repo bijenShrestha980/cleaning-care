@@ -1,19 +1,28 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
-import { useHeroSection } from "@/features/hero-sections/api/use-hero-sections";
+import { useHeroSections } from "@/features/hero-sections/api/use-hero-sections";
 import HeroSectionForm from "@/features/hero-sections/components/hero-section-form";
+import { HeroSection } from "@/components/admin/data/schema";
 
 const ViewHeroSection = ({ params }: { params: { id: number } }) => {
+  const [isHero, setIsHero] = useState<HeroSection>();
   const {
     data: heroSectionData,
     isPending,
     isFetching,
     isError,
-  } = useHeroSection(params.id);
+  } = useHeroSections();
 
-  if (isPending || isFetching) {
+  useEffect(() => {
+    if (heroSectionData && !isPending && !isFetching && !isError) {
+      heroSectionData?.map((data) => data.id == params.id && setIsHero(data));
+    }
+  }, [heroSectionData, isError, isFetching, isPending, params.id]);
+
+  if (isPending || isFetching || !isHero) {
     return <Loading />;
   }
   if (isError) {
@@ -24,13 +33,13 @@ const ViewHeroSection = ({ params }: { params: { id: number } }) => {
       <p className="font-medium mb-4">View style</p>
       <HeroSectionForm
         heroSection={{
-          title: heroSectionData?.title,
-          description: heroSectionData?.description,
-          order: heroSectionData?.order,
-          status: heroSectionData?.status,
-          hero_image: heroSectionData?.hero_image,
+          title: isHero?.title,
+          description: isHero?.description,
+          order: isHero?.order,
+          status: isHero?.status,
+          hero_image_url: isHero?.hero_image_url,
         }}
-        id={heroSectionData?.id}
+        id={params.id}
       />
     </div>
   );

@@ -1,11 +1,10 @@
-import React from "react";
-import AboutForm from "@/components/admin/module/about-form";
+import AboutFormComp from "@/features/about-us/components/about-form";
 
 const About = () => {
   return (
-    <div>
+    <div className="pb-12">
       <p className="font-medium mb-4">Manage About Page</p>
-      <AboutForm />
+      <AboutFormComp />
     </div>
   );
 };

@@ -19,7 +19,7 @@ const getHeroSections = async (query?: QueryParams) => {
 };
 
 const getHeroSection = async (id: number) => {
-  const response = await axios.get(`/hero-sections/${id}`);
+  const response = await axios.get(`/hero-section/${id}`);
   return response.data as HeroSection;
 };
 

@@ -16,19 +16,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Quote,
   quoteSchema,
+  quoteToUserSchema,
   ServiceCategory,
 } from "../../../components/admin/data/schema";
 import { quoteStatuses } from "@/constants/table-data";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
+import Link from "next/link";
+import { useCreateQuoteToUser } from "../api/use-create-user-quote";
 
 const QuotActionForm = ({
   quote,
@@ -38,12 +34,22 @@ const QuotActionForm = ({
   serviceCategoriesData: ServiceCategory[];
 }) => {
   const [totalCost, setTotalCost] = useState<number>(0);
-  const formSchema = quoteSchema;
+  const {
+    mutate: createQuote,
+    isPending: createIsPending,
+    isSuccess: createIsSuccess,
+  } = useCreateQuoteToUser();
+
+  const formSchema = quoteToUserSchema;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id: quote?.id,
-      status: quote?.status || "received_from_user",
+      send_user_quote_id: quote.id,
+      service_category_id: quote.senduserquoteservice?.map(
+        (service) => service.service_category_id
+      ),
+      categories: [],
     },
   });
 
@@ -61,8 +67,28 @@ const QuotActionForm = ({
     setTotalCost(total);
   }, [serviceCategoriesData, quote.senduserquoteservice]);
 
+  useEffect(() => {
+    const transformedData = quote.senduserquoteservice?.map((service) => {
+      const prices = service.servicecategory.servicecategoryitems.map(
+        (item) => item.price
+      );
+      const serviceCategoryItemIds =
+        service.servicecategory.servicecategoryitems.map(
+          (item) => item.service_category_id
+        );
+
+      return {
+        price: prices,
+        service_category_item_id: serviceCategoryItemIds,
+      };
+    });
+    if (transformedData) {
+      form.setValue("categories", transformedData);
+    }
+  }, [form, quote]);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    createQuote(values as any);
   }
 
   return (
@@ -167,14 +193,16 @@ const QuotActionForm = ({
           className="grid sm:grid-cols-2 gap-4 w-full select-none"
         >
           <span />
-          <div className="flex justify-end gap-4">
-            <Button
-              variant={"outline"}
-              animation={"scale_in"}
-              className="w-[86px]"
-            >
-              Cancle
-            </Button>
+          <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-md">
+            <Link href="/admin/dashboard/quote" className="w-full sm:w-[86px]">
+              <Button
+                variant={"outline"}
+                animation={"scale_in"}
+                className="w-[86px]"
+              >
+                Cancle
+              </Button>
+            </Link>
             <Button type="submit" animation={"scale_in"} className="w-[86px]">
               Proceed
             </Button>

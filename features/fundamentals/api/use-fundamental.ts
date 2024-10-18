@@ -12,10 +12,10 @@ const getFundamentals = async (query?: QueryParams) => {
 };
 
 const getAllFundamental = async (query?: QueryParams) => {
-  const response = (await axios.get(
+  const response = await axios.get(
     `/get-fundamental?${createQueryParams(query || {})}`
-  )) as SiteAdmin;
-  return response;
+  );
+  return response.data as SiteAdmin;
 };
 
 export const useFundamentals = (query?: QueryParams) =>
@@ -24,7 +24,7 @@ export const useFundamentals = (query?: QueryParams) =>
     queryFn: () => getFundamentals(query || {}),
   });
 
-export const useAllFundamentals = (query?: QueryParams) =>
+export const useAllFundamental = (query?: QueryParams) =>
   useQuery({
     queryKey: ["fundamental", query],
     queryFn: () => getAllFundamental(query || {}),

@@ -85,7 +85,7 @@ export function Navbar() {
                           <ListItem
                             key={component.id}
                             title={component.service_name}
-                            href={component.id?.toString()}
+                            href={component.service_category_id?.toString()}
                           />
                         ))
                       )}
@@ -119,7 +119,7 @@ export function Navbar() {
                     <ListItem
                       key={component.id}
                       title={component.service_name}
-                      href={component.id?.toString()}
+                      href={component.service_category_id?.toString()}
                     />
                   ))
                 )}

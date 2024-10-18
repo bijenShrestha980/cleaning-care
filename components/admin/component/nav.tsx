@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { useLogout } from "@/features/logout/api/use-logout";
 import { user_1 } from "@/constants/images";
 import { axiosLocal } from "@/lib/axios";
 import SidebarToggle from "./sidebar-toggle";
@@ -26,8 +27,11 @@ const Nav = () => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const { refetch } = useLogout();
+
   const logout = async () => {
     await axiosLocal.get("/logout");
+    refetch();
     router.refresh();
   };
 

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import GoogleMapComponent from "./map";
-import { useAllFundamentals } from "@/features/fundamentals/api/use-fundamental";
+import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import { Skeleton } from "./ui/skeleton";
 import Error from "./ui/error";
 
@@ -10,7 +10,7 @@ const CustomerReview = () => {
     data: fundamentalData,
     isPending: fundamentalIsPending,
     isError: fundamentalIsError,
-  } = useAllFundamentals();
+  } = useAllFundamental();
 
   if (fundamentalIsError) {
     return <Error />;
@@ -53,10 +53,10 @@ const CustomerReview = () => {
             ) : (
               <>
                 <p className="text-md md:text-xl text-primary">
-                  {fundamentalData?.open_day.split(",").join("-")}
+                  {fundamentalData?.open_day?.split(",").join("-")}
                 </p>
                 <p className="text-md md:text-xl text-primary">
-                  {fundamentalData?.open_time.split(",").join(" - ")}
+                  {fundamentalData?.open_time?.split(",").join(" - ")}
                 </p>
               </>
             )}
