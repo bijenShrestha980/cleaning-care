@@ -99,12 +99,12 @@ const SignInForm = () => {
             </FormItem>
           )}
         />
-        <Link
+        {/* <Link
           className="BodyText-Medium flex justify-center pt-4 pb-2"
           href="forgot-password"
         >
           Forgot Password?
-        </Link>
+        </Link> */}
         <Button
           type="submit"
           // variant={"secondary"}
