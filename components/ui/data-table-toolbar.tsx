@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
 
-import { quoteStatuses, statuses } from "@/constants/table-data";
+import { quoteStatuses, statuses, types } from "@/constants/table-data";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
 interface DataTableToolbarProps<TData> {
@@ -84,6 +84,16 @@ export function DataTableToolbar<TData>({
             className="h-8 w-[150px] lg:w-[250px]"
           />
         )}
+        {table.getColumn("title") && (
+          <Input
+            placeholder="Filter title..."
+            value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("title")?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] lg:w-[250px]"
+          />
+        )}
         {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
@@ -96,6 +106,13 @@ export function DataTableToolbar<TData>({
             column={table.getColumn("quoteStatus")}
             title="Quote Status"
             options={quoteStatuses}
+          />
+        )}
+        {table.getColumn("type") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("type")}
+            title="Type"
+            options={types}
           />
         )}
 

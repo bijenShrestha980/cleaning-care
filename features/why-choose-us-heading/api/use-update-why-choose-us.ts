@@ -3,32 +3,37 @@ import { useRouter } from "next/navigation";
 
 import { toast } from "@/hooks/use-toast";
 import { axios } from "@/lib/axios";
-import { WhyChooseUsFeatures } from "@/components/admin/data/schema";
+import { WhyChooseUs } from "@/components/admin/data/schema";
 
-const postWhyChooseUsFeatures = async (data: WhyChooseUsFeatures) => {
-  const response = await axios.post("/why-choose-us-features", data);
+const postWhyChooseUs = async ({
+  data,
+  id,
+}: {
+  data: WhyChooseUs;
+  id: number | string;
+}) => {
+  const response = await axios.post(`/why-choose-us/${id}`, data);
   return response.data;
 };
 
-export const useCreateWhyChooseUsFeatures = () => {
+export const useUpdateWhyChooseUs = (id: number | string | undefined) => {
   const router = useRouter();
 
   return useMutation({
-    mutationKey: ["why-choose-us-features"],
-    mutationFn: postWhyChooseUsFeatures,
+    mutationKey: ["why-choose-us", id],
+    mutationFn: postWhyChooseUs,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
         toast({
           title: "Error",
-          description: data?.message,
+          description: data?.error,
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/why-choose-us/features");
+        router.push("/admin/dashboard/why-choose-us/heading");
       }
     },
     onError: (error) => {
-      console.log("first", error);
       toast({
         title: "Error",
         //@ts-ignore

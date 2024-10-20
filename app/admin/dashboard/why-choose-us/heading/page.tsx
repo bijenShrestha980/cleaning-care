@@ -1,23 +1,23 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import WhyChooseUsFeaturesDetails from "@/features/why-choose-us-features/components/why-choose-us-features-details";
+import WhyChooseUsDetails from "@/features/why-choose-us-heading/components/why-choose-us-details";
 
-const Features = () => {
+const Heading = () => {
   return (
     <section>
       <div className="w-full flex justify-between mb-3">
-        <p className="font-medium mb-4">Features</p>
-        <Link href="/admin/dashboard/why-choose-us/features/add-features">
+        <p className="font-medium mb-4">Heading</p>
+        <Link href="/admin/dashboard/why-choose-us/heading/add-heading">
           <Button animation={"scale_in"}>
             <Plus size={20} className="mr-2" />
             Add
           </Button>
         </Link>
       </div>
-      <WhyChooseUsFeaturesDetails />
+      <WhyChooseUsDetails />
     </section>
   );
 };
 
-export default Features;
+export default Heading;

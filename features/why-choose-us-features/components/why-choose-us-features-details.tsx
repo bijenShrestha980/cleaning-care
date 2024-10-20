@@ -2,15 +2,17 @@
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
 import { DataTable } from "@/components/ui/data-table";
-import { heroSectionColumns } from "@/components/admin/module/hero-section-columns";
-import { useCreateWhyChooseUsFeatures } from "../api/use-create-feature";
+import { whyChooseUsFeaturesColumns } from "@/components/admin/module/why-choose-us-features-columns";
+import { useWhyChooseUsFeatures } from "../api/use-features";
 
 const WhyChooseUsFeaturesDetails = () => {
   const {
     data: whyChooseUsFeaturesData,
     isPending: whyChooseUsFeaturesIsPending,
     isError: whyChooseUsFeaturesIsError,
-  } = useCreateWhyChooseUsFeatures();
+  } = useWhyChooseUsFeatures();
+
+  console.log(whyChooseUsFeaturesColumns);
 
   if (whyChooseUsFeaturesIsPending) {
     return <Loading />;
@@ -19,7 +21,10 @@ const WhyChooseUsFeaturesDetails = () => {
     return <Error />;
   }
   return (
-    <DataTable data={whyChooseUsFeaturesData} columns={heroSectionColumns} />
+    <DataTable
+      data={whyChooseUsFeaturesData}
+      columns={whyChooseUsFeaturesColumns}
+    />
   );
 };
 

@@ -49,7 +49,7 @@ const QuotActionForm = ({
       service_category_id: quote.senduserquoteservice?.map(
         (service) => service.service_category_id
       ),
-      categories: [],
+      categories: {},
     },
   });
 
@@ -68,20 +68,33 @@ const QuotActionForm = ({
   }, [serviceCategoriesData, quote.senduserquoteservice]);
 
   useEffect(() => {
-    const transformedData = quote.senduserquoteservice?.map((service) => {
-      const prices = service.servicecategory.servicecategoryitems.map(
-        (item) => item.price
-      );
-      const serviceCategoryItemIds =
-        service.servicecategory.servicecategoryitems.map(
-          (item) => item.service_category_id
+    const transformedData = quote.senduserquoteservice?.reduce(
+      (
+        acc: Record<
+          number,
+          { service_category_item_id: number[]; price: string[] }
+        >,
+        service
+      ) => {
+        const serviceCategoryId = service.service_category_id;
+        const serviceCategoryItemIds =
+          service.servicecategory.servicecategoryitems.map(
+            (item) => item.service_category_id
+          );
+        const prices = service.servicecategory.servicecategoryitems.map(
+          (item) => item.price
         );
 
-      return {
-        price: prices,
-        service_category_item_id: serviceCategoryItemIds,
-      };
-    });
+        acc[serviceCategoryId] = {
+          service_category_item_id: serviceCategoryItemIds,
+          price: prices,
+        };
+
+        return acc;
+      },
+      {}
+    );
+
     if (transformedData) {
       form.setValue("categories", transformedData);
     }
@@ -89,6 +102,7 @@ const QuotActionForm = ({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     createQuote(values as any);
+    // console.log(values);
   }
 
   return (

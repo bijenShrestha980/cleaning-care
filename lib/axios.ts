@@ -60,7 +60,7 @@ export const verifySession = async (): Promise<{ token: string } | null> => {
 
 // Axios instance
 export const axios = Axios.create({
-  baseURL: process.env.url,
+  baseURL: `${process.env.url}/api/`,
 });
 
 // Axios request interceptor for adding token to Authorization header

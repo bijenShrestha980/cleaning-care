@@ -1,21 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-
-import { toast } from "@/hooks/use-toast";
 import { axios } from "@/lib/axios";
-import { WhyChooseUsFeatures } from "@/components/admin/data/schema";
+import { toast } from "@/hooks/use-toast";
 
-const postWhyChooseUsFeatures = async (data: WhyChooseUsFeatures) => {
-  const response = await axios.post("/why-choose-us-features", data);
+const deleteWhyChooseUs = async (id: number | string) => {
+  const response = await axios.delete(`/why-choose-us/${id}`);
   return response.data;
 };
 
-export const useCreateWhyChooseUsFeatures = () => {
+export const useDeleteWhyChooseUs = () => {
   const router = useRouter();
-
   return useMutation({
-    mutationKey: ["why-choose-us-features"],
-    mutationFn: postWhyChooseUsFeatures,
+    mutationKey: ["why-choose-us"],
+    mutationFn: deleteWhyChooseUs,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
         toast({
@@ -24,7 +21,11 @@ export const useCreateWhyChooseUsFeatures = () => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/why-choose-us/features");
+        toast({
+          title: "Deleted Successfully",
+          variant: "default",
+        });
+        router.push("/admin/dashboard/why-choose-us/heading");
       }
     },
     onError: (error) => {

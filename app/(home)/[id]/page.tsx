@@ -1,38 +1,12 @@
 "use client";
-import { CheckCheck } from "lucide-react";
 import Image from "next/image";
 import Divider from "@/components/ui/divider";
 import { Skeleton } from "@/components/ui/skeleton";
 import Error from "@/components/ui/error";
 import { banner1 } from "@/constants/images";
-import {
-  useService,
-  useServiceByCategoryId,
-} from "@/features/services/api/use-service";
+import { useServiceByCategoryId } from "@/features/services/api/use-service";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
-
-const howToBook = [
-  {
-    title: "Explore Our Service or Contact Us",
-    description:
-      "Visit our website to explore our wide range of cleaning services, including residential, commercial, and specialized cleaning options like kitchen, oven, and BBQ cleaning. Choose the service that best fits your needs.",
-  },
-  {
-    title: "Get a Free Quote",
-    description:
-      "Once you’ve identified the service you need, provide us with some details about your cleaning requirements, including the size of the area, specific cleaning tasks, and any special requests. We’ll offer you a free, no-obligation quote tailored to your needs.",
-  },
-  {
-    title: "Schedule Your Cleaning",
-    description:
-      "Choose a convenient date and time for your cleaning service. We offer flexible scheduling options to fit your busy lifestyle, including weekdays, weekends, and evenings.",
-  },
-  {
-    title: "Enjoy a Spotless Space",
-    description:
-      "Relax and enjoy the peace of mind that comes with a professionally cleaned home or business. Our skilled cleaners will ensure every detail is taken care of, leaving your space fresh and pristine.",
-  },
-];
+import WhyChooseUsServiceSection from "@/features/why-choose-us-heading/components/why-choose-us-service-section";
 
 const Service = ({ params }: { params: { id: number } }) => {
   const {
@@ -179,40 +153,7 @@ const Service = ({ params }: { params: { id: number } }) => {
           </div>
         </section>
         <Divider />
-        <section className="w-full flex flex-col xl:flex-row items-end lg:items-start justify-between gap-4 lg:gap-16">
-          <div className="w-full">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3">
-              How to Book Our Cleaning Service
-            </h4>
-            <p className="text-base md:text-xl text-[#191919] opacity-60">
-              Curious about how our cleaning service operates? It’s
-              straightforward! Our expert cleaners, renowned for their attention
-              to detail, guarantee a home free of dust and cobwebs every time.
-              With our comprehensive vacuuming, no corner is overlooked,
-              effectively eliminating those troublesome dust bunnies. As for
-              your floors, we ensure they are left gleaming and immaculate. We
-              recognize the importance of keeping a tidy home, especially in
-              high-traffic areas like floors and corners. That’s why scheduling
-              regular cleaning with us ensures these spaces remain in excellent
-              condition, without any stress or hassle on your part.
-            </p>
-          </div>
-          <div className="w-full shrink-1 bg-[#F2FAFF] px-4 py-5">
-            {howToBook.map((book, index) => (
-              <div className="flex gap-3 mb-6" key={index}>
-                <CheckCheck stroke="#8CC540" size={36} />
-                <div className="w-full ">
-                  <h5 className="text-[#191919] text-base md:text-xl font-semibold mb-2">
-                    {book.title}
-                  </h5>
-                  <p className="text-[#191919] text-sm md:text-base">
-                    {book.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <WhyChooseUsServiceSection />
       </div>
     </main>
   );

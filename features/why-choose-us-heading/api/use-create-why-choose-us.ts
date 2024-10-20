@@ -3,19 +3,19 @@ import { useRouter } from "next/navigation";
 
 import { toast } from "@/hooks/use-toast";
 import { axios } from "@/lib/axios";
-import { WhyChooseUsFeatures } from "@/components/admin/data/schema";
+import { WhyChooseUs } from "@/components/admin/data/schema";
 
-const postWhyChooseUsFeatures = async (data: WhyChooseUsFeatures) => {
-  const response = await axios.post("/why-choose-us-features", data);
+const postWhyChooseUs = async (data: WhyChooseUs) => {
+  const response = await axios.post("/why-choose-us", data);
   return response.data;
 };
 
-export const useCreateWhyChooseUsFeatures = () => {
+export const useCreateWhyChooseUs = () => {
   const router = useRouter();
 
   return useMutation({
-    mutationKey: ["why-choose-us-features"],
-    mutationFn: postWhyChooseUsFeatures,
+    mutationKey: ["why-choose-us"],
+    mutationFn: postWhyChooseUs,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
         toast({
@@ -24,7 +24,7 @@ export const useCreateWhyChooseUsFeatures = () => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/why-choose-us/features");
+        router.push("/admin/dashboard/why-choose-us/heading");
       }
     },
     onError: (error) => {
