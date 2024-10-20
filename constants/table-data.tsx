@@ -2,9 +2,15 @@ import {
   AlarmClockCheck,
   BadgeDollarSign,
   Ban,
+  BookCheck,
   CircleCheck,
   CircleDashed,
+  CircleDot,
   ClipboardCheck,
+  Disc,
+  Grab,
+  HandHeart,
+  Handshake,
   LoaderCircle,
   ShieldCheck,
   SquareUser,
@@ -71,5 +77,23 @@ export const quoteStatuses = [
     value: "payment_complete",
     label: "Payment complete",
     icon: BadgeDollarSign,
+  },
+];
+
+export const types = [
+  {
+    value: "chooseus",
+    label: "Choose us",
+    icon: Handshake,
+  },
+  {
+    value: "values",
+    label: "Values",
+    icon: HandHeart,
+  },
+  {
+    value: "bookservice",
+    label: "Book service",
+    icon: BookCheck,
   },
 ];

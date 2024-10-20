@@ -26,6 +26,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Loading from "@/components/ui/loading";
+import Error from "@/components/ui/error";
 import {
   WhyChooseUsFeatures,
   whyChooseUsFeaturesSchema,
@@ -33,6 +35,8 @@ import {
 import { useUpdateWhyChooseUsFeatures } from "../api/use-update-feature";
 import { useDeleteWhyChooseUsFeatures } from "../api/use-delete-feature";
 import { useCreateWhyChooseUsFeatures } from "../api/use-create-feature";
+import { useWhyChooseUs } from "@/features/why-choose-us-heading/api/use-why-choose-us";
+import { types } from "@/constants/table-data";
 
 const FeaturesForm = ({
   whyChooseUs,
@@ -44,6 +48,11 @@ const FeaturesForm = ({
   const [logoPreview, setLogoPreview] = useState<string | null>(
     whyChooseUs?.icon_url || null
   );
+  const {
+    data: whyChooseUsData,
+    isPending: whyChooseUsIsPending,
+    isError: whyChooseUsIsError,
+  } = useWhyChooseUs();
   const { mutate: createWhyChooseUsFeatures, isPending: createIsPending } =
     useCreateWhyChooseUsFeatures();
   const { mutate: updateWhyChooseUsFeatures, isPending: updateIsPending } =
@@ -56,6 +65,7 @@ const FeaturesForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      why_choose_us_id: whyChooseUs?.why_choose_us_id || undefined,
       feature_title: whyChooseUs?.feature_title || "",
       feature_short_description: whyChooseUs?.feature_short_description || "",
       icon: null,
@@ -64,9 +74,7 @@ const FeaturesForm = ({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
-    // Object.entries(values).forEach(([key, value]) => {
-    //   formData.append(key, value as any);
-    // });
+    formData.append("why_choose_us_id", String(values.why_choose_us_id));
     formData.append("feature_title", values.feature_title);
     formData.append(
       "feature_short_description",
@@ -80,6 +88,12 @@ const FeaturesForm = ({
     }
   }
 
+  if (whyChooseUsIsPending) {
+    return <Loading />;
+  }
+  if (whyChooseUsIsError) {
+    return <Error />;
+  }
   return (
     <Form {...form}>
       <form
@@ -94,6 +108,55 @@ const FeaturesForm = ({
               <FormLabel className="font-normal text-sm">Title</FormLabel>
               <FormControl>
                 <Input placeholder="Title" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="why_choose_us_id"
+          render={({ field }) => (
+            <FormItem className="col-span-2 sm:col-span-1">
+              <FormLabel className="font-normal text-sm">Type</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={String(field.value)}
+                >
+                  <SelectTrigger className="border-[#A7B2C3] focus:bg-transparent [&>svg]:opacity-100 [&>svg]:text-[#5065F6]">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {whyChooseUsData?.map((item) => (
+                      <SelectItem
+                        key={item.id}
+                        value={String(item.id)}
+                        className="text-[#374253] focus:bg-grey-40"
+                      >
+                        {types.find((type) => type.value === item.type)?.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="feature_short_description"
+          render={({ field }) => (
+            <FormItem className="col-span-2 sm:col-span-1">
+              <FormLabel className="font-normal text-sm">Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  className="border-[#A7B2C3] focus:bg-grey-30"
+                  rows={8}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -155,23 +218,7 @@ const FeaturesForm = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="feature_short_description"
-          render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-1">
-              <FormLabel className="font-normal text-sm">Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  {...field}
-                  className="border-[#A7B2C3] focus:bg-grey-30"
-                  rows={8}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
         <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-md">
           {id && (
             <Button

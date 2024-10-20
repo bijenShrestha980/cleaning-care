@@ -8,7 +8,7 @@ const getAllAboutUs = async (query?: QueryParams) => {
   const response = await axios.get(
     `/get-about-us?${createQueryParams(query || {})}`
   );
-  return response.data as AboutUs[];
+  return response.data as AboutUs;
 };
 
 const getAboutUs = async (query?: QueryParams) => {

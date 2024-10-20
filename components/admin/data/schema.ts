@@ -1,6 +1,7 @@
 import { StaticImageData } from "next/image";
 import { z } from "zod";
 import validator from "validator";
+import { features } from "process";
 
 // Define the file size limit and accepted file types as constants
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes
@@ -304,17 +305,17 @@ export const quoteSchema = z.object({
     .optional(),
 });
 
+const categorySchema = z.object({
+  service_category_item_id: z.array(z.number()),
+  price: z.array(z.string()),
+});
+
 export const quoteToUserSchema = z.object({
   send_user_quote_id: z.number().min(1, {
     message: "Quote id is required",
   }),
   service_category_id: z.array(z.number()),
-  categories: z.array(
-    z.object({
-      service_category_item_id: z.array(z.number()),
-      price: z.array(z.string()),
-    })
-  ),
+  categories: z.record(z.string(), categorySchema),
 });
 
 export const siteAdminSchema = z.object({
@@ -522,6 +523,7 @@ export const aboutUsSchema = z.object({
 
 export const whyChooseUsFeaturesSchema = z.object({
   id: z.number().optional(),
+  why_choose_us_id: z.string(),
   feature_title: z.string().min(1, { message: "Title is required" }),
   feature_short_description: z
     .string()
@@ -546,6 +548,16 @@ export const whyChooseUsFeaturesSchema = z.object({
     )
     .nullable(),
   icon_url: z.string().optional(),
+});
+
+export const whyChooseUsSchema = z.object({
+  id: z.number().optional(),
+  title: z.string().min(1, { message: "Title is required" }),
+  short_description: z
+    .string()
+    .min(1, { message: "Short description is required" }),
+  type: z.enum(["chooseus", "values", "bookservice"]),
+  features: z.array(whyChooseUsFeaturesSchema).optional(),
 });
 
 export const bankAccountDetailsSchema = z.object({
@@ -582,6 +594,8 @@ export type ChangePassword = z.infer<typeof changePasswordSchema>;
 export type RequestCallback = z.infer<typeof requestCallbackSchema>;
 
 export type AboutUs = z.infer<typeof aboutUsSchema>;
+
+export type WhyChooseUs = z.infer<typeof whyChooseUsSchema>;
 
 export type WhyChooseUsFeatures = z.infer<typeof whyChooseUsFeaturesSchema>;
 

@@ -32,7 +32,7 @@ export const useUpdateWhyChooseUsFeatures = (
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/why-choose-us-features");
+        router.push("/admin/dashboard/why-choose-us/features");
       }
     },
     onError: (error) => {

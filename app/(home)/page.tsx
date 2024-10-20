@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Banner from "@/components/banner";
 import Divider from "@/components/ui/divider";
-import RequestCallbackForm from "@/features/request-callback/components/request-callback-form";
 import CustomerReview from "@/components/customer-review";
-import { banner1 } from "@/constants/images";
-import { dollar, leaf, like, shield, timer } from "@/constants/icons";
+import RequestCallbackForm from "@/features/request-callback/components/request-callback-form";
 import ServicesSection from "@/features/services/components/services-section";
+import WhyChooseUsSection from "@/features/why-choose-us-heading/components/why-choose-us-section";
+import { banner1 } from "@/constants/images";
 
 const services = [
   {
@@ -25,34 +25,6 @@ const services = [
     title: "Residential Cleaning",
     description:
       "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-];
-
-const chooseUs = [
-  {
-    icon: dollar,
-    title: "Affordable Pricing",
-    description: "No hidden fees.",
-  },
-  {
-    icon: leaf,
-    title: "Eco-Friendly Products",
-    description: "Safe for your family and pets.",
-  },
-  {
-    icon: timer,
-    title: "Flexible Scheduling",
-    description: "To suit your needs.",
-  },
-  {
-    icon: shield,
-    title: "Experienced Staff",
-    description: "Ensuring high-quality service.",
-  },
-  {
-    icon: like,
-    title: "Satisfaction Guarantee",
-    description: "With every cleaning.",
   },
 ];
 
@@ -78,40 +50,7 @@ export default function Home() {
         </section>
         <Divider />
         {/* Why Choose Us */}
-        <section className="flex flex-col items-center">
-          <div className="mb-12 max-w-[765px] flex flex-col items-center">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
-              Why Choose Us
-            </h4>
-            <p className="text-[#191919] opacity-60 text-base md:text-xl text-center">
-              A section outlining the key benefits and trust signals of the
-              cleaning company, including eco-friendly products, experienced
-              staff, affordable pricing, flexible scheduling, and satisfaction
-              guarantee.
-            </p>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-x-56 gap-y-12 md:gap-y-20">
-            {chooseUs.map((item, index) => (
-              <div
-                key={index}
-                className="sm:w-[285px] flex flex-col items-center gap-3"
-              >
-                <Image
-                  src={item.icon}
-                  alt="Residential Cleaning"
-                  className="w-[64px] h-[64px] object-cover object-center"
-                />
-                <h5 className="text-primary text-lg md:text-2xl font-medium text-center">
-                  {item.title}
-                </h5>
-                <p className="text-base md:text-lg text-primary opacity-50 text-center">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-        <Divider />
+        <WhyChooseUsSection />
         {/* Customer Review */}
         <section className="flex flex-col items-center">
           <div className="mb-12 max-w-[765px] flex flex-col items-center">
