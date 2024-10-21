@@ -1,6 +1,6 @@
 import { StaticImageData } from "next/image";
 import { z } from "zod";
-import validator from "validator";
+import validator, { isPostalCode } from "validator";
 
 // Define the file size limit and accepted file types as constants
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes
@@ -283,6 +283,17 @@ export const quoteSchema = z.object({
       "payment_complete",
     ])
     .optional(),
+  quoteStatus: z
+    .enum([
+      "received_from_user",
+      "quote_sent_to_user",
+      "work_in_progress",
+      "completed",
+      "invoice_sent",
+      "payment_complete",
+    ])
+    .optional(),
+  confirmation: z.enum(["accept", "decline"]).optional(),
   senduserquoteservice: z
     .array(
       z.object({
@@ -293,6 +304,7 @@ export const quoteSchema = z.object({
           id: z.number(),
           servicecategoryitems: z.array(
             z.object({
+              id: z.number(),
               service_category_id: z.number(),
               item_name: z.string(),
               price: z.string(),
@@ -310,6 +322,7 @@ const categorySchema = z.object({
 });
 
 export const quoteToUserSchema = z.object({
+  id: z.number().optional(),
   send_user_quote_id: z.number().min(1, {
     message: "Quote id is required",
   }),
@@ -575,6 +588,53 @@ export const bankAccountDetailsSchema = z.object({
   account_bsb: z.string().min(1, { message: "Account bsb is required" }),
 });
 
+export const invoiceSchema = z.object({
+  id: z.number().optional(),
+  send_user_quote_id: z.number().optional(),
+  invoice_number: z.string().optional(),
+  // quote_id: z.number().min(1, { message: "Quote id is required" }),
+  total_amount: z.number().optional(),
+  due_date: z.string(),
+  discount: z
+    .number({
+      message: "Invalid discount percentage",
+    })
+    .max(100, {
+      message: "Invalid discount percentage",
+    })
+    .optional(),
+  invoice_items: z
+    .array(
+      z.object({
+        price: z.number(),
+        service_category_item: z.object({
+          item_name: z.string(),
+          price: z.string(),
+        }),
+      })
+    )
+    .optional(),
+  send_user_quote: z
+    .object({
+      full_name: z.string(),
+      address: z.string(),
+      email: z.string().email(),
+      phone_number: z.string(),
+      postal_code: z.string(),
+      quote: z.string(),
+      status: z.enum([
+        "received_from_user",
+        "quote_sent_to_user",
+        "work_in_progress",
+        "completed",
+        "invoice_sent",
+        "payment_complete",
+      ]),
+    })
+    .optional(),
+  created_at: z.string().optional(),
+});
+
 export type QuoteStatus = z.infer<typeof quoteStatusSchema>;
 
 export type HeroSection = z.infer<typeof heroSectionSchema>;
@@ -608,3 +668,5 @@ export type WhyChooseUs = z.infer<typeof whyChooseUsSchema>;
 export type WhyChooseUsFeatures = z.infer<typeof whyChooseUsFeaturesSchema>;
 
 export type BankAccountDetails = z.infer<typeof bankAccountDetailsSchema>;
+
+export type Invoice = z.infer<typeof invoiceSchema>;

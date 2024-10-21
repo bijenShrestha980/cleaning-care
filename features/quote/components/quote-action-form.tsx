@@ -1,30 +1,25 @@
 "use client";
 
+import Link from "next/link";
+import { use, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { LoaderCircle } from "lucide-react";
 
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import {
   Quote,
-  quoteSchema,
   quoteToUserSchema,
   ServiceCategory,
 } from "../../../components/admin/data/schema";
-import { quoteStatuses } from "@/constants/table-data";
-import { use, useEffect, useState } from "react";
-import Link from "next/link";
 import { useCreateQuoteToUser } from "../api/use-create-user-quote";
+import { quoteStatuses } from "@/constants/table-data";
+import { useDeleteQuote } from "../api/use-delete-user-quote";
+import QuoteStatus from "./quote-status";
+import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
 
 const QuotActionForm = ({
   quote,
@@ -34,11 +29,13 @@ const QuotActionForm = ({
   serviceCategoriesData: ServiceCategory[];
 }) => {
   const [totalCost, setTotalCost] = useState<number>(0);
+  const [status, setStatus] = useState<string | undefined>(quote.status);
   const {
     mutate: createQuote,
     isPending: createIsPending,
     isSuccess: createIsSuccess,
   } = useCreateQuoteToUser();
+  const { mutate: deleteQuote, isPending: deleteIsPending } = useDeleteQuote();
 
   const formSchema = quoteToUserSchema;
 
@@ -78,9 +75,7 @@ const QuotActionForm = ({
       ) => {
         const serviceCategoryId = service.service_category_id;
         const serviceCategoryItemIds =
-          service.servicecategory.servicecategoryitems.map(
-            (item) => item.service_category_id
-          );
+          service.servicecategory.servicecategoryitems.map((item) => item?.id);
         const prices = service.servicecategory.servicecategoryitems.map(
           (item) => item.price
         );
@@ -149,9 +144,9 @@ const QuotActionForm = ({
         </div>
         <div className="p-4 bg-primary-foreground rounded-lg border border-dashed w-full flex flex-col justify-between items-end">
           <div className="w-full">
-            <div className="flex flex-col md:flex-row justify-between gap-2 mb-4">
+            <div className="flex flex-col xl:flex-row justify-between gap-2 mb-4">
               <h5 className="font-semibold">Service Information</h5>
-              {quoteStatuses.map((status) =>
+              {/* {quoteStatuses.map((status) =>
                 status.value === quote.status ? (
                   <Badge
                     key={status.value}
@@ -164,7 +159,17 @@ const QuotActionForm = ({
                     {status.label}
                   </Badge>
                 ) : null
-              )}
+              )} */}
+              <div className="flex gap-2">
+                <QuoteStatus quote={quote} />
+                {status === "completed" && quote?.id && (
+                  <div
+                    className={`${status === "completed" ? "block" : "hidden"}`}
+                  >
+                    <InvoiceGenerate id={quote?.id} />
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex flex-col gap-2">
               {serviceCategoriesData.map((category, index) =>
@@ -196,7 +201,7 @@ const QuotActionForm = ({
               )}
             </div>
           </div>
-          <span className="flex items-center gap-2 mt-2">
+          <span className="flex items-center gap-2 mt-4">
             Total cost :<h4>$ {totalCost}</h4>
           </span>
         </div>
@@ -208,18 +213,54 @@ const QuotActionForm = ({
         >
           <span />
           <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-md">
+            {quote.id && (
+              <Button
+                variant={"ghost"}
+                animation={"scale_in"}
+                className="w-[86px]"
+                disabled={createIsPending || deleteIsPending}
+                type="button"
+                onClick={() => quote.id && deleteQuote(quote.id)}
+              >
+                {deleteIsPending ? (
+                  <LoaderCircle
+                    className="animate-spin"
+                    width={20}
+                    height={20}
+                  />
+                ) : (
+                  "Delete"
+                )}
+              </Button>
+            )}
             <Link href="/admin/dashboard/quote" className="w-full sm:w-[86px]">
               <Button
                 variant={"outline"}
                 animation={"scale_in"}
                 className="w-[86px]"
+                disabled={createIsPending || deleteIsPending}
               >
                 Cancle
               </Button>
             </Link>
-            <Button type="submit" animation={"scale_in"} className="w-[86px]">
-              Proceed
-            </Button>
+            {quote.status === "received_from_user" && (
+              <Button
+                type="submit"
+                animation={"scale_in"}
+                className="w-[86px]"
+                disabled={createIsPending || deleteIsPending}
+              >
+                {createIsPending ? (
+                  <LoaderCircle
+                    className="animate-spin"
+                    width={20}
+                    height={20}
+                  />
+                ) : (
+                  "Proceed"
+                )}
+              </Button>
+            )}
           </div>
         </form>
       </Form>
