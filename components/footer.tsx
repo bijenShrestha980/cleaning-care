@@ -1,15 +1,23 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { banner1 } from "@/constants/images";
+import { CustomImage } from "./ui/custom-image";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 
 const Footer = () => {
   return (
     <footer>
       <div className="w-full relative">
-        <Image src={banner1} alt="footer" fill className="-z-20 object-cover" />
+        <CustomImage
+          src={banner1}
+          alt="footer"
+          fill
+          priority={true}
+          sizes="100vw"
+          containerClassName="h-[530px] -z-20 absolute top-0 w-full"
+          className=" object-cover"
+        />
         <div className="w-full h-full absolute top-0 -z-10 bg-[#06060680]" />
         <div className="p-8 md:p-12 flex justify-center">
           <div className="max-w-[684px] flex flex-col items-center">

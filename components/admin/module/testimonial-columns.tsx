@@ -9,6 +9,7 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 
 import { labels } from "@/constants/table-data";
 import { Testimonial } from "../data/schema";
+import { CustomImage } from "@/components/ui/custom-image";
 
 export const testimonialColumns: ColumnDef<Testimonial>[] = [
   {
@@ -22,11 +23,11 @@ export const testimonialColumns: ColumnDef<Testimonial>[] = [
       return (
         <div className="flex space-x-2">
           {row.original.image && (
-            <Image
+            <CustomImage
               src={row.original.image}
               alt="Art Image"
-              width={48}
-              height={48}
+              fill
+              containerClassName="w-[50px] h-[50px] rounded-md"
               className="w-12 h-12 object-cover object-center rounded-md"
             />
           )}

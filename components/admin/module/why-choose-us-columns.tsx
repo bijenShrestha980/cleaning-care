@@ -54,8 +54,8 @@ export const whyChooseUsColumns: ColumnDef<WhyChooseUs>[] = [
       }
 
       return (
-        <Badge>
-          {type.icon && <type.icon className="mr-2 h-4 w-4 " />}
+        <Badge variant={"outline"}>
+          {type.icon && <type.icon className="mr-2 h-3 w-3" />}
           <span>{type.label}</span>
         </Badge>
       );

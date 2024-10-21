@@ -24,6 +24,7 @@ import {
 import { logo } from "@/constants/images";
 import { useAllServices } from "@/features/services/api/use-service";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
+import { CustomImage } from "./ui/custom-image";
 
 export function Navbar() {
   const { data: servicesData, isPending } = useAllServices();
@@ -34,7 +35,14 @@ export function Navbar() {
           <NavigationMenuItem>
             <Link href="/" legacyBehavior passHref>
               <NavigationMenuLink>
-                <Image src={logo} alt="Logo" width={77} height={80} priority />
+                <CustomImage
+                  src={logo}
+                  alt="Logo"
+                  priority
+                  fill
+                  sizes="(max-width: 640px) 77px, 57px"
+                  containerClassName="w-[57px] md:w-[77px] h-[60px] md:h-[80px]"
+                />
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

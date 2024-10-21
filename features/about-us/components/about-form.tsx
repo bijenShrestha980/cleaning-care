@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LoaderCircle, User } from "lucide-react";
 import { useState } from "react";
-import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
+import { CustomImage } from "@/components/ui/custom-image";
 import { AboutUs, aboutUsSchema } from "@/components/admin/data/schema";
 import { useAboutUs } from "../api/use-service-about-us";
 import { useCreateAboutUs } from "../api/use-create-about-us";
@@ -248,11 +248,12 @@ const AboutForm = ({ aboutUs }: { aboutUs: AboutUs }) => {
                     Image (Preview)
                   </FormLabel>
                   {bannerPreview ? (
-                    <Image
+                    <CustomImage
                       src={bannerPreview}
                       alt="logo"
-                      width={64}
-                      height={64}
+                      fill
+                      sizes="64px"
+                      containerClassName="w-[64px] h-[64px]"
                       className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                     />
                   ) : (
@@ -319,11 +320,12 @@ const AboutForm = ({ aboutUs }: { aboutUs: AboutUs }) => {
                     Image (Preview)
                   </FormLabel>
                   {storyPreview ? (
-                    <Image
+                    <CustomImage
                       src={storyPreview}
                       alt="logo"
-                      width={64}
-                      height={64}
+                      fill
+                      sizes="64px"
+                      containerClassName="w-[64px] h-[64px]"
                       className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                     />
                   ) : (
@@ -408,11 +410,12 @@ const AboutForm = ({ aboutUs }: { aboutUs: AboutUs }) => {
                     Image (Preview)
                   </FormLabel>
                   {teamPreview ? (
-                    <Image
+                    <CustomImage
                       src={teamPreview}
                       alt="logo"
-                      width={64}
-                      height={64}
+                      fill
+                      sizes="64px"
+                      containerClassName="w-[64px] h-[64px]"
                       className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                     />
                   ) : (
@@ -499,11 +502,12 @@ const AboutForm = ({ aboutUs }: { aboutUs: AboutUs }) => {
                     Image (Preview)
                   </FormLabel>
                   {missionPreview ? (
-                    <Image
+                    <CustomImage
                       src={missionPreview}
                       alt="logo"
-                      width={64}
-                      height={64}
+                      fill
+                      sizes="64px"
+                      containerClassName="w-[64px] h-[64px]"
                       className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                     />
                   ) : (

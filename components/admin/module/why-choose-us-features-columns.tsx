@@ -1,14 +1,37 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import { ColumnDef } from "@tanstack/react-table";
 
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 
 import { WhyChooseUsFeatures } from "../data/schema";
+import { CustomImage } from "@/components/ui/custom-image";
+import { types } from "@/constants/table-data";
 
 export const whyChooseUsFeaturesColumns: ColumnDef<WhyChooseUsFeatures>[] = [
+  {
+    accessorKey: "icon",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Icon" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <CustomImage
+          src={`${process.env.url}/storage/${row.getValue("icon")}`}
+          alt={row.getValue("feature_title")}
+          fill
+          containerClassName="w-[50px] h-[50px]"
+          sizes="(max-width: 640px) 50px, (max-width: 768px) 50px, 50px (max-width: 1024px) 50px"
+          className="rounded-md object-cover"
+        />
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
   {
     accessorKey: "feature_title",
     header: ({ column }) => (
@@ -37,6 +60,25 @@ export const whyChooseUsFeaturesColumns: ColumnDef<WhyChooseUsFeatures>[] = [
             {row.getValue("feature_short_description")}
           </span>
         </div>
+      );
+    },
+  },
+  {
+    accessorKey: "type",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Type" />
+    ),
+    cell: ({ row }) => {
+      const type = types.find((type) => type.value === row.getValue("type"));
+
+      if (!type) {
+        return null;
+      }
+      return (
+        <Badge variant={"outline"}>
+          {type.icon && <type.icon className="mr-2 h-3 w-3" />}
+          <span>{type.label}</span>
+        </Badge>
       );
     },
   },

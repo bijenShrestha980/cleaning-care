@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { Circle, Star } from "lucide-react";
 // import Autoplay from "embla-carousel-autoplay";
 
@@ -11,12 +10,10 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { banner1 } from "@/constants/images";
-import {
-  useAllHeroSection,
-  useHeroSections,
-} from "@/features/hero-sections/api/use-hero-sections";
+import { CustomImage } from "./ui/custom-image";
 import Error from "./ui/error";
 import { Skeleton } from "./ui/skeleton";
+import { useAllHeroSection } from "@/features/hero-sections/api/use-hero-sections";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 
 const Banner = () => {
@@ -55,21 +52,21 @@ const Banner = () => {
       <CarouselContent>
         {heroSectionData.map((item, index) => (
           <CarouselItem
-            className="min-h-[630px] lg:min-h-[780px] w-full relative"
+            className="min-h-[630px] lg:min-h-[740px] w-full relative"
             key={index}
           >
             {heroSectionIsPending ? (
-              <Skeleton className="h-[200px] md:h-[780px] w-full -z-20" />
+              <Skeleton className="h-[200px] md:h-[740px] w-full -z-20" />
             ) : (
               <>
-                <Image
+                <CustomImage
                   src={item?.hero_image_url ? item.hero_image_url : banner1}
                   alt={item.title}
-                  width={1366}
-                  height={740}
+                  fill
                   priority={true}
                   sizes="calc(100vw + 16px)"
-                  className="h-full w-full absolute top-0 object-cover object-center -z-20"
+                  containerClassName="h-[740px] w-full absolute top-0 -z-20"
+                  className="h-[740px] w-full object-cover object-center"
                 />
                 <div className="w-full h-full absolute top-0 -z-10 bg-transbg" />
               </>

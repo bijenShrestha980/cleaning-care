@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Banner from "@/components/banner";
 import Divider from "@/components/ui/divider";
+import { CustomImage } from "@/components/ui/custom-image";
 import CustomerReview from "@/components/customer-review";
 import RequestCallbackForm from "@/features/request-callback/components/request-callback-form";
 import ServicesSection from "@/features/services/components/services-section";
@@ -66,12 +66,15 @@ export default function Home() {
             {services.map((service, index) => (
               <div
                 key={index}
-                className="px-4 flex flex-row items-center gap-4"
+                className="px-4 w-full flex flex-row items-center gap-4"
               >
-                <Image
+                <CustomImage
                   src={service.img}
                   alt={service.title}
-                  className="w-[64px] h-[64px] object-cover object-center rounded-full"
+                  containerClassName="w-[64px] h-[64px] shrink-0"
+                  fill
+                  sizes="64px"
+                  className="object-cover object-center rounded-full"
                 />
                 <div className="flex flex-col gap-1">
                   <h5 className="text-primary text-base md:text-xl font-semibold">

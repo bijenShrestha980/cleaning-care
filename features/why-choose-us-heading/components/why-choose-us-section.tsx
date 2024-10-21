@@ -1,8 +1,8 @@
 "use client";
-import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAllWhyChooseUs } from "../api/use-why-choose-us";
 import Divider from "@/components/ui/divider";
+import { CustomImage } from "@/components/ui/custom-image";
+import { useAllWhyChooseUs } from "../api/use-why-choose-us";
 
 const WhyChooseUsSection = () => {
   const {
@@ -41,11 +41,12 @@ const WhyChooseUsSection = () => {
                       key={index}
                       className="sm:w-[285px] flex flex-col items-center gap-3"
                     >
-                      <Image
+                      <CustomImage
                         src={`${process.env.url}/storage/${item.icon}`}
                         alt="Residential Cleaning"
-                        width={64}
-                        height={64}
+                        fill
+                        sizes="64px"
+                        containerClassName="w-[64px] h-[64px]"
                         className="w-[64px] h-[64px] rounded-full object-cover object-center"
                       />
                       <h5 className="text-primary text-lg md:text-2xl font-medium text-center">

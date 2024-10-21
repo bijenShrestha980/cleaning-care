@@ -1,7 +1,6 @@
 import { StaticImageData } from "next/image";
 import { z } from "zod";
 import validator from "validator";
-import { features } from "process";
 
 // Define the file size limit and accepted file types as constants
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes
@@ -548,6 +547,15 @@ export const whyChooseUsFeaturesSchema = z.object({
     )
     .nullable(),
   icon_url: z.string().optional(),
+
+  why_choose_us: z
+    .object({
+      id: z.number(),
+      title: z.string(),
+      short_description: z.string(),
+      type: z.enum(["chooseus", "values", "bookservice"]),
+    })
+    .optional(),
 });
 
 export const whyChooseUsSchema = z.object({

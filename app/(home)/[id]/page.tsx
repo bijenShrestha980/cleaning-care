@@ -1,8 +1,8 @@
 "use client";
-import Image from "next/image";
 import Divider from "@/components/ui/divider";
 import { Skeleton } from "@/components/ui/skeleton";
 import Error from "@/components/ui/error";
+import { CustomImage } from "@/components/ui/custom-image";
 import { banner1 } from "@/constants/images";
 import { useServiceByCategoryId } from "@/features/services/api/use-service";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
@@ -24,12 +24,13 @@ const Service = ({ params }: { params: { id: number } }) => {
         {isPending ? (
           <Skeleton className="h-[200px] md:h-[530px] w-full -z-20" />
         ) : (
-          <Image
+          <CustomImage
             src={serviceData?.banner_image_url || banner1}
             alt={"banner"}
             priority={true}
+            containerClassName="h-[530px]"
             sizes="calc(100vw + 16px)"
-            layout="fill"
+            fill
             className="h-full w-full absolute top-0 object-cover object-center -z-20"
           />
         )}
@@ -96,11 +97,12 @@ const Service = ({ params }: { params: { id: number } }) => {
           {isPending ? (
             <Skeleton className="h-[460px] w-full lg:w-[521px]" />
           ) : (
-            <Image
+            <CustomImage
               src={serviceData?.section_one_image_url || ""}
               alt="logo"
-              width={521}
-              height={460}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 100vw (max-width: 1024px) 100vw"
+              containerClassName="w-full lg:w-[524px] h-full lg:h-[460px]"
               className="w-full lg:w-[524px] h-full lg:h-[460px] object-cover rounded-3xl"
             />
           )}
@@ -135,11 +137,12 @@ const Service = ({ params }: { params: { id: number } }) => {
                     key={index}
                     className="w-[252px] p-2 flex flex-col items-center gap-2 md:gap-4"
                   >
-                    <Image
+                    <CustomImage
                       src={service.icon_url || banner1}
                       alt="Residential Cleaning"
-                      width={149}
-                      height={149}
+                      fill
+                      sizes="252px"
+                      containerClassName="w-[149px] h-[149px]"
                       className="rounded-full w-[149px] h-[149px] object-cover object-center"
                     />
                     <h5 className="text-[#191919] opacity-60 text-base md:text-xl font-semibold text-center">

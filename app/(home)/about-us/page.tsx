@@ -1,15 +1,15 @@
 "use client";
-import Image from "next/image";
+import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import Divider from "@/components/ui/divider";
 import { logoColor } from "@/constants/icons";
+import Error from "@/components/ui/error";
+import { CustomImage } from "@/components/ui/custom-image";
 import { banner1, mission, team } from "@/constants/images";
 import WhyChooseUsValuesSection from "@/features/why-choose-us-heading/components/why-choose-us-values-section";
 import WhyChooseUsServiceSection from "@/features/why-choose-us-heading/components/why-choose-us-service-section";
 import { useAllAboutUs } from "@/features/about-us/api/use-service-about-us";
-import { Skeleton } from "@/components/ui/skeleton";
-import Error from "@/components/ui/error";
-import Link from "next/link";
 
 const AboutUs = () => {
   const {
@@ -27,12 +27,13 @@ const AboutUs = () => {
         {aboutUsIsPending ? (
           <Skeleton className="h-[200px] md:h-[530px] w-full -z-20" />
         ) : (
-          <Image
+          <CustomImage
             src={aboutUsData?.banner_image_url || banner1}
             alt={"banner"}
-            layout="fill"
+            fill
             priority={true}
             sizes="calc(100vw + 16px)"
+            containerClassName="h-[530px]"
             className="h-full w-full absolute top-0 object-cover object-center -z-20"
           />
         )}
@@ -99,11 +100,12 @@ const AboutUs = () => {
           {aboutUsIsPending ? (
             <Skeleton className="h-[227px] w-full md:w-[376px]" />
           ) : (
-            <Image
+            <CustomImage
               src={aboutUsData?.story_image_url || logoColor}
               alt="logo"
-              width={376}
-              height={277}
+              fill
+              sizes="376px"
+              containerClassName="w-full lg:w-[376px] h-full lg:h-[277px]"
               className="w-full lg:w-[376px] h-full lg:h-[277px] object-contain hidden md:block"
             />
           )}
@@ -113,11 +115,12 @@ const AboutUs = () => {
           {aboutUsIsPending ? (
             <Skeleton className="h-[431px] w-full md:w-[581px]" />
           ) : (
-            <Image
+            <CustomImage
               src={aboutUsData?.mission_image_url || mission}
               alt="our mission image"
-              width={581}
-              height={431}
+              fill
+              sizes="581px"
+              containerClassName="lg:w-[581px] lg:h-[431px]"
               className="lg:w-[581px] lg:h-[431px] object-cover"
             />
           )}
@@ -149,11 +152,12 @@ const AboutUs = () => {
           {aboutUsIsPending ? (
             <Skeleton className="h-[543px] w-full md:w-[606px]" />
           ) : (
-            <Image
+            <CustomImage
               src={aboutUsData?.team_image_url || team}
               alt="our team image"
-              width={606}
-              height={543}
+              fill
+              sizes="606px"
+              containerClassName="lg:w-[606px] lg:h-[543px]"
               className="w-full lg:max-w-[606px] h-full lg:max-h-[543px] object-cover"
             />
           )}
