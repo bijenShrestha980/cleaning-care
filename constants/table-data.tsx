@@ -6,6 +6,7 @@ import {
   CircleCheck,
   CircleDashed,
   CircleDot,
+  CircleOff,
   ClipboardCheck,
   Disc,
   Grab,
@@ -59,8 +60,8 @@ export const quoteStatuses = [
     icon: UserRoundCheck,
   },
   {
-    value: "work_in_progress",
-    label: "Work in progress",
+    value: "work_in_process",
+    label: "Work in process",
     icon: LoaderCircle,
   },
   {
@@ -95,5 +96,18 @@ export const types = [
     value: "bookservice",
     label: "Book service",
     icon: BookCheck,
+  },
+];
+
+export const confirmations = [
+  {
+    value: "accept",
+    label: "Accept",
+    icon: CircleCheck,
+  },
+  {
+    value: "decline",
+    label: "Decline",
+    icon: CircleOff,
   },
 ];

@@ -7,7 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
 
-import { quoteStatuses, statuses, types } from "@/constants/table-data";
+import {
+  confirmations,
+  quoteStatuses,
+  statuses,
+  types,
+} from "@/constants/table-data";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
 interface DataTableToolbarProps<TData> {
@@ -113,6 +118,13 @@ export function DataTableToolbar<TData>({
             column={table.getColumn("type")}
             title="Type"
             options={types}
+          />
+        )}
+        {table.getColumn("confirmation") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("confirmation")}
+            title="Confirmation"
+            options={confirmations}
           />
         )}
 

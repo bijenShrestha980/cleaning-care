@@ -21,7 +21,7 @@ const ViewWhyChooseFeature = ({ params }: { params: { id: number } }) => {
   }
   return (
     <div className="pb-5">
-      <p className="font-medium mb-4">View style</p>
+      <p className="font-medium mb-4">View why choose us</p>
       <FeaturesForm
         whyChooseUs={{
           why_choose_us_id: featureData?.why_choose_us_id,

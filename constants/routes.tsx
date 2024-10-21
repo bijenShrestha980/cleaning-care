@@ -3,6 +3,7 @@ import {
   LayoutDashboard,
   MessageCircleQuestion,
   Quote,
+  ReceiptText,
   Settings,
   Undo2,
 } from "lucide-react";
@@ -51,6 +52,12 @@ const adminRoutes = [
             notificationCount: 0,
           },
         ],
+      },
+      {
+        icon: <ReceiptText width={20} height={20} />,
+        name: "Invoice",
+        path: "/invoice",
+        sidebar: true,
       },
       {
         icon: <MessageCircleQuestion width={20} height={20} />,

@@ -430,7 +430,33 @@
   animation-duration: 11s;
 }
 
+.rdp-caption_start {
+  width: 100%;
+  font-size: 60px;
+}
 
+.rdp-head>tr {
+  justify-content: space-between;
+}
+
+.rdp-tbody>tr {
+  justify-content: space-between;
+}
+
+/* .rdp-tbody>tr>td {
+  width: 100%;
+  height: 60px;
+} */
+
+.rdp-tbody>tr>td>button {
+  padding: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .rdp-tbody>tr>td>button {
+    padding: 0;
+  }
+}
 
 @keyframes animate {
 

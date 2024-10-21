@@ -5,8 +5,9 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Quote } from "../data/schema";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { quoteStatuses } from "@/constants/table-data";
+import { confirmations, quoteStatuses } from "@/constants/table-data";
 import { QuoteTableRowActions } from "./quote-table-row-actions";
+import { Badge } from "@/components/ui/badge";
 
 export const quoteColumns: ColumnDef<Quote>[] = [
   {
@@ -100,6 +101,27 @@ export const quoteColumns: ColumnDef<Quote>[] = [
         return null;
       }
       return <QuoteTableRowActions row={row} />;
+    },
+  },
+  {
+    accessorKey: "confirmation",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Confirmation" />
+    ),
+    cell: ({ row }) => {
+      const confirmation = confirmations.find(
+        (status) => status.value === row.getValue("confirmation")
+      );
+
+      if (!confirmation) {
+        return null;
+      }
+      return (
+        <Badge variant={"outline"}>
+          {confirmation.icon && <confirmation.icon className="mr-2 h-3 w-3" />}
+          <span>{confirmation.label}</span>
+        </Badge>
+      );
     },
   },
   {

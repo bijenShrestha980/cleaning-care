@@ -72,7 +72,7 @@ export const useUpdateUserQuoteStatus = (id: number | string | undefined) => {
       } else {
         toast({
           title: "Success",
-          description: "Quote updated successfully",
+          description: "Quote sent successfully",
         });
       }
     },

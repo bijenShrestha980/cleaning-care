@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 
 import { toast } from "@/hooks/use-toast";
@@ -45,6 +46,7 @@ export const useCreateQuote = () => {
 };
 
 export const useCreateQuoteToUser = () => {
+  const router = useRouter();
   return useMutation({
     mutationKey: ["user-quote"],
     mutationFn: postQuoteToUser,
@@ -60,6 +62,7 @@ export const useCreateQuoteToUser = () => {
           title: "Success",
           description: "Quote sent to user successfully",
         });
+        router.push("/admin/dashboard/quote");
       }
     },
     onError: (error) => {
