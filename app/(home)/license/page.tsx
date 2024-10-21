@@ -8,6 +8,7 @@ import Loading from "@/components/ui/loading";
 import CustomEditor from "@/components/editor";
 import { useFundamentals } from "@/features/fundamentals/api/use-fundamental";
 import { banner1 } from "@/constants/images";
+import { CustomImage } from "@/components/ui/custom-image";
 
 const License = () => {
   const {
@@ -19,13 +20,13 @@ const License = () => {
   return (
     <main className="-translate-y-[104px]">
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">
-        <Image
+        <CustomImage
           src={banner1}
           alt={"banner"}
-          // width={1366}
-          // height={740}
+          fill
           priority={true}
           sizes="calc(100vw + 16px)"
+          containerClassName="h-[530px]"
           className="h-full w-full absolute top-0 object-cover object-center -z-20"
         />
         <div className="w-full h-full absolute top-0 -z-10 bg-transbg" />

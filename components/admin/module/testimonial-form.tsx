@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { testimonialSchema } from "../data/schema";
+import { CustomImage } from "@/components/ui/custom-image";
 
 const TestimonialForm = () => {
   const router = useRouter();
@@ -92,11 +93,12 @@ const TestimonialForm = () => {
                     Image (Preview)
                   </FormLabel>
                   {logoPreview ? (
-                    <Image
+                    <CustomImage
                       src={logoPreview}
                       alt="logo"
-                      width={64}
-                      height={64}
+                      fill
+                      sizes="64px"
+                      containerClassName="w-[64px] h-[64px]"
                       className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                     />
                   ) : (

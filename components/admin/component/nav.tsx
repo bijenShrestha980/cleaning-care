@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown, Home, LogOut } from "lucide-react";
 import {
@@ -17,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { CustomImage } from "@/components/ui/custom-image";
 
 import { useLogout } from "@/features/logout/api/use-logout";
 import { user_1 } from "@/constants/images";
@@ -45,24 +45,26 @@ const Nav = () => {
           <SidebarToggle icon="menu" />
           <DropdownMenu>
             <DropdownMenuTrigger className="focus-visible:outline-none h-10 flex justify-between items-center gap-1">
-              <Image
+              <CustomImage
                 src={user_1}
                 alt="avatar"
-                width={40}
-                height={40}
-                className="rounded-full"
+                fill
+                sizes="40px"
+                containerClassName="w-10 h-10"
+                className="rounded-full object-cover"
               />
               <ChevronDown size={20} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-5 rounded w-[240px]">
               <div className="flex gap-3 px-4 py-[14px]">
                 <div className="relative">
-                  <Image
+                  <CustomImage
                     src={user_1}
                     alt="avatar"
-                    width={40}
-                    height={40}
-                    className="rounded-full w-10 h-10"
+                    fill
+                    sizes="40px"
+                    containerClassName="w-10 h-10"
+                    className="rounded-full object-cover"
                   />
                   <div className="bg-success w-[10px] h-[10px] rounded-full absolute bottom-1 right-0 ring-2 ring-green-400 bg-green-400"></div>
                 </div>

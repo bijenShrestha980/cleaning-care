@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import Image from "next/image";
 import { User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -19,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { CustomImage } from "@/components/ui/custom-image";
 
 const DescriptionForm = () => {
   const router = useRouter();
@@ -118,11 +118,12 @@ const DescriptionForm = () => {
                     Image (Preview)
                   </FormLabel>
                   {logoPreview ? (
-                    <Image
+                    <CustomImage
                       src={logoPreview}
                       alt="logo"
-                      width={64}
-                      height={64}
+                      fill
+                      sizes="64px"
+                      containerClassName="w-[64px] h-[64px]"
                       className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                     />
                   ) : (

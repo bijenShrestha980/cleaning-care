@@ -3,6 +3,7 @@ import { banner1 } from "@/constants/images";
 import { useAllServices } from "../api/use-service";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CustomImage } from "@/components/ui/custom-image";
 
 const ServicesSection = () => {
   const {
@@ -26,11 +27,12 @@ const ServicesSection = () => {
               key={index}
               className="p-6 flex flex-col items-center gap-2 md:gap-4"
             >
-              <Image
+              <CustomImage
                 src={service?.banner_image_url || banner1}
                 alt="Residential Cleaning"
-                width={225}
-                height={225}
+                fill
+                sizes="225px"
+                containerClassName="w-[225px] h-[225px]"
                 className="rounded-full w-[225px] h-[225px] object-cover object-center"
               />
               <h5 className="text-primary text-lg md:text-2xl font-medium text-center">

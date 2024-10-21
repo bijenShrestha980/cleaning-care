@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -49,6 +48,7 @@ import {
 } from "@/components/ui/popover";
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
+import { CustomImage } from "@/components/ui/custom-image";
 import { Service, serviceSchema } from "@/components/admin/data/schema";
 import { useCreateService } from "@/features/services/api/use-create-service";
 import { useUpdateService } from "@/features/services/api/use-update-service";
@@ -308,11 +308,12 @@ const ServiceForm = ({
                 <div className="flex flex-col items-center">
                   <Label className="font-normal text-sm">Image (Preview)</Label>
                   {bannerPreview ? (
-                    <Image
+                    <CustomImage
                       src={bannerPreview}
                       alt="logo"
-                      width={64}
-                      height={64}
+                      fill
+                      sizes="64px"
+                      containerClassName="w-[64px] h-[64px]"
                       className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                     />
                   ) : (
@@ -513,11 +514,12 @@ const ServiceForm = ({
                 <div className="flex flex-col items-center">
                   <Label className="font-normal text-sm">Image (Preview)</Label>
                   {logoPreview ? (
-                    <Image
+                    <CustomImage
                       src={logoPreview}
                       alt="logo"
-                      width={64}
-                      height={64}
+                      fill
+                      sizes="64px"
+                      containerClassName="w-[64px] h-[64px]"
                       className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                     />
                   ) : (
@@ -714,11 +716,12 @@ const ServiceForm = ({
                             Image (Preview)
                           </Label>
                           {featurePreview && featurePreview[index] ? (
-                            <Image
+                            <CustomImage
                               src={featurePreview[index]}
                               alt="logo"
-                              width={64}
-                              height={64}
+                              fill
+                              sizes="64px"
+                              containerClassName="w-[64px] h-[64px]"
                               className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                             />
                           ) : (

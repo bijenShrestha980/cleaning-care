@@ -1,21 +1,21 @@
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Divider from "@/components/ui/divider";
+import CustomerReview from "@/components/customer-review";
+import { CustomImage } from "@/components/ui/custom-image";
 import RequestCallbackForm from "@/features/request-callback/components/request-callback-form";
 import { banner1 } from "@/constants/images";
-import CustomerReview from "@/components/customer-review";
 
 const ContactUs = () => {
   return (
     <main className="-translate-y-[104px]">
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">
-        <Image
+        <CustomImage
           src={banner1}
           alt={"banner"}
-          // width={1366}
-          // height={740}
+          fill
           priority={true}
           sizes="calc(100vw + 16px)"
+          containerClassName="h-[530px]"
           className="h-full w-full absolute top-0 object-cover object-center -z-20"
         />
         <div className="w-full h-full absolute top-0 -z-10 bg-transbg" />

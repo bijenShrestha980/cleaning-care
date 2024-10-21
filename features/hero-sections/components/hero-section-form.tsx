@@ -5,7 +5,6 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import Image from "next/image";
 import { LoaderCircle, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -27,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { HeroSection, heroSectionSchema } from "@/components/admin/data/schema";
+import { CustomImage } from "@/components/ui/custom-image";
 import { useCreateHeroSection } from "../api/use-create-hero-section";
 import { useUpdateHeroSection } from "../api/use-update-hero-section";
 import { useDeleteHeroSection } from "../api/use-delete-hero-section";
@@ -166,11 +166,12 @@ const HeroSectionForm = ({
                     Image (Preview)
                   </FormLabel>
                   {logoPreview ? (
-                    <Image
+                    <CustomImage
                       src={logoPreview}
                       alt="logo"
-                      width={64}
-                      height={64}
+                      fill
+                      sizes="64px"
+                      containerClassName="w-[64px] h-[64px]"
                       className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                     />
                   ) : (

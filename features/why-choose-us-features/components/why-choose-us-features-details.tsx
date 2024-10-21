@@ -12,7 +12,7 @@ const WhyChooseUsFeaturesDetails = () => {
     isError: whyChooseUsFeaturesIsError,
   } = useWhyChooseUsFeatures();
 
-  console.log(whyChooseUsFeaturesColumns);
+  console.log(whyChooseUsFeaturesData);
 
   if (whyChooseUsFeaturesIsPending) {
     return <Loading />;
@@ -22,7 +22,10 @@ const WhyChooseUsFeaturesDetails = () => {
   }
   return (
     <DataTable
-      data={whyChooseUsFeaturesData}
+      data={whyChooseUsFeaturesData.map((feature) => ({
+        ...feature,
+        type: feature.why_choose_us?.type,
+      }))}
       columns={whyChooseUsFeaturesColumns}
     />
   );

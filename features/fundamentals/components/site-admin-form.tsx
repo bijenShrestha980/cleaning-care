@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import Image from "next/image";
 import { LoaderCircle, User } from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -23,10 +22,11 @@ import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
 import CustomEditor from "@/components/editor";
 import { SiteAdmin, siteAdminSchema } from "@/components/admin/data/schema";
+import { Separator } from "@/components/ui/separator";
+import { CustomImage } from "@/components/ui/custom-image";
 import { useCreateFundamental } from "@/features/fundamentals/api/use-create-fundamental";
 import { useFundamentals } from "@/features/fundamentals/api/use-fundamental";
 import { quillModules } from "@/constants/quill-module";
-import { Separator } from "@/components/ui/separator";
 
 const SiteAdminComp = () => {
   const { data: fundamentals, isPending, isError } = useFundamentals();
@@ -280,11 +280,12 @@ const SiteAdminForm = ({
                     Image (Preview)
                   </FormLabel>
                   {logoPreview ? (
-                    <Image
+                    <CustomImage
                       src={logoPreview}
                       alt="logo"
-                      width={64}
-                      height={64}
+                      fill
+                      sizes="64px"
+                      containerClassName="w-[64px] h-[64px]"
                       className="mt-2 rounded-sm w-[64px] h-[64px] object-cover object-center"
                     />
                   ) : (
