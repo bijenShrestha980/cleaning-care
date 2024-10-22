@@ -104,8 +104,15 @@ const Nav = () => {
           {pathname.split("/").length > 3 && (
             <>
               <BreadcrumbSeparator />
-              <BreadcrumbItem className="text-sm font-medium uppercase text-[#596579]">
-                {pathname.split("/")[3]?.split("-").join(" ")}
+              <BreadcrumbItem>
+                <BreadcrumbLink
+                  href={`/${pathname.split("/")[1]}/${pathname.split("/")[2]}/${
+                    pathname.split("/")[3]
+                  }`}
+                  className="text-[#596579] text-sm font-medium uppercase line-clamp-1 sm:line-clamp-none"
+                >
+                  {pathname.split("/")[3]?.split("-").join(" ")}
+                </BreadcrumbLink>
               </BreadcrumbItem>
             </>
           )}

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Error from "@/components/ui/error";
 import Loading from "@/components/ui/loading";
 import CustomEditor from "@/components/editor";
-import { useFundamentals } from "@/features/fundamentals/api/use-fundamental";
+import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import { banner1 } from "@/constants/images";
 import { CustomImage } from "@/components/ui/custom-image";
 
@@ -15,7 +15,7 @@ const License = () => {
     data: fundamentalData,
     isPending: fundamentalIsPending,
     isError: fundamentalIsError,
-  } = useFundamentals();
+  } = useAllFundamental();
 
   return (
     <main className="-translate-y-[104px]">
@@ -51,7 +51,7 @@ const License = () => {
       ) : (
         <div className="p-5 md:p-10">
           <CustomEditor
-            value={fundamentalData[0]?.license}
+            value={fundamentalData?.license}
             readOnly={true}
             theme={"bubble"}
           />

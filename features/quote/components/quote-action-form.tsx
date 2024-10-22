@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LoaderCircle } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import {
@@ -16,10 +15,8 @@ import {
   ServiceCategory,
 } from "../../../components/admin/data/schema";
 import { useCreateQuoteToUser } from "../api/use-create-user-quote";
-import { quoteStatuses } from "@/constants/table-data";
 import { useDeleteQuote } from "../api/use-delete-user-quote";
 import QuoteStatus from "./quote-status";
-import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
 
 const QuotActionForm = ({
   quote,
@@ -29,7 +26,6 @@ const QuotActionForm = ({
   serviceCategoriesData: ServiceCategory[];
 }) => {
   const [totalCost, setTotalCost] = useState<number>(0);
-  const [status, setStatus] = useState<string | undefined>(quote.status);
   const {
     mutate: createQuote,
     isPending: createIsPending,
@@ -146,29 +142,9 @@ const QuotActionForm = ({
           <div className="w-full">
             <div className="flex flex-col xl:flex-row justify-between gap-2 mb-4">
               <h5 className="font-semibold">Service Information</h5>
-              {/* {quoteStatuses.map((status) =>
-                status.value === quote.status ? (
-                  <Badge
-                    key={status.value}
-                    variant={"outline"}
-                    className="w-fit"
-                  >
-                    {status.icon && (
-                      <status.icon className="mr-2 h-4 w-4 text-primary" />
-                    )}
-                    {status.label}
-                  </Badge>
-                ) : null
-              )} */}
+
               <div className="flex gap-2">
                 <QuoteStatus quote={quote} />
-                {status === "completed" && quote?.id && (
-                  <div
-                    className={`${status === "completed" ? "block" : "hidden"}`}
-                  >
-                    <InvoiceGenerate id={quote?.id} />
-                  </div>
-                )}
               </div>
             </div>
             <div className="flex flex-col gap-2">

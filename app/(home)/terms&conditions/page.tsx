@@ -7,14 +7,14 @@ import Loading from "@/components/ui/loading";
 import { CustomImage } from "@/components/ui/custom-image";
 import CustomEditor from "@/components/editor";
 import { banner1 } from "@/constants/images";
-import { useFundamentals } from "@/features/fundamentals/api/use-fundamental";
+import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 
 const TermsConditions = () => {
   const {
     data: fundamentalData,
     isPending: fundamentalIsPending,
     isError: fundamentalIsError,
-  } = useFundamentals();
+  } = useAllFundamental();
 
   return (
     <main className="-translate-y-[104px]">
@@ -50,7 +50,7 @@ const TermsConditions = () => {
       ) : (
         <div className="p-5 md:p-10">
           <CustomEditor
-            value={fundamentalData[0]?.term_condition}
+            value={fundamentalData?.term_condition}
             readOnly={true}
             theme={"bubble"}
           />

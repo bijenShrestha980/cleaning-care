@@ -69,6 +69,7 @@ export const useUpdateUserQuoteStatus = (id: number | string | undefined) => {
           description: data?.error,
           variant: "destructive",
         });
+        location.reload();
       } else {
         toast({
           title: "Success",

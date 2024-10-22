@@ -25,11 +25,11 @@ import { SiteAdmin, siteAdminSchema } from "@/components/admin/data/schema";
 import { Separator } from "@/components/ui/separator";
 import { CustomImage } from "@/components/ui/custom-image";
 import { useCreateFundamental } from "@/features/fundamentals/api/use-create-fundamental";
-import { useFundamentals } from "@/features/fundamentals/api/use-fundamental";
+import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import { quillModules } from "@/constants/quill-module";
 
 const SiteAdminComp = () => {
-  const { data: fundamentals, isPending, isError } = useFundamentals();
+  const { data: fundamentals, isPending, isError } = useAllFundamental();
 
   if (isPending) {
     return <Loading />;
@@ -39,25 +39,25 @@ const SiteAdminComp = () => {
   }
   return (
     <SiteAdminForm
-      site_title={fundamentals[0]?.site_title}
-      site_address={fundamentals[0]?.site_address}
-      email1={fundamentals[0]?.email1}
-      email2={fundamentals[0]?.email2}
-      contact_number1={fundamentals[0]?.contact_number1}
-      contact_number2={fundamentals[0]?.contact_number2}
-      open_day={fundamentals[0]?.open_day}
-      open_time={fundamentals[0]?.open_time}
+      site_title={fundamentals?.site_title}
+      site_address={fundamentals?.site_address}
+      email1={fundamentals?.email1}
+      email2={fundamentals?.email2}
+      contact_number1={fundamentals?.contact_number1}
+      contact_number2={fundamentals?.contact_number2}
+      open_day={fundamentals?.open_day}
+      open_time={fundamentals?.open_time}
       site_logo={null}
-      image_url={fundamentals[0]?.image_url}
-      copyright={fundamentals[0]?.copyright}
+      image_url={fundamentals?.image_url}
+      copyright={fundamentals?.copyright}
       google_map={
-        typeof fundamentals[0]?.google_map === "string"
-          ? JSON.parse(fundamentals[0]?.google_map)
-          : fundamentals[0]?.google_map
+        typeof fundamentals?.google_map === "string"
+          ? JSON.parse(fundamentals?.google_map)
+          : fundamentals?.google_map
       }
-      term_condition={fundamentals[0]?.term_condition}
-      privacy_policy={fundamentals[0]?.privacy_policy}
-      license={fundamentals[0]?.license}
+      term_condition={fundamentals?.term_condition}
+      privacy_policy={fundamentals?.privacy_policy}
+      license={fundamentals?.license}
     />
   );
 };

@@ -9,7 +9,7 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png"];
 export const quoteStatusSchema = z.enum([
   "received_from_user",
   "quote_sent_to_user",
-  "work_in_progress",
+  "work_in_process",
   "completed",
   "invoice_sent",
   "payment_complete",
@@ -277,7 +277,7 @@ export const quoteSchema = z.object({
     .enum([
       "received_from_user",
       "quote_sent_to_user",
-      "work_in_progress",
+      "work_in_process",
       "completed",
       "invoice_sent",
       "payment_complete",
@@ -287,7 +287,7 @@ export const quoteSchema = z.object({
     .enum([
       "received_from_user",
       "quote_sent_to_user",
-      "work_in_progress",
+      "work_in_process",
       "completed",
       "invoice_sent",
       "payment_complete",
@@ -594,7 +594,9 @@ export const invoiceSchema = z.object({
   invoice_number: z.string().optional(),
   // quote_id: z.number().min(1, { message: "Quote id is required" }),
   total_amount: z.number().optional(),
-  due_date: z.string(),
+  due_date: z.string({
+    message: "Due date is required",
+  }),
   discount: z
     .number({
       message: "Invalid discount percentage",
@@ -625,13 +627,15 @@ export const invoiceSchema = z.object({
       status: z.enum([
         "received_from_user",
         "quote_sent_to_user",
-        "work_in_progress",
+        "work_in_process",
         "completed",
         "invoice_sent",
         "payment_complete",
       ]),
     })
     .optional(),
+  subtotal: z.number().optional(),
+  surge_fee: z.number().optional(),
   created_at: z.string().optional(),
 });
 

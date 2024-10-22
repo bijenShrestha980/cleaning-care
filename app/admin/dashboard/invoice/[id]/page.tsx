@@ -1,28 +1,42 @@
 "use client";
+import { format } from "date-fns";
+import { Download, LoaderCircle, Printer } from "lucide-react";
 
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
-import { useWhyChooseUsFeaturesById } from "@/features/why-choose-us-features/api/use-features";
-import { useInvoiceById } from "@/features/invoice/api/use-invoice";
 import { CustomImage } from "@/components/ui/custom-image";
-import { logo } from "@/constants/images";
-import { logoColor } from "@/constants/icons";
-import { useFundamentals } from "@/features/fundamentals/api/use-fundamental";
-import { format } from "date-fns";
-import { Download, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { logoColor } from "@/constants/icons";
+import {
+  useInvoiceById,
+  useInvoiceDownload,
+} from "@/features/invoice/api/use-invoice";
+import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
+import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
+import { useDeleteInvoice } from "@/features/invoice/api/use-delete-invoice";
 
 const ViewInvoice = ({ params }: { params: { id: number } }) => {
-  const { data: invoiceData, isPending, isError } = useInvoiceById(params.id);
+  const {
+    data: invoiceData,
+    isPending,
+    isError,
+    isFetching,
+  } = useInvoiceById(params.id);
 
   const {
     data: fundamentalData,
     isPending: fundamentalIsPending,
     isError: fundamentalIsError,
-  } = useFundamentals();
-  console.log(invoiceData);
+  } = useAllFundamental();
 
-  if (isPending || fundamentalIsPending) {
+  const { refetch, isPending: isPendingDownload } = useInvoiceDownload(
+    Number(params.id)
+  );
+
+  const { mutate: deleteInvoice, isPending: deleteIsPending } =
+    useDeleteInvoice();
+
+  if (isPending || isFetching || fundamentalIsPending) {
     return <Loading />;
   }
   if (isError || fundamentalIsError) {
@@ -53,7 +67,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                 </span>
 
                 <address className="mt-4 not-italic text-gray-800">
-                  {fundamentalData[0].site_address}
+                  {fundamentalData.site_address}
                 </address>
               </div>
             </div>
@@ -196,7 +210,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                       Discount:
                     </dt>
                     <dd className="col-span-2 text-gray-500">
-                      ${invoiceData.discount}
+                      {invoiceData.discount}%
                     </dd>
                   </dl>
 
@@ -222,34 +236,67 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
               </p>
               <div className="mt-2">
                 <p className="block text-sm font-medium text-gray-800">
-                  {fundamentalData[0].email1}
+                  {fundamentalData.email1}
                 </p>
                 <p className="block text-sm font-medium text-gray-800">
-                  {fundamentalData[0].email2}
+                  {fundamentalData.email2}
                 </p>
                 <p className="block text-sm font-medium text-gray-800">
-                  {fundamentalData[0].contact_number1}
+                  {fundamentalData.contact_number1}
                 </p>
                 <p className="block text-sm font-medium text-gray-800">
-                  {fundamentalData[0].contact_number2}
+                  {fundamentalData.contact_number2}
                 </p>
               </div>
             </div>
 
             <p className="mt-5 text-sm text-gray-500">
-              {fundamentalData[0].copyright}
+              {fundamentalData.copyright}
             </p>
           </div>
 
           <div className="mt-6 flex justify-end gap-x-3">
-            <Button variant={"outline"} className="flex gap-2">
-              <Download size={16} />
-              Invoice PDF
+            <Button
+              variant={"ghost"}
+              animation={"scale_in"}
+              className="w-[86px]"
+              disabled={deleteIsPending}
+              type="button"
+              onClick={() => invoiceData.id && deleteInvoice(invoiceData.id)}
+            >
+              {deleteIsPending ? (
+                <LoaderCircle className="animate-spin" width={20} height={20} />
+              ) : (
+                "Delete"
+              )}
             </Button>
-            <Button className="flex gap-2">
+            <Button
+              variant={"outline"}
+              className="flex gap-2"
+              type="button"
+              disabled={isPendingDownload}
+              onClick={() => refetch()}
+            >
+              {isPendingDownload ? (
+                <LoaderCircle className="animate-spin" width={20} height={20} />
+              ) : (
+                <>
+                  <Download size={16} />
+                  Invoice PDF
+                </>
+              )}
+            </Button>
+            <InvoiceGenerate
+              id={Number(params.id)}
+              invoice={{
+                discount: invoiceData.discount,
+                due_date: invoiceData.due_date,
+              }}
+            />
+            {/* <Button className="flex gap-2" >
               <Printer size={16} />
               Print
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

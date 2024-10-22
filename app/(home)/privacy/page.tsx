@@ -6,7 +6,7 @@ import Error from "@/components/ui/error";
 import Loading from "@/components/ui/loading";
 import { CustomImage } from "@/components/ui/custom-image";
 import CustomEditor from "@/components/editor";
-import { useFundamentals } from "@/features/fundamentals/api/use-fundamental";
+import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import { banner1 } from "@/constants/images";
 
 const Privacy = () => {
@@ -14,7 +14,7 @@ const Privacy = () => {
     data: fundamentalData,
     isPending: fundamentalIsPending,
     isError: fundamentalIsError,
-  } = useFundamentals();
+  } = useAllFundamental();
 
   return (
     <main className="-translate-y-[104px]">
@@ -50,7 +50,7 @@ const Privacy = () => {
       ) : (
         <div className="p-5 md:p-10">
           <CustomEditor
-            value={fundamentalData[0]?.privacy_policy}
+            value={fundamentalData?.privacy_policy}
             readOnly={true}
             theme={"bubble"}
           />
