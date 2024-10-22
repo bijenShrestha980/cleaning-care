@@ -3,16 +3,16 @@ import { useRouter } from "next/navigation";
 import { axios } from "@/lib/axios";
 import { toast } from "@/hooks/use-toast";
 
-const deleteQuote = async (id: number | string) => {
-  const response = await axios.delete(`/user-send-quote/${id}`);
+const deleteInvoice = async (id: number | string) => {
+  const response = await axios.delete(`/invoices/${id}`);
   return response.data;
 };
 
-export const useDeleteQuote = () => {
+export const useDeleteInvoice = () => {
   const router = useRouter();
   return useMutation({
-    mutationKey: ["user-quote"],
-    mutationFn: deleteQuote,
+    mutationKey: ["invoice"],
+    mutationFn: deleteInvoice,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
         toast({
@@ -25,7 +25,7 @@ export const useDeleteQuote = () => {
           title: "Deleted Successfully",
           variant: "default",
         });
-        router.push("/admin/dashboard/quotes");
+        router.push("/admin/dashboard/invoice");
       }
     },
     onError: (error) => {

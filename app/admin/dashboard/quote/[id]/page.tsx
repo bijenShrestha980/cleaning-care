@@ -39,6 +39,7 @@ const ViewQuote = ({ params }: { params: { id: number } }) => {
           quote: quoteData?.quote,
           senduserquoteservice: quoteData?.senduserquoteservice,
           status: quoteData?.status,
+          confirmation: quoteData?.confirmation,
           id: quoteData?.id,
         }}
         serviceCategoriesData={serviceCategoriesData}

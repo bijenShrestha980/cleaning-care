@@ -12,8 +12,6 @@ const InvoiceDetails = () => {
     isError: invoiceIsError,
   } = useAllInvoice();
 
-  console.log(invoiceData);
-
   if (invoiceIsPending) {
     return <Loading />;
   }

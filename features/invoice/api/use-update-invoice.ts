@@ -2,37 +2,34 @@ import { useMutation } from "@tanstack/react-query";
 
 import { toast } from "@/hooks/use-toast";
 import { axios } from "@/lib/axios";
-import { quoteStatusSchema } from "@/components/admin/data/schema";
-import { Quote } from "@/components/admin/data/schema";
+import { Invoice } from "@/components/admin/data/schema";
 
-const postUserQuote = async ({
+const postInvoice = async ({
   data,
   id,
 }: {
-  data: Quote;
+  data: Invoice;
   id: number | string;
 }) => {
-  const response = await axios.post(`/user-send-quote/${id}`, data);
+  const response = await axios.post(`/update-invoice/${id}`, data);
   return response.data;
 };
 
-const postUserQuoteStatus = async ({
+const postInvoiceSearch = async ({
   data,
   id,
 }: {
-  data: {
-    status: typeof quoteStatusSchema;
-  };
+  data: Invoice;
   id: number | string;
 }) => {
-  const response = await axios.post(`/update-user-quote-status/${id}`, data);
+  const response = await axios.post(`/invoices/search`, data);
   return response.data;
 };
 
-export const useUpdateUserQuote = (id: number | string | undefined) => {
+export const useUpdateInvoice = (id: number | string | undefined) => {
   return useMutation({
-    mutationKey: ["user-quote", id],
-    mutationFn: postUserQuote,
+    mutationKey: ["invoice", id],
+    mutationFn: postInvoice,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
         toast({
@@ -43,7 +40,7 @@ export const useUpdateUserQuote = (id: number | string | undefined) => {
       } else {
         toast({
           title: "Success",
-          description: "Quote sent successfully",
+          description: "Invoice updated successfully",
         });
       }
     },
@@ -58,10 +55,10 @@ export const useUpdateUserQuote = (id: number | string | undefined) => {
   });
 };
 
-export const useUpdateUserQuoteStatus = (id: number | string | undefined) => {
+export const useInvoiceSearch = (id: number | string | undefined) => {
   return useMutation({
-    mutationKey: ["user-quote", id],
-    mutationFn: postUserQuoteStatus,
+    mutationKey: ["invoice", id],
+    mutationFn: postInvoiceSearch,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
         toast({
@@ -72,7 +69,7 @@ export const useUpdateUserQuoteStatus = (id: number | string | undefined) => {
       } else {
         toast({
           title: "Success",
-          description: "Quote sent successfully",
+          description: "Invoice sent successfully",
         });
       }
     },

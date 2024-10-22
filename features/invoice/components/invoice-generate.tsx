@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { format } from "date-fns";
-import { ChevronsUpDown, LoaderCircle } from "lucide-react";
+import { ChevronsUpDown, ClockArrowUp, LoaderCircle } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -27,16 +28,31 @@ import {
 } from "@/components/ui/form";
 import { invoiceSchema } from "@/components/admin/data/schema";
 import { useCreateInvoice } from "../api/use-create-invoice";
-import { useInvoiceById } from "../api/use-invoice";
+import { useInvoiceSend } from "../api/use-invoice";
+import { useUpdateInvoice } from "../api/use-update-invoice";
 
-const InvoiceGenerate = ({ id }: { id: number }) => {
+const InvoiceGenerate = ({
+  id,
+  invoice,
+}: {
+  id: number;
+  invoice?: { discount?: number; due_date?: string };
+}) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const { isSuccess: invoiceIsSuccess, refetch } = useInvoiceSend(id);
+
   const {
     mutate: createInvoice,
     isPending: createIsPending,
     isSuccess: createIsSuccess,
   } = useCreateInvoice();
-  const { data: invoiceData, isPending, isSuccess } = useInvoiceById(id);
+
+  const {
+    mutate: updateInvoice,
+    isPending: updateIsPending,
+    isSuccess: updateIsSuccess,
+  } = useUpdateInvoice(id);
 
   const formSchema = invoiceSchema;
 
@@ -44,13 +60,35 @@ const InvoiceGenerate = ({ id }: { id: number }) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       id: id,
-      discount: 0,
-      due_date: undefined,
+      discount: invoice?.discount || 0,
+      due_date: invoice?.due_date || undefined,
     },
   });
 
+  useEffect(() => {
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createIsSuccess]);
+
+  useEffect(() => {
+    if (invoiceIsSuccess) {
+      toast.success("Invoice sent successfully");
+    }
+  }, [invoiceIsSuccess]);
+
+  useEffect(() => {
+    if (updateIsSuccess) {
+      setIsDialogOpen(false);
+      location.reload();
+    }
+  }, [updateIsSuccess]);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    createInvoice({ data: values, id: id });
+    if (invoice) {
+      updateInvoice({ data: values, id: id });
+    } else {
+      createInvoice({ data: values, id: id });
+    }
   }
 
   return (
@@ -59,10 +97,17 @@ const InvoiceGenerate = ({ id }: { id: number }) => {
       onOpenChange={(isOpen) => !isOpen && setIsDialogOpen(false)}
     >
       <DialogTrigger asChild onClick={() => setIsDialogOpen(true)}>
-        <Button variant="outline" size="sm">
-          Generate Invoice
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
+        {invoice ? (
+          <Button className="flex gap-2">
+            <ClockArrowUp size={16} />
+            Update Invoice
+          </Button>
+        ) : (
+          <Button variant="outline" size="sm">
+            Completed
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="max-h-dvh md:max-h-[750px] overflow-y-scroll no-scrollbar">
         <DialogHeader className="items-center">
@@ -135,7 +180,7 @@ const InvoiceGenerate = ({ id }: { id: number }) => {
               type="submit"
               animation={"scale_in"}
               className="w-full h-[46px]"
-              disabled={createIsPending}
+              disabled={createIsPending || updateIsPending}
             >
               {createIsPending ? (
                 <LoaderCircle className="animate-spin" width={20} height={20} />

@@ -36,7 +36,7 @@ export const useCreateInvoice = () => {
       } else {
         toast({
           title: "Success",
-          description: "Invoice sent successfully",
+          description: "Invoice generated successfully",
         });
         router.push("/admin/dashboard/quote");
       }
