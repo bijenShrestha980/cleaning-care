@@ -14,7 +14,7 @@ const baseUrlLocal =
 
 // Axios instance
 export const axiosLocal = Axios.create({
-  baseURL: baseUrlLocal,
+  baseURL: `${baseUrlLocal}/api/`,
 });
 
 axiosLocal.interceptors.request.use(
