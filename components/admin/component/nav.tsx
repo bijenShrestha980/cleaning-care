@@ -30,8 +30,8 @@ const Nav = () => {
   const { refetch } = useLogout();
 
   const logout = async () => {
-    await axiosLocal.get("/logout");
     refetch();
+    await axiosLocal.get("/logout");
     router.refresh();
   };
 
