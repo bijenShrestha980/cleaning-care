@@ -14,7 +14,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[80%] items-center">
+        <div className="flex w-[100%] items-center">
           <span>#{row.getValue("id")}</span>
         </div>
       );
@@ -27,7 +27,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[80%] items-center">
+        <div className="flex w-[100%] items-center">
           <span>{row.getValue("invoice_number")}</span>
         </div>
       );
@@ -43,7 +43,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[80%] items-center">
+        <div className="flex w-[100%] items-center">
           <span>{row.getValue("due_date")}</span>
         </div>
       );

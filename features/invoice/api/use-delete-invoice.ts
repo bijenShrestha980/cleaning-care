@@ -4,8 +4,8 @@ import { axios } from "@/lib/axios";
 import { toast } from "@/hooks/use-toast";
 
 const deleteInvoice = async (id: number | string) => {
-  const response = await axios.delete(`/invoices/${id}`);
-  return response.data;
+  const response = (await axios.delete(`/invoices/${id}`)) as any;
+  return response;
 };
 
 export const useDeleteInvoice = () => {
@@ -23,6 +23,7 @@ export const useDeleteInvoice = () => {
       } else {
         toast({
           title: "Deleted Successfully",
+          description: data?.message,
           variant: "default",
         });
         router.push("/admin/dashboard/invoice");

@@ -17,7 +17,7 @@ export const quoteColumns: ColumnDef<Quote>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[80%] items-center">
+        <div className="flex w-[100%] items-center">
           <span>#{row.getValue("id")}</span>
         </div>
       );
@@ -30,7 +30,7 @@ export const quoteColumns: ColumnDef<Quote>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-[80%] items-center">
+        <div className="flex w-[100%] items-center">
           <span>{row.getValue("full_name")}</span>
         </div>
       );

@@ -60,7 +60,7 @@ export const useUpdateUserQuote = (id: number | string | undefined) => {
 
 export const useUpdateUserQuoteStatus = (id: number | string | undefined) => {
   return useMutation({
-    mutationKey: ["user-quote", id],
+    mutationKey: ["user-quote"],
     mutationFn: postUserQuoteStatus,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
@@ -69,7 +69,6 @@ export const useUpdateUserQuoteStatus = (id: number | string | undefined) => {
           description: data?.error,
           variant: "destructive",
         });
-        location.reload();
       } else {
         toast({
           title: "Success",

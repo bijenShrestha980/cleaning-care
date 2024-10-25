@@ -30,6 +30,7 @@ import { invoiceSchema } from "@/components/admin/data/schema";
 import { useCreateInvoice } from "../api/use-create-invoice";
 import { useInvoiceSend } from "../api/use-invoice";
 import { useUpdateInvoice } from "../api/use-update-invoice";
+import { useQueryClient } from "@tanstack/react-query";
 
 const InvoiceGenerate = ({
   id,
@@ -39,6 +40,8 @@ const InvoiceGenerate = ({
   invoice?: { discount?: number; due_date?: string };
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [sendInvoice, setSendInvoice] = useState(false);
+  const queryClient = useQueryClient();
 
   const { isSuccess: invoiceIsSuccess, refetch } = useInvoiceSend(id);
 
@@ -67,16 +70,26 @@ const InvoiceGenerate = ({
 
   useEffect(() => {
     if (createIsSuccess) {
-      refetch();
+      setSendInvoice(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createIsSuccess]);
 
   useEffect(() => {
-    if (invoiceIsSuccess) {
-      toast.success("Invoice sent successfully");
+    if (sendInvoice) {
+      refetch();
     }
-  }, [invoiceIsSuccess]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sendInvoice]);
+
+  useEffect(() => {
+    if (invoiceIsSuccess) {
+      setSendInvoice(false);
+      setIsDialogOpen(false);
+      toast.success("Invoice sent successfully");
+      queryClient.invalidateQueries({ queryKey: ["user-quote"] });
+      location.reload();
+    }
+  }, [invoiceIsSuccess, queryClient]);
 
   useEffect(() => {
     if (updateIsSuccess) {
