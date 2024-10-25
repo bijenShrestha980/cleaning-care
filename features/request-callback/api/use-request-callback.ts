@@ -18,10 +18,10 @@ const getRequestCallbacks = async (query?: QueryParams) => {
   return response.data as RequestCallback[];
 };
 
-const getRequestCallback = async (id: number) => {
-  const response = await axios.get(`/request-callback/${id}`);
-  return response.data as RequestCallback;
-};
+// const getRequestCallback = async (id: number) => {
+//   const response = await axios.get(`/request-callback/${id}`);
+//   return response.data as RequestCallback;
+// };
 
 export const useAllRequestCallbacks = (query?: QueryParams) =>
   useQuery({
@@ -35,8 +35,8 @@ export const useRequestCallbacks = (query?: QueryParams) =>
     queryFn: () => getRequestCallbacks(query || {}),
   });
 
-export const useRequestCallback = (id: number) =>
-  useQuery({
-    queryKey: ["request-callback", id],
-    queryFn: () => getRequestCallback(id),
-  });
+// export const useRequestCallback = (id: number) =>
+//   useQuery({
+//     queryKey: ["request-callback", id],
+//     queryFn: () => getRequestCallback(id),
+//   });

@@ -99,6 +99,21 @@ export function DataTableToolbar<TData>({
             className="h-8 w-[150px] lg:w-[250px]"
           />
         )}
+        {table.getColumn("invoice_number") && (
+          <Input
+            placeholder="Filter invoice_number..."
+            value={
+              (table.getColumn("invoice_number")?.getFilterValue() as string) ??
+              ""
+            }
+            onChange={(event) =>
+              table
+                .getColumn("invoice_number")
+                ?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] lg:w-[250px]"
+          />
+        )}
         {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}

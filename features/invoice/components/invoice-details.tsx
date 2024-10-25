@@ -18,7 +18,16 @@ const InvoiceDetails = () => {
   if (invoiceIsError) {
     return <Error />;
   }
-  return <DataTable data={invoiceData} columns={invoiceColumns} />;
+  return (
+    <DataTable
+      data={invoiceData.map((invoice) => ({
+        ...invoice,
+        invoice_number: invoice.invoice_number,
+        email: invoice.send_user_quote?.email,
+      }))}
+      columns={invoiceColumns}
+    />
+  );
 };
 
 export default InvoiceDetails;

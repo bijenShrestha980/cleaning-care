@@ -8,7 +8,7 @@ const deleteRequestCallback = async (id: number | string) => {
   return response.data;
 };
 
-export const useDeleteRequestCallback = () => {
+export const useDeleteRequestCallback = (id: any) => {
   const router = useRouter();
   return useMutation({
     mutationKey: ["request-callback"],

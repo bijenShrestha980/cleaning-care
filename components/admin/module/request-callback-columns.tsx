@@ -1,12 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { RequestCallback } from "../data/schema";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { quoteStatuses } from "@/constants/table-data";
-import { Badge } from "@/components/ui/badge";
+import { RequestCallbackTableRowActions } from "./request-callback-table-row-actions";
 
 export const requestCallbackColumns: ColumnDef<RequestCallback>[] = [
   {
@@ -73,22 +71,13 @@ export const requestCallbackColumns: ColumnDef<RequestCallback>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  // {
-  //   id: "actions",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Action" />
-  //   ),
-  //   cell: ({ row }) => (
-  //     <div className="w-[80px]">
-  //       <Link
-  //         className="font-normal text-[13px] text-[#5065F6]"
-  //         href={`/admin/dashboard/quote/${row.original.id}`}
-  //       >
-  //         View
-  //       </Link>
-  //     </div>
-  //   ),
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
+  {
+    accessorKey: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Quote Status" />
+    ),
+    cell: ({ row }) => {
+      return <RequestCallbackTableRowActions row={row} />;
+    },
+  },
 ];

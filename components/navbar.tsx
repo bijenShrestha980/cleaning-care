@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -21,10 +20,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { CustomImage } from "@/components/ui/custom-image";
 import { logo } from "@/constants/images";
-import { useAllServices } from "@/features/services/api/use-service";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
-import { CustomImage } from "./ui/custom-image";
+import { useAllServices } from "@/features/services/api/use-service";
 
 export function Navbar() {
   const { data: servicesData, isPending } = useAllServices();
