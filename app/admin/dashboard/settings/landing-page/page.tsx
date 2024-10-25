@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { LayoutPanelTop, Plus, TableOfContents } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,9 +9,15 @@ import HeroSectionDetails from "@/features/hero-sections/components/hero-section
 const LandingPage = () => {
   return (
     <Tabs defaultValue="hero">
-      <TabsList className="inline gap-1 space-y-2 md:space-y-0">
-        <TabsTrigger value="hero">Hero section</TabsTrigger>
-        <TabsTrigger value="description">Description</TabsTrigger>
+      <TabsList className="inline gap-2">
+        <TabsTrigger value="hero" className="gap-2 w-fit md:w-[220px]">
+          <LayoutPanelTop size={15} />
+          <p className="hidden md:block">Hero section</p>
+        </TabsTrigger>
+        <TabsTrigger value="description" className="gap-2 w-fit md:w-[220px]">
+          <TableOfContents size={15} />
+          <p className="hidden md:block">Description</p>
+        </TabsTrigger>
       </TabsList>
       <TabsContent
         value="hero"

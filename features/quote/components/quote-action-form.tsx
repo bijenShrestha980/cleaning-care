@@ -193,7 +193,7 @@ const QuotActionForm = ({
               <Button
                 variant={"ghost"}
                 animation={"scale_in"}
-                className="w-[86px]"
+                className="w-full md:w-[86px]"
                 disabled={createIsPending || deleteIsPending}
                 type="button"
                 onClick={() => quote.id && deleteQuote(quote.id)}
@@ -213,7 +213,7 @@ const QuotActionForm = ({
               <Button
                 variant={"outline"}
                 animation={"scale_in"}
-                className="w-[86px]"
+                className="w-full md:w-[86px]"
                 disabled={createIsPending || deleteIsPending}
               >
                 Cancle
@@ -223,7 +223,7 @@ const QuotActionForm = ({
               <Button
                 type="submit"
                 animation={"scale_in"}
-                className="w-[86px]"
+                className="w-full md:w-[86px]"
                 disabled={createIsPending || deleteIsPending}
               >
                 {createIsPending ? (

@@ -145,7 +145,7 @@ const WhyChooseUsForm = ({
             <Button
               variant={"ghost"}
               animation={"scale_in"}
-              className="w-[86px]"
+              className="w-full md:w-[86px]"
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
               onClick={() => deleteWhyChooseUs(id)}
@@ -159,12 +159,12 @@ const WhyChooseUsForm = ({
           )}
           <Link
             href="/admin/dashboard/why-choose-us/heading"
-            className="w-full sm:w-[86px]"
+            className="w-full md:w-[86px]"
           >
             <Button
               variant={"outline"}
               animation={"scale_in"}
-              className="w-[86px]"
+              className="w-full md:w-[86px]"
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
             >
@@ -174,7 +174,7 @@ const WhyChooseUsForm = ({
           <Button
             type="submit"
             animation={"scale_in"}
-            className="w-[86px]"
+            className="w-full md:w-[86px]"
             disabled={createIsPending || updateIsPending || deleteIsPending}
           >
             {createIsPending || updateIsPending ? (

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,9 +24,7 @@ import {
 } from "@/components/admin/data/schema";
 import { useBankAccountDetails } from "../api/use-bank";
 import { useCreateBankAccountDetails } from "../api/use-create-bank";
-import Link from "next/link";
 import { useDeleteBankAccountDetails } from "../api/use-delete-bank";
-import { use, useEffect } from "react";
 
 const BankFormComp = () => {
   const { data: bankData, isPending, isError } = useBankAccountDetails();
@@ -136,7 +135,7 @@ const BankForm = ({ bank }: { bank: BankAccountDetails }) => {
             <Button
               variant={"ghost"}
               animation={"scale_in"}
-              className="w-[86px]"
+              className="w-full md:w-[86px]"
               disabled={createIsPending || deleteIsPending}
               type="button"
               onClick={() => bank.id && deleteBankAccountDetails(bank.id)}
@@ -152,6 +151,7 @@ const BankForm = ({ bank }: { bank: BankAccountDetails }) => {
             type="submit"
             animation={"scale_in"}
             disabled={createIsPending}
+            className="w-full md:w-[86px]"
           >
             {createIsPending ? (
               <LoaderCircle className="animate-spin" width={20} height={20} />

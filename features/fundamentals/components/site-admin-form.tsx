@@ -247,14 +247,14 @@ const SiteAdminForm = ({
           name="site_logo"
           render={({ field: { ref, name, onBlur, onChange } }) => (
             <FormItem className="col-span-2 2xl:col-span-1">
-              <div className="flex flex-col sm:flex-row gap-12">
+              <div className="flex flex-col sm:flex-row gap-4 md:gap-12">
                 <span>
                   <FormLabel className="font-normal text-sm">
                     Site logo
                   </FormLabel>
 
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="w-[50px] h-[50px] rounded-lg hidden sm:flex items-center justify-center bg-[#ecedee] overflow-hidden">
+                    <div className="shrink-0 w-[50px] h-[50px] rounded-lg hidden sm:flex items-center justify-center bg-[#ecedee] overflow-hidden">
                       <User className="text-[#596579] h-6 w-6" />
                     </div>
                     <FormControl>
@@ -270,7 +270,7 @@ const SiteAdminForm = ({
                             file ? URL.createObjectURL(file) : null
                           );
                         }}
-                        // className="w-fit"
+                        className="w-full"
                       />
                     </FormControl>
                   </div>
@@ -342,6 +342,7 @@ const SiteAdminForm = ({
                       form.setValue("open_day", value.join(","))
                     }
                     value={field.value.split(",")}
+                    className="flex-wrap"
                   >
                     <ToggleGroupItem
                       value="Sun"
@@ -433,8 +434,7 @@ const SiteAdminForm = ({
                   theme="snow"
                   modules={quillModules}
                   style={{
-                    height: "300px",
-                    marginBottom: "40px",
+                    height: "100%",
                   }}
                 />
               </FormControl>
@@ -458,8 +458,7 @@ const SiteAdminForm = ({
                   theme="snow"
                   modules={quillModules}
                   style={{
-                    height: "300px",
-                    marginBottom: "40px",
+                    height: "100%",
                   }}
                 />
               </FormControl>
@@ -481,8 +480,7 @@ const SiteAdminForm = ({
                   theme="snow"
                   modules={quillModules}
                   style={{
-                    height: "300px",
-                    marginBottom: "40px",
+                    height: "100%",
                   }}
                 />
               </FormControl>
@@ -493,11 +491,12 @@ const SiteAdminForm = ({
 
         <span />
 
-        <div className="flex justify-end gap-4">
+        <div className="col-span-2 flex justify-end gap-4">
           <Button
             type="submit"
             animation={"scale_in"}
             disabled={createIsPending}
+            className="w-full md:w-[86px]"
           >
             {createIsPending ? (
               <LoaderCircle className="animate-spin" width={20} height={20} />

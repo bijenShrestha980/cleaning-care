@@ -1,4 +1,5 @@
 import Axios, { InternalAxiosRequestConfig } from "axios";
+import Cookies from "js-cookie";
 import { PageOptions } from "@/types";
 
 declare module "axios" {
@@ -14,7 +15,7 @@ const baseUrlLocal =
 
 // Axios instance
 export const axiosLocal = Axios.create({
-  baseURL: `${baseUrlLocal}/api/`,
+  baseURL: `${baseUrlLocal}/api`,
 });
 
 axiosLocal.interceptors.request.use(
@@ -60,13 +61,13 @@ export const verifySession = async (): Promise<{ token: string } | null> => {
 
 // Axios instance
 export const axios = Axios.create({
-  baseURL: `${process.env.url}/api/`,
+  baseURL: `${process.env.url}/api`,
 });
 
 // Axios request interceptor for adding token to Authorization header
 axios.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   const session = await verifySession();
-
+  // const session = Cookies.get("session");
   if (session?.token) {
     config.headers.Authorization = `Bearer ${session.token}`;
   }

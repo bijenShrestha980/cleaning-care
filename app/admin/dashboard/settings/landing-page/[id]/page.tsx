@@ -29,7 +29,7 @@ const ViewHeroSection = ({ params }: { params: { id: number } }) => {
     return <Error />;
   }
   return (
-    <div className="pb-5">
+    <div className="pb-16">
       <p className="font-medium mb-4">View style</p>
       <HeroSectionForm
         heroSection={{

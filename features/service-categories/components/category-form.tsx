@@ -268,7 +268,7 @@ const CategoryForm = ({
             <Button
               variant={"ghost"}
               animation={"scale_in"}
-              className="w-[86px]"
+              className="w-full md:w-[86px]"
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
               onClick={() => deleteStyle(id)}

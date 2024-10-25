@@ -78,13 +78,13 @@ const FormComponent = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid sm:grid-cols-2 gap-4 w-full select-none"
+        className="grid md:grid-cols-2 gap-4 w-full select-none"
       >
         <FormField
           control={form.control}
           name="facebook"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 md:col-span-1">
               <FormLabel className="font-normal text-sm">Facebook</FormLabel>
               <FormControl>
                 <Input placeholder="Facebook" {...field} />
@@ -97,7 +97,7 @@ const FormComponent = ({
           control={form.control}
           name="instagram"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 md:col-span-1">
               <FormLabel className="font-normal text-sm">Instagram</FormLabel>
               <FormControl>
                 <Input placeholder="Instagram" {...field} />
@@ -110,7 +110,7 @@ const FormComponent = ({
           control={form.control}
           name="twitter"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 md:col-span-1">
               <FormLabel className="font-normal text-sm">Twitter</FormLabel>
               <FormControl>
                 <Input placeholder="Twitter" {...field} />
@@ -123,7 +123,7 @@ const FormComponent = ({
           control={form.control}
           name="youtube"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2 md:col-span-1">
               <FormLabel className="font-normal text-sm">Youtube</FormLabel>
               <FormControl>
                 <Input placeholder="Youtube" {...field} />
@@ -135,11 +135,12 @@ const FormComponent = ({
 
         <span />
 
-        <div className="flex justify-end gap-4">
+        <div className="col-span-2 flex justify-end gap-4">
           <Button
             type="submit"
             animation={"scale_in"}
             disabled={createIsPending}
+            className="w-full md:w-[86px]"
           >
             {createIsPending ? (
               <LoaderCircle className="animate-spin" width={20} height={20} />

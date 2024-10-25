@@ -2,7 +2,7 @@ import FeaturesForm from "@/features/why-choose-us-features/components/why-chooo
 
 const AddCategory = () => {
   return (
-    <div className="pb-5">
+    <div className="pb-14">
       <p className="font-medium mb-4">Add Features</p>
       <FeaturesForm />
     </div>
