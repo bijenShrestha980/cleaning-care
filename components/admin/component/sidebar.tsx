@@ -1,5 +1,5 @@
 "use client";
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, Search, X } from "lucide-react";
@@ -19,6 +19,8 @@ import SidebarToggle from "./sidebar-toggle";
 const Sidebar = () => {
   const pathname = usePathname();
   let { openSidenav, setOpenSidenav } = useContext(SidebarContext);
+  const [filter, setFilter] = useState("");
+
   return (
     <aside
       className={`${
@@ -34,6 +36,9 @@ const Sidebar = () => {
           <Input
             placeholder="Search"
             className="w-full h-10 mt-6 border-grey-50 text-primary-foreground placeholder:text-grey-50 rounded-[8px] bg-transparent focus:bg-transparent pl-[30px] pr-[14px] py-[10px]"
+            onChange={(e) =>
+              setFilter((e.target.value as string).toLowerCase())
+            }
           />
           <Search
             color="#D0D7E2"
@@ -53,105 +58,107 @@ const Sidebar = () => {
                   collapsible
                   defaultValue={formatToCapitalize(pathname.split("/")[3])}
                 >
-                  {pages.map(
-                    ({
-                      icon,
-                      name,
-                      path,
-                      sidebar,
-                      level,
-                      sub,
-                      notification,
-                    }) => (
-                      <Fragment key={name}>
-                        {sidebar && (
-                          <li>
-                            {level ? (
-                              <AccordionItem
-                                value={name}
-                                className="border-none"
-                              >
-                                <AccordionTrigger
-                                  className={`flex w-full h-10 items-center gap-4 rounded-lg hover:no-underline py-2 px-3 capitalize transition-all text-[#F4F7FB] hover:bg-white/10 hover:text-white active:bg-white/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none mb-1
+                  {pages
+                    .filter((el) => el.name.toLowerCase().includes(filter))
+                    .map(
+                      ({
+                        icon,
+                        name,
+                        path,
+                        sidebar,
+                        level,
+                        sub,
+                        notification,
+                      }) => (
+                        <Fragment key={name}>
+                          {sidebar && (
+                            <li>
+                              {level ? (
+                                <AccordionItem
+                                  value={name}
+                                  className="border-none"
+                                >
+                                  <AccordionTrigger
+                                    className={`flex w-full h-10 items-center gap-4 rounded-lg hover:no-underline py-2 px-3 capitalize transition-all text-[#F4F7FB] hover:bg-white/10 hover:text-white active:bg-white/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none mb-1
                                   ${
                                     pathname.split("/")[3] ===
                                     path.split("/")[1]
                                       ? "bg-[#343030] border border-[#8E7755]"
                                       : ""
                                   }`}
-                                >
-                                  <div className="flex items-center text-sm justify-start gap-3 w-full">
-                                    <div>{icon}</div>
-                                    {name}
+                                  >
+                                    <div className="flex items-center text-sm justify-start gap-3 w-full">
+                                      <div>{icon}</div>
+                                      {name}
+                                      {notification && (
+                                        <div className="bg-secondary h-2 w-2 rounded-full"></div>
+                                      )}
+                                    </div>
+                                  </AccordionTrigger>
+                                  <AccordionContent className="py-1">
+                                    {sub.map((item) => (
+                                      <Link
+                                        href={`/${layout}${path}${item.path}`}
+                                        key={item.name}
+                                      >
+                                        <Button
+                                          className={`flex items-center text-sm justify-between gap-3 py-2 pl-[43px] pr-3 w-full mb-1 hover:bg-white/10 hover:text-white active:bg-white/30 rounded-lg  ${
+                                            pathname.split("/")[4] ===
+                                            item.path.split("/")[1]
+                                              ? "bg-[#343030]"
+                                              : ""
+                                          }`}
+                                          onClick={() => setOpenSidenav(false)}
+                                        >
+                                          <p
+                                            color="inherit"
+                                            className="font-medium capitalize"
+                                          >
+                                            {item.name}
+                                          </p>
+                                          {notification &&
+                                            item.notificationCount > 0 && (
+                                              <div className="bg-secondary h-6 py-[2px] px-[10px] rounded-2xl SmallText-Regular text-grey-20">
+                                                {item.notificationCount} new
+                                              </div>
+                                            )}
+                                        </Button>
+                                      </Link>
+                                    ))}
+                                  </AccordionContent>
+                                </AccordionItem>
+                              ) : (
+                                <Link href={`/${layout}${path}`}>
+                                  <Button
+                                    className={`flex items-center text-sm justify-start gap-3 py-2 px-3 w-full h-10 mb-1 hover:bg-white/10 hover:text-white active:bg-white/30 rounded-lg ${
+                                      pathname.split("/")[3] ===
+                                        path.split("/")[1] ||
+                                      (pathname.split("/").length <= 3 &&
+                                        pathname.split("/")[2] ===
+                                          name.toLocaleLowerCase())
+                                        ? "bg-[#343030] border border-[#8E7755]"
+                                        : ""
+                                    }`}
+                                    onClick={() => setOpenSidenav(false)}
+                                  >
+                                    {icon}
+                                    <p
+                                      color="inherit"
+                                      className="font-medium capitalize"
+                                    >
+                                      {name}
+                                    </p>
                                     {notification && (
                                       <div className="bg-secondary h-2 w-2 rounded-full"></div>
                                     )}
-                                  </div>
-                                </AccordionTrigger>
-                                <AccordionContent className="py-1">
-                                  {sub.map((item) => (
-                                    <Link
-                                      href={`/${layout}${path}${item.path}`}
-                                      key={item.name}
-                                    >
-                                      <Button
-                                        className={`flex items-center text-sm justify-between gap-3 py-2 pl-[43px] pr-3 w-full mb-1 hover:bg-white/10 hover:text-white active:bg-white/30 rounded-lg  ${
-                                          pathname.split("/")[4] ===
-                                          item.path.split("/")[1]
-                                            ? "bg-[#343030]"
-                                            : ""
-                                        }`}
-                                        onClick={() => setOpenSidenav(false)}
-                                      >
-                                        <p
-                                          color="inherit"
-                                          className="font-medium capitalize"
-                                        >
-                                          {item.name}
-                                        </p>
-                                        {notification &&
-                                          item.notificationCount > 0 && (
-                                            <div className="bg-secondary h-6 py-[2px] px-[10px] rounded-2xl SmallText-Regular text-grey-20">
-                                              {item.notificationCount} new
-                                            </div>
-                                          )}
-                                      </Button>
-                                    </Link>
-                                  ))}
-                                </AccordionContent>
-                              </AccordionItem>
-                            ) : (
-                              <Link href={`/${layout}${path}`}>
-                                <Button
-                                  className={`flex items-center text-sm justify-start gap-3 py-2 px-3 w-full h-10 mb-1 hover:bg-white/10 hover:text-white active:bg-white/30 rounded-lg ${
-                                    pathname.split("/")[3] ===
-                                      path.split("/")[1] ||
-                                    (pathname.split("/").length <= 3 &&
-                                      pathname.split("/")[2] ===
-                                        name.toLocaleLowerCase())
-                                      ? "bg-[#343030] border border-[#8E7755]"
-                                      : ""
-                                  }`}
-                                  onClick={() => setOpenSidenav(false)}
-                                >
-                                  {icon}
-                                  <p
-                                    color="inherit"
-                                    className="font-medium capitalize"
-                                  >
-                                    {name}
-                                  </p>
-                                  {notification && (
-                                    <div className="bg-secondary h-2 w-2 rounded-full"></div>
-                                  )}
-                                </Button>
-                              </Link>
-                            )}
-                          </li>
-                        )}
-                      </Fragment>
-                    )
-                  )}
+                                  </Button>
+                                </Link>
+                              )}
+                            </li>
+                          )}
+                        </Fragment>
+                      )
+                    )}
                 </Accordion>
               </ul>
             )}

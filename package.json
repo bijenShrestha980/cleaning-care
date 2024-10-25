@@ -31,8 +31,6 @@
     "@tanstack/react-table": "^8.20.5",
     "@types/quill": "^2.0.14",
     "axios": "^1.7.7",
-    "ckeditor5": "^43.0.0",
-    "ckeditor5-premium-features": "^43.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",

@@ -63,9 +63,6 @@ const HeroSectionForm = ({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
-    // Object.entries(values).forEach(([key, value]) => {
-    //   formData.append(key, value as any);
-    // });
     formData.append("title", values.title);
     formData.append("description", values.description);
     formData.append("order", values.order as any);
@@ -133,14 +130,14 @@ const HeroSectionForm = ({
           name="hero_image"
           render={({ field: { ref, name, onBlur, onChange } }) => (
             <FormItem className="col-span-2 2xl:col-span-1">
-              <div className="flex flex-col sm:flex-row gap-12">
+              <div className="flex flex-col sm:flex-row gap-4 md:gap-12">
                 <span>
                   <FormLabel className="font-normal text-sm">
                     Hero image
                   </FormLabel>
 
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
+                    <div className="shrink-0 w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
                       <User className="text-[#596579] h-6 w-6" />
                     </div>
                     <FormControl>
@@ -156,7 +153,7 @@ const HeroSectionForm = ({
                             file ? URL.createObjectURL(file) : null
                           );
                         }}
-                        className="w-fit"
+                        className="w-full"
                       />
                     </FormControl>
                   </div>
@@ -229,7 +226,7 @@ const HeroSectionForm = ({
             <Button
               variant={"ghost"}
               animation={"scale_in"}
-              className="w-[86px]"
+              className="w-full md:w-[86px]"
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
               onClick={() => deleteHeroSection(id)}
@@ -243,12 +240,12 @@ const HeroSectionForm = ({
           )}
           <Link
             href="/admin/dashboard/settings/landing-page"
-            className="w-full sm:w-[86px]"
+            className="w-full md:w-[86px]"
           >
             <Button
               variant={"outline"}
               animation={"scale_in"}
-              className="w-[86px]"
+              className="w-full md:w-[86px]"
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
             >
@@ -258,7 +255,7 @@ const HeroSectionForm = ({
           <Button
             type="submit"
             animation={"scale_in"}
-            className="w-[86px]"
+            className="w-full md:w-[86px]"
             disabled={createIsPending || updateIsPending || deleteIsPending}
           >
             {createIsPending || updateIsPending ? (

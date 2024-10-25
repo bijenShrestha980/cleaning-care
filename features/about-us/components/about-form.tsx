@@ -547,6 +547,7 @@ const AboutForm = ({ aboutUs }: { aboutUs: AboutUs }) => {
             type="submit"
             animation={"scale_in"}
             disabled={createIsPending || updateIsPending}
+            className="w-full sm:w-[86px]"
           >
             {createIsPending || updateIsPending ? (
               <LoaderCircle className="animate-spin" width={20} height={20} />

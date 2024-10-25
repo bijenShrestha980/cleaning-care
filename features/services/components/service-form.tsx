@@ -277,14 +277,14 @@ const ServiceForm = ({
           name="banner_image"
           render={({ field: { ref, name, onBlur, onChange } }) => (
             <FormItem className="col-span-2 2xl:col-span-1">
-              <div className="flex flex-col sm:flex-row gap-12">
+              <div className="flex flex-col sm:flex-row gap-4 md:gap-12">
                 <span>
                   <FormLabel className="font-normal text-sm">
                     Banner image
                   </FormLabel>
 
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
+                    <div className="shrink-0 w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
                       <User className="text-[#596579] h-6 w-6" />
                     </div>
                     <FormControl>
@@ -300,7 +300,7 @@ const ServiceForm = ({
                             file ? URL.createObjectURL(file) : null
                           );
                         }}
-                        className="w-fit"
+                        className="w-full"
                       />
                     </FormControl>
                   </div>
@@ -483,14 +483,14 @@ const ServiceForm = ({
           name="section_one_image"
           render={({ field: { ref, name, onBlur, onChange } }) => (
             <FormItem className="col-span-2 2xl:col-span-1">
-              <div className="flex flex-col sm:flex-row gap-12">
+              <div className="flex flex-col sm:flex-row gap-4 md:gap-12">
                 <span>
                   <FormLabel className="font-normal text-sm">
                     Section One Image
                   </FormLabel>
 
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
+                    <div className="shrink-0 w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
                       <User className="text-[#596579] h-6 w-6" />
                     </div>
                     <FormControl>
@@ -506,7 +506,7 @@ const ServiceForm = ({
                             file ? URL.createObjectURL(file) : null
                           );
                         }}
-                        className="w-fit"
+                        className="w-full"
                       />
                     </FormControl>
                   </div>
@@ -677,14 +677,14 @@ const ServiceForm = ({
                   name={`service_items.${index}.icon`}
                   render={({ field: { ref, name, onBlur, onChange } }) => (
                     <FormItem className="col-span-2">
-                      <div className="flex flex-col sm:flex-row gap-12">
+                      <div className="flex flex-col sm:flex-row gap-4 md:gap-12">
                         <span>
                           <FormLabel className="font-normal text-sm">
                             Feature Image
                           </FormLabel>
 
                           <div className="flex items-center gap-3 mt-2">
-                            <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
+                            <div className="shrink-0 w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#ecedee] overflow-hidden">
                               <User className="text-[#596579] h-6 w-6" />
                             </div>
                             <FormControl>
@@ -706,7 +706,7 @@ const ServiceForm = ({
                                         : []
                                     );
                                 }}
-                                className="w-fit"
+                                className="w-full"
                               />
                             </FormControl>
                           </div>
@@ -740,129 +740,7 @@ const ServiceForm = ({
             ))}
           </div>
         </div>
-        {/* <Separator className="col-span-2 my-4" />
-        <div className="space-y-2 col-span-2 sm:col-span-1">
-          <FormField
-            control={form.control}
-            name="sectionThree.title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-normal text-sm">
-                  Section Three Title
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="How to Book Our Cleaning Service"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="sectionThree.description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-normal text-sm">
-                  Section Three Description
-                </FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Curious about how our cleaning service operates? It’s straightforward! Our expert..."
-                    {...field}
-                    rows={6}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="col-span-1 pt-4">
-            <div className="flex justify-between mb-4">
-              <FormLabel className="font-semibold text-sm active:scale-95">
-                Section Three Features
-              </FormLabel>
-              <Button
-                type="button"
-                animation={"scale_both"}
-                size={"sm"}
-                onClick={() =>
-                  sectionThreeAppend({ title: "", description: "" })
-                }
-              >
-                Add Feature
-              </Button>
-            </div>
-            {sectionThreeFields.map((field, index) => (
-              <div
-                key={index}
-                className={`grid lg:grid-cols-2 gap-4 mb-4 pb-4 ${
-                  index !== sectionThreeFields.length - 1 ? "border-b" : ""
-                }`}
-              >
-                {index !== 0 && (
-                  <>
-                    <span />
-                    <div
-                      className="
-                  w-full flex gap-4 justify-end
-                "
-                    >
-                      <Button
-                        type="button"
-                        className="w-fit"
-                        variant={"outline"}
-                        animation={"scale_in"}
-                        onClick={() => sectionThreeRemove(index)}
-                      >
-                        <Trash2 size={16} />
-                      </Button>
-                    </div>
-                  </>
-                )}
-                <FormField
-                  control={form.control}
-                  name={`sectionThree.features.${index}.title`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-normal text-sm">
-                        Title
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Explore Our Service or Contact Us"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`sectionThree.features.${index}.description`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-normal text-sm">
-                        Description
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Visit our website ..."
-                          {...field}
-                          rows={6}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            ))}
-          </div>
-        </div> */}
+
         <span />
         <span />
 
@@ -871,7 +749,7 @@ const ServiceForm = ({
             <Button
               variant={"ghost"}
               animation={"scale_in"}
-              className="w-[86px]"
+              className="w-full md:w-[86px]"
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
               onClick={() => deleteStyle(id)}

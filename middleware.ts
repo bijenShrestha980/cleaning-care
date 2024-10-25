@@ -16,8 +16,6 @@ export default async function middleware(req: NextRequest) {
   const cookie = cookies().get("session")?.value;
   const session = await decrypt(cookie);
 
-  console.log(session, "session");
-
   // 4. Redirect to /admin/dashboard if the user is authenticated and on a public route
   if (isPublicRoute && session?.data) {
     return NextResponse.redirect(new URL("/admin/dashboard", req.nextUrl));

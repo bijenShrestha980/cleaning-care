@@ -29,9 +29,12 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
     isError: fundamentalIsError,
   } = useAllFundamental();
 
-  const { refetch, isPending: isPendingDownload } = useInvoiceDownload(
-    Number(params.id)
-  );
+  const {
+    refetch,
+    isPending: downloadIsPending,
+    isFetching: downloadIsFetching,
+  } = useInvoiceDownload(Number(params.id));
+  console.log(downloadIsFetching);
 
   const { mutate: deleteInvoice, isPending: deleteIsPending } =
     useDeleteInvoice();
@@ -43,10 +46,10 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
     return <Error />;
   }
   return (
-    <div className="pb-5 ">
+    <div className="pb-5">
       <p className="font-medium mb-4">View invoice</p>
-      <div className="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto my-4 sm:my-10">
-        <div className="sm:w-11/12 lg:w-3/4 mx-auto">
+      <div className="max-w-[85rem] sm:px-6 lg:px-8 mx-auto my-4 sm:my-10">
+        <div className="w-full md:w-11/12 lg:w-3/4 mx-auto">
           <div className="flex flex-col p-4 sm:p-10 bg-white shadow-md rounded-xl">
             <div className="flex justify-between">
               <div>
@@ -255,11 +258,11 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
             </p>
           </div>
 
-          <div className="mt-6 flex justify-end gap-x-3">
+          <div className="w-full mt-6 flex flex-col md:flex-row justify-end gap-3">
             <Button
               variant={"ghost"}
               animation={"scale_in"}
-              className="w-[86px]"
+              className="w-full md:w-[86px]"
               disabled={deleteIsPending}
               type="button"
               onClick={() => invoiceData.id && deleteInvoice(invoiceData.id)}
@@ -274,10 +277,10 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
               variant={"outline"}
               className="flex gap-2"
               type="button"
-              disabled={isPendingDownload}
+              disabled={downloadIsFetching}
               onClick={() => refetch()}
             >
-              {isPendingDownload ? (
+              {downloadIsFetching ? (
                 <LoaderCircle className="animate-spin" width={20} height={20} />
               ) : (
                 <>

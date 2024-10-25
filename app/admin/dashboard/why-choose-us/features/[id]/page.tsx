@@ -20,7 +20,7 @@ const ViewWhyChooseFeature = ({ params }: { params: { id: number } }) => {
     return <Error />;
   }
   return (
-    <div className="pb-5">
+    <div className="pb-14">
       <p className="font-medium mb-4">View why choose us features</p>
       <FeaturesForm
         whyChooseUs={{
