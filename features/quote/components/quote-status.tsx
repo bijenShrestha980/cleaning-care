@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils";
 import { quoteStatuses } from "@/constants/table-data";
 import { useUpdateUserQuoteStatus } from "@/features/quote/api/use-update-user-quote";
 import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
+import { useQueryClient } from "@tanstack/react-query";
 
 const QuoteStatus = ({ quote }: { quote: Quote }) => {
   const [value, setValue] = React.useState<string>(
@@ -44,7 +45,7 @@ const QuoteStatus = ({ quote }: { quote: Quote }) => {
     (value === "quote_sent_to_user" && quoteConfirmation !== "accept")
   ) {
     return (
-      <Badge variant={"outline"} className="h-8 px-3 justify-between">
+      <Badge variant={"outline"} className="w-max h-8 px-3 justify-between">
         {quoteStatuses.find((status) => status.value === value)?.label}
       </Badge>
     );
@@ -83,6 +84,7 @@ const StatusPopOver = ({
   quoteConfirmation?: string;
 }) => {
   const [open, setOpen] = React.useState(false);
+  const queryClient = useQueryClient();
 
   const {
     mutate: updateUserQuoteStatus,
@@ -94,6 +96,13 @@ const StatusPopOver = ({
   React.useEffect(() => {
     setValue(quoteStatus as string);
   }, [quoteStatus, setValue, updateUserQuoteStatusIsError]);
+
+  React.useEffect(() => {
+    if (updateUserQuoteStatusIsSuccess) {
+      // location.reload();
+      queryClient.invalidateQueries({ queryKey: ["user-quote"] });
+    }
+  }, [queryClient, updateUserQuoteStatusIsSuccess]);
 
   const handleSelect = async (currentValue: string) => {
     updateUserQuoteStatus({
@@ -116,7 +125,7 @@ const StatusPopOver = ({
           size={"sm"}
           role="combobox"
           aria-expanded={open}
-          className="justify-between"
+          className="justify-between w-max"
         >
           {value
             ? quoteStatuses.find((status) => status.value === value)?.label

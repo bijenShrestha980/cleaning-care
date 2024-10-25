@@ -178,7 +178,7 @@ const QuotActionForm = ({
             </div>
           </div>
           <span className="flex items-center gap-2 mt-4">
-            Total cost :<h4>$ {totalCost}</h4>
+            Total cost :<h4>${totalCost}</h4>
           </span>
         </div>
       </div>

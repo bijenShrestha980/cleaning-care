@@ -233,7 +233,7 @@ const QuoteForm = ({
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="sm:w-[462px]">
+                <PopoverContent className="sm:w-[462px] p-0">
                   <Command>
                     <CommandInput placeholder="Search category..." />
                     <CommandList>

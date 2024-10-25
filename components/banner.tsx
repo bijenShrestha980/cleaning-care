@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Circle, Star } from "lucide-react";
-// import Autoplay from "embla-carousel-autoplay";
+import Autoplay from "embla-carousel-autoplay";
 
 import {
   Carousel,
@@ -19,12 +19,12 @@ import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 const Banner = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
   const {
     data: heroSectionData,
     isPending: heroSectionIsPending,
     isError: heroSectionIsError,
   } = useAllHeroSection();
-  // const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
 
   useEffect(() => {
     if (!api) {
@@ -46,7 +46,11 @@ const Banner = () => {
   return (
     <Carousel
       setApi={setApi}
-      // plugins={[plugin.current]}
+      plugins={[plugin.current]}
+      opts={{
+        align: "start",
+        loop: true,
+      }}
       className="h-full w-full relative"
     >
       <CarouselContent>
