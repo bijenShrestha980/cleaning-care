@@ -5,9 +5,6 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Invoice } from "../data/schema";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { confirmations, quoteStatuses } from "@/constants/table-data";
-import { QuoteTableRowActions } from "./quote-table-row-actions";
-import { Badge } from "@/components/ui/badge";
 
 export const invoiceColumns: ColumnDef<Invoice>[] = [
   {
@@ -18,7 +15,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex w-[80%] items-center">
-          <span>{row.getValue("id")}</span>
+          <span>#{row.getValue("id")}</span>
         </div>
       );
     },
@@ -56,15 +53,14 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     },
   },
   {
-    accessorKey: "send_user_quote",
+    accessorKey: "email",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Email" />
     ),
     cell: ({ row }) => {
-      const email = row.original.send_user_quote?.email ?? "N/A";
       return (
         <div className="flex w-[80%] items-center">
-          <span>{email}</span>
+          <span>{row.getValue("email")}</span>
         </div>
       );
     },

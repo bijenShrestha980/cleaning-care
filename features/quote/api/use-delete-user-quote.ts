@@ -4,8 +4,8 @@ import { axios } from "@/lib/axios";
 import { toast } from "@/hooks/use-toast";
 
 const deleteQuote = async (id: number | string) => {
-  const response = await axios.delete(`/user-send-quote/${id}`);
-  return response.data;
+  const response = (await axios.delete(`/delete-usersent-quote/${id}`)) as any;
+  return response;
 };
 
 export const useDeleteQuote = () => {
@@ -23,9 +23,10 @@ export const useDeleteQuote = () => {
       } else {
         toast({
           title: "Deleted Successfully",
+          description: data?.message,
           variant: "default",
         });
-        router.push("/admin/dashboard/quotes");
+        router.push("/admin/dashboard/quote");
       }
     },
     onError: (error) => {

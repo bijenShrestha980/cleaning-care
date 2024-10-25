@@ -46,7 +46,7 @@ const QuoteDialogue = ({
           Get service quote
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-dvh md:max-h-[750px] overflow-y-scroll no-scrollbar">
+      <DialogContent className="max-h-[750px] h-dvh rounded-lg overflow-y-scroll no-scrollbar">
         <DialogHeader className="items-center">
           <DialogTitle className="text-[42px] font-normal font-inter">
             Get the Quote

@@ -11,6 +11,19 @@ import { Badge } from "@/components/ui/badge";
 
 export const quoteColumns: ColumnDef<Quote>[] = [
   {
+    accessorKey: "id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ID" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex w-[80%] items-center">
+          <span>#{row.getValue("id")}</span>
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "full_name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Full Name" />
@@ -42,44 +55,15 @@ export const quoteColumns: ColumnDef<Quote>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  {
-    accessorKey: "address",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Address" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex w-[80%] items-center">
-          <span>{row.getValue("address")}</span>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
   // {
-  //   accessorKey: "quoteStatus",
+  //   accessorKey: "address",
   //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Quote Status" />
+  //     <DataTableColumnHeader column={column} title="Address" />
   //   ),
   //   cell: ({ row }) => {
-  //     const status = quoteStatuses.find(
-  //       (status) => status.value === row.getValue("quoteStatus")
-  //     );
-
-  //     if (!status) {
-  //       return null;
-  //     }
-
   //     return (
-  //       <div className="flex w-fit items-center">
-  //         <Badge>
-  //           {status.icon && (
-  //             <status.icon className="mr-2 h-4 w-4 text-primary-foreground" />
-  //           )}
-  //           <span>{status.label}</span>
-  //         </Badge>
+  //       <div className="flex w-[80%] items-center">
+  //         <span>{row.getValue("address")}</span>
   //       </div>
   //     );
   //   },
@@ -93,13 +77,6 @@ export const quoteColumns: ColumnDef<Quote>[] = [
       <DataTableColumnHeader column={column} title="Quote Status" />
     ),
     cell: ({ row }) => {
-      const status = quoteStatuses.find(
-        (status) => status.value === row.getValue("quoteStatus")
-      );
-
-      if (!status) {
-        return null;
-      }
       return <QuoteTableRowActions row={row} />;
     },
   },

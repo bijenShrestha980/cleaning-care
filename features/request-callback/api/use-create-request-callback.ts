@@ -1,18 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 
 import { toast } from "@/hooks/use-toast";
 import { axios } from "@/lib/axios";
 import { RequestCallback } from "@/components/admin/data/schema";
 
 const postRequestCallback = async (data: RequestCallback) => {
-  const response = await axios.post("/request-callback", data);
-  return response.data;
+  const response = (await axios.post("/request-callback", data)) as any;
+  return response;
 };
 
 export const useCreateRequestCallback = () => {
-  const router = useRouter();
-
   return useMutation({
     mutationKey: ["request-callback"],
     mutationFn: postRequestCallback,
@@ -24,11 +21,15 @@ export const useCreateRequestCallback = () => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/request-callback");
+        console.log(data);
+        toast({
+          title: "Success",
+          description: data?.message,
+          variant: "default",
+        });
       }
     },
     onError: (error) => {
-      console.log("first", error);
       toast({
         title: "Error",
         //@ts-ignore
