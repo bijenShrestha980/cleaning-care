@@ -1,5 +1,4 @@
 import Axios, { InternalAxiosRequestConfig } from "axios";
-import Cookies from "js-cookie";
 import { PageOptions } from "@/types";
 
 declare module "axios" {
