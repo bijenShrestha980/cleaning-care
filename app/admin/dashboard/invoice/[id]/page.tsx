@@ -50,7 +50,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
       <p className="font-medium mb-4">View invoice</p>
       <div className="max-w-[85rem] sm:px-6 lg:px-8 mx-auto my-4 sm:my-10">
         <div className="w-full md:w-11/12 lg:w-3/4 mx-auto">
-          <div className="flex flex-col p-4 sm:p-10 bg-white shadow-md rounded-xl">
+          <div className="flex flex-col p-4 sm:p-10 bg-white rounded-xl shadow-[rgba(0,0,0,0.15)_0px_5px_15px_0px]">
             <div className="flex justify-between">
               <div>
                 <CustomImage
@@ -105,7 +105,6 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                       Due date:
                     </dt>
                     <dd className="col-span-2 text-gray-500">
-                      {" "}
                       {invoiceData.due_date
                         ? format(invoiceData.due_date, "dd/MM/yyyy")
                         : "N/A"}
@@ -117,13 +116,13 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
 
             <div className="mt-6">
               <div className="border border-gray-200 p-4 rounded-lg space-y-4">
-                <div className="hidden sm:grid sm:grid-cols-5">
+                <div className="hidden sm:grid sm:grid-cols-4">
                   <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">
                     Item
                   </div>
-                  <div className="text-start text-xs font-medium text-gray-500 uppercase">
+                  {/* <div className="text-start text-xs font-medium text-gray-500 uppercase">
                     Qty
-                  </div>
+                  </div> */}
                   <div className="text-start text-xs font-medium text-gray-500 uppercase">
                     Rate
                   </div>
@@ -138,7 +137,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                   invoiceData.invoice_items.map((item, index) => (
                     <>
                       <div
-                        className="grid grid-cols-3 sm:grid-cols-5 gap-2"
+                        className="grid grid-cols-3 sm:grid-cols-4 gap-2"
                         key={index}
                       >
                         <div className="col-span-full sm:col-span-2">
@@ -149,12 +148,12 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                             {item.service_category_item.item_name}
                           </p>
                         </div>
-                        <div>
+                        {/* <div>
                           <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                             Qty
                           </h5>
                           <p className="text-gray-800">1</p>
-                        </div>
+                        </div> */}
                         <div>
                           <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                             Rate
