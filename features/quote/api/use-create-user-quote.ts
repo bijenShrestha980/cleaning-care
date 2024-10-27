@@ -17,7 +17,7 @@ const postQuoteToUser = async (data: Quote) => {
 
 export const useCreateQuote = () => {
   return useMutation({
-    mutationKey: ["user-quote"],
+    mutationKey: ["user-quote", "notifications"],
     mutationFn: postQuote,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {
