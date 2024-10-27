@@ -22,6 +22,7 @@ import { useLogout } from "@/features/logout/api/use-logout";
 import { user_1 } from "@/constants/images";
 import { axiosLocal } from "@/lib/axios";
 import SidebarToggle from "./sidebar-toggle";
+import NotificationButton from "@/features/notification/components/notification-button";
 
 const Nav = () => {
   const pathname = usePathname();
@@ -43,6 +44,7 @@ const Nav = () => {
         </h1>
         <div className="flex justify-between items-center gap-2 md:gap-5">
           <SidebarToggle icon="menu" />
+          <NotificationButton />
           <DropdownMenu>
             <DropdownMenuTrigger className="focus-visible:outline-none h-10 flex justify-between items-center gap-1">
               <CustomImage

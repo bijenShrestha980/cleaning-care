@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { format } from "date-fns";
 import { ChevronsUpDown, ClockArrowUp, LoaderCircle } from "lucide-react";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -31,6 +30,7 @@ import { useCreateInvoice } from "../api/use-create-invoice";
 import { useInvoiceSend } from "../api/use-invoice";
 import { useUpdateInvoice } from "../api/use-update-invoice";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/hooks/use-toast";
 
 const InvoiceGenerate = ({
   id,
@@ -43,7 +43,11 @@ const InvoiceGenerate = ({
   const [sendInvoice, setSendInvoice] = useState(false);
   const queryClient = useQueryClient();
 
-  const { isSuccess: invoiceIsSuccess, refetch } = useInvoiceSend(id);
+  const {
+    isSuccess: invoiceIsSuccess,
+    refetch,
+    isError: invoiceIsError,
+  } = useInvoiceSend(id);
 
   const {
     mutate: createInvoice,
@@ -85,7 +89,10 @@ const InvoiceGenerate = ({
     if (invoiceIsSuccess) {
       setSendInvoice(false);
       setIsDialogOpen(false);
-      toast.success("Invoice sent successfully");
+      toast({
+        title: "Success",
+        description: "Invoice sent successfully",
+      });
       queryClient.invalidateQueries({ queryKey: ["user-quote"] });
       location.reload();
     }
@@ -97,6 +104,16 @@ const InvoiceGenerate = ({
       location.reload();
     }
   }, [updateIsSuccess]);
+
+  // useEffect(() => {
+  //   if (invoiceIsError) {
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to send invoice to user",
+  //       variant: "destructive",
+  //     });
+  //   }
+  // }, [invoiceIsError]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (invoice) {

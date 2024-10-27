@@ -79,7 +79,7 @@ export const serviceCategorySchema = z.object({
           .string()
           .min(2, { message: "Item name is required." })
           .trim(),
-        price: z.string().optional(),
+        price: z.string(),
         status: z.enum(["active", "inactive"]),
       })
     )

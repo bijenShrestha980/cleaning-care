@@ -34,7 +34,6 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
     isPending: downloadIsPending,
     isFetching: downloadIsFetching,
   } = useInvoiceDownload(Number(params.id));
-  console.log(downloadIsFetching);
 
   const { mutate: deleteInvoice, isPending: deleteIsPending } =
     useDeleteInvoice();
