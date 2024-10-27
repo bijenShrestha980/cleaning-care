@@ -99,7 +99,7 @@ const StatusPopOver = ({
 
   React.useEffect(() => {
     if (updateUserQuoteStatusIsSuccess) {
-      // location.reload();
+      location.reload();
       queryClient.invalidateQueries({ queryKey: ["user-quote"] });
     }
   }, [queryClient, updateUserQuoteStatusIsSuccess]);

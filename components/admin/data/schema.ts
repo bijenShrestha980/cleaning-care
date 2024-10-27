@@ -74,11 +74,12 @@ export const serviceCategorySchema = z.object({
   servicecategoryitems: z
     .array(
       z.object({
+        id: z.number().optional(),
         item_name: z
           .string()
           .min(2, { message: "Item name is required." })
           .trim(),
-        price: z.string(),
+        price: z.string().optional(),
         status: z.enum(["active", "inactive"]),
       })
     )
@@ -316,10 +317,12 @@ export const quoteSchema = z.object({
     .optional(),
 });
 
-const categorySchema = z.object({
-  service_category_item_id: z.array(z.number()),
-  price: z.array(z.string()),
-});
+const categorySchema = z
+  .object({
+    service_category_item_id: z.array(z.number()),
+    price: z.array(z.string().max(7, { message: "Price is too high" })),
+  })
+  .optional();
 
 export const quoteToUserSchema = z.object({
   id: z.number().optional(),
