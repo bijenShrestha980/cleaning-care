@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { axios } from "@/lib/axios";
+import { axios, clearSessionCache } from "@/lib/axios";
 
 const getLogout = async () => {
   const response = await axios.get("/logout");
+  clearSessionCache();
   return response.data;
 };
 

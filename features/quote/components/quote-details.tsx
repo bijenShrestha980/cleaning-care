@@ -10,10 +10,10 @@ const QuoteDetails = () => {
     data: quoteData,
     isPending: quoteIsPending,
     isError: quoteIsError,
-    isFetching: quoteIsFetching,
+    // isFetching: quoteIsFetching,
   } = useAllQuote();
 
-  if (quoteIsPending || quoteIsFetching) {
+  if (quoteIsPending) {
     return <Loading />;
   }
   if (quoteIsError) {

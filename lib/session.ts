@@ -1,7 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { clearSessionCache } from "./axios";
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -61,7 +60,6 @@ export function deleteSession() {
 }
 
 export async function logout() {
-  clearSessionCache();
   deleteSession();
   redirect("/");
 }

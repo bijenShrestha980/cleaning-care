@@ -30,27 +30,20 @@ axiosLocal.interceptors.response.use(
 );
 
 // In-memory session cache
-let cachedSession: { token: string; expiresAt: number } | null = null;
+let cachedSession: { token: string } | null = null;
 
 // Function to verify and cache the session
 export const verifySession = async (): Promise<{ token: string } | null> => {
-  // Check if cached session exists and hasn't expired
-  if (cachedSession && Date.now() < cachedSession.expiresAt) {
-    return { token: cachedSession.token };
-  }
-
-  const response = await axiosLocal.get("/session");
-  const session = response.data.session;
-
-  if (session?.token) {
-    // Cache the session and set an expiration (e.g., 1 hour from now)
-    cachedSession = {
-      token: session.token,
-      expiresAt: Date.now() + 60 * 60 * 1000, // 1 hour expiry
+  if (cachedSession) {
+    return {
+      token: cachedSession.token,
     };
+  } else {
+    const response = await axiosLocal.get("/session");
+    const session = response.data.session;
+    cachedSession = session;
+    return session;
   }
-
-  return session;
 };
 
 // Axios instance
