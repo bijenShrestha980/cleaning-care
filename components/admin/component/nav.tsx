@@ -17,11 +17,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CustomImage } from "@/components/ui/custom-image";
-
-import { useLogout } from "@/features/logout/api/use-logout";
-import { user_1 } from "@/constants/images";
-import { axiosLocal } from "@/lib/axios";
 import SidebarToggle from "./sidebar-toggle";
+
+import { axiosLocal } from "@/lib/axios";
+import { user_1 } from "@/constants/images";
+import { useLogout } from "@/features/logout/api/use-logout";
 import NotificationButton from "@/features/notification/components/notification-button";
 
 const Nav = () => {

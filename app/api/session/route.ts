@@ -1,6 +1,5 @@
 import { verifySession } from "@/lib/dal";
 import { createSession } from "@/lib/session";
-import { NextResponse } from "next/server";
 
 export async function GET() {
   const session = await verifySession();

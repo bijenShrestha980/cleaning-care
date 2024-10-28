@@ -3,6 +3,8 @@ import { axios } from "@/lib/axios";
 import { QueryParams } from "@/types";
 import { createQueryParams } from "@/lib/create-query-params";
 
+const intervalMs = 60000;
+
 const getAllNotification = async () => {
   const response = await axios.get(`/all-notifications/read`);
   return response.data as any;
@@ -25,6 +27,6 @@ export const useNotification = (query?: QueryParams) =>
   useQuery({
     queryKey: ["notifications"],
     queryFn: () => getNotification(query || {}),
-    staleTime: 60 * 1000,
+    refetchInterval: intervalMs,
     // enabled: false,
   });
