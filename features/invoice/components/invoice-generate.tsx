@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { format } from "date-fns";
 import { ChevronsUpDown, ClockArrowUp, LoaderCircle } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -29,7 +30,6 @@ import { invoiceSchema } from "@/components/admin/data/schema";
 import { useCreateInvoice } from "../api/use-create-invoice";
 import { useInvoiceSend } from "../api/use-invoice";
 import { useUpdateInvoice } from "../api/use-update-invoice";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 
 const InvoiceGenerate = ({
@@ -44,16 +44,20 @@ const InvoiceGenerate = ({
   const queryClient = useQueryClient();
 
   const {
-    isSuccess: invoiceIsSuccess,
-    refetch,
-    isError: invoiceIsError,
-  } = useInvoiceSend(id);
-
-  const {
     mutate: createInvoice,
+    data: createInvoiceData,
     isPending: createIsPending,
     isSuccess: createIsSuccess,
   } = useCreateInvoice();
+
+  const {
+    isSuccess: invoiceIsSuccess,
+    refetch,
+    isError: invoiceIsError,
+    isFetching: invoiceIsFetching,
+  } = useInvoiceSend(
+    createInvoiceData?.invoice?.id ? createInvoiceData?.invoice?.id : null
+  );
 
   const {
     mutate: updateInvoice,
@@ -79,24 +83,23 @@ const InvoiceGenerate = ({
   }, [createIsSuccess]);
 
   useEffect(() => {
-    if (sendInvoice) {
+    if (sendInvoice && createInvoiceData?.invoice?.id) {
       refetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sendInvoice]);
 
   useEffect(() => {
-    if (invoiceIsSuccess) {
+    if (invoiceIsSuccess && sendInvoice) {
       setSendInvoice(false);
       setIsDialogOpen(false);
       toast({
         title: "Success",
         description: "Invoice sent successfully",
       });
-      queryClient.invalidateQueries({ queryKey: ["user-quote"] });
       location.reload();
     }
-  }, [invoiceIsSuccess, queryClient]);
+  }, [invoiceIsSuccess, sendInvoice]);
 
   useEffect(() => {
     if (updateIsSuccess) {
@@ -187,7 +190,7 @@ const InvoiceGenerate = ({
               render={({ field }) => (
                 <FormItem className="col-span-2">
                   <FormLabel className="font-medium text-sm text-[#191919]">
-                    Discount
+                    Discount %
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -212,9 +215,9 @@ const InvoiceGenerate = ({
               type="submit"
               animation={"scale_in"}
               className="w-full h-[46px]"
-              disabled={createIsPending || updateIsPending}
+              disabled={createIsPending || updateIsPending || invoiceIsFetching}
             >
-              {createIsPending ? (
+              {createIsPending || invoiceIsFetching ? (
                 <LoaderCircle className="animate-spin" width={20} height={20} />
               ) : (
                 "Generate invoice"

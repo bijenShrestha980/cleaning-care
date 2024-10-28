@@ -30,7 +30,6 @@ import { cn } from "@/lib/utils";
 import { quoteStatuses } from "@/constants/table-data";
 import { useUpdateUserQuoteStatus } from "@/features/quote/api/use-update-user-quote";
 import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
-import { useQueryClient } from "@tanstack/react-query";
 
 const QuoteStatus = ({ quote }: { quote: Quote }) => {
   const [value, setValue] = React.useState<string>(
@@ -84,7 +83,6 @@ const StatusPopOver = ({
   quoteConfirmation?: string;
 }) => {
   const [open, setOpen] = React.useState(false);
-  const queryClient = useQueryClient();
 
   const {
     mutate: updateUserQuoteStatus,
@@ -100,9 +98,8 @@ const StatusPopOver = ({
   React.useEffect(() => {
     if (updateUserQuoteStatusIsSuccess) {
       location.reload();
-      queryClient.invalidateQueries({ queryKey: ["user-quote"] });
     }
-  }, [queryClient, updateUserQuoteStatusIsSuccess]);
+  }, [updateUserQuoteStatusIsSuccess]);
 
   const handleSelect = async (currentValue: string) => {
     updateUserQuoteStatus({
@@ -115,7 +112,7 @@ const StatusPopOver = ({
   };
 
   if (updateUserQuoteStatusIsPending) {
-    return <Skeleton className="h-8" />;
+    return <Skeleton className="w-[134px] h-8" />;
   }
   return (
     <Popover open={open} onOpenChange={setOpen}>

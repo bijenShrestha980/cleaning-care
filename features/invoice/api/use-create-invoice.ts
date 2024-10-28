@@ -12,8 +12,13 @@ const postInvoice = async ({
   data: Invoice;
   id: number | string;
 }) => {
-  const response = await axios.post(`/invoices/${id}/generate`, data);
-  return response.data;
+  const response = (await axios.post(`/invoices/${id}/generate`, data)) as {
+    invoice: Invoice;
+    success: boolean;
+    message: string;
+    error: boolean;
+  };
+  return response;
 };
 
 const postInvoiceSearch = async (data: Invoice) => {
@@ -24,7 +29,7 @@ const postInvoiceSearch = async (data: Invoice) => {
 export const useCreateInvoice = () => {
   const router = useRouter();
   return useMutation({
-    mutationKey: ["invoice"],
+    mutationKey: ["invoice", "user-quote"],
     mutationFn: postInvoice,
     onSuccess: async (data) => {
       if (data?.error || data?.success === false) {

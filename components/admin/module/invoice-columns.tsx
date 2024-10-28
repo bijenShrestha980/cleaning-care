@@ -21,6 +21,19 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     },
   },
   {
+    accessorKey: "send_user_quote_id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Quote ID" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex w-[100%] items-center">
+          <span>#{row.getValue("send_user_quote_id")}</span>
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "invoice_number",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Invoice number" />

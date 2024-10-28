@@ -1,6 +1,6 @@
 "use client";
 import { format } from "date-fns";
-import { Download, LoaderCircle, Printer } from "lucide-react";
+import { Download, LoaderCircle } from "lucide-react";
 
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
@@ -14,6 +14,7 @@ import {
 import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
 import { useDeleteInvoice } from "@/features/invoice/api/use-delete-invoice";
+import { Fragment } from "react";
 
 const ViewInvoice = ({ params }: { params: { id: number } }) => {
   const {
@@ -33,7 +34,9 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
     refetch,
     isPending: downloadIsPending,
     isFetching: downloadIsFetching,
-  } = useInvoiceDownload(Number(params.id));
+  } = useInvoiceDownload(
+    invoiceData?.send_user_quote_id ? invoiceData?.send_user_quote_id : null
+  );
 
   const { mutate: deleteInvoice, isPending: deleteIsPending } =
     useDeleteInvoice();
@@ -56,6 +59,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                   src={logoColor}
                   alt="logo"
                   fill
+                  sizes="(max-width: 640px) 100px, 100px"
                   containerClassName="w-[100px] h-[75px]"
                 />
               </div>
@@ -126,7 +130,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                     Rate
                   </div>
                   <div className="text-end text-xs font-medium text-gray-500 uppercase">
-                    Amount
+                    Amount (AUD)
                   </div>
                 </div>
 
@@ -134,11 +138,8 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
 
                 {invoiceData.invoice_items &&
                   invoiceData.invoice_items.map((item, index) => (
-                    <>
-                      <div
-                        className="grid grid-cols-3 sm:grid-cols-4 gap-2"
-                        key={index}
-                      >
+                    <Fragment key={index}>
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                         <div className="col-span-full sm:col-span-2">
                           <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                             Item
@@ -163,7 +164,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                         </div>
                         <div>
                           <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                            Amount
+                            Amount (AUD)
                           </h5>
                           <p className="sm:text-end text-gray-800">
                             ${item.price}
@@ -180,7 +181,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                         }
                           `}
                       ></div>
-                    </>
+                    </Fragment>
                   ))}
               </div>
             </div>
@@ -190,7 +191,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                 <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
                   <dl className="grid sm:grid-cols-5 gap-x-3">
                     <dt className="col-span-3 font-semibold text-gray-800">
-                      Subtotal:
+                      Subtotal (including HST):
                     </dt>
                     <dd className="col-span-2 text-gray-500">
                       ${invoiceData.subtotal}
@@ -202,7 +203,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                       Surge fee:
                     </dt>
                     <dd className="col-span-2 text-gray-500">
-                      ${invoiceData.surge_fee}
+                      {invoiceData.surge_fee}%
                     </dd>
                   </dl>
 
@@ -217,7 +218,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
 
                   <dl className="grid sm:grid-cols-5 gap-x-3">
                     <dt className="col-span-3 font-semibold text-gray-800">
-                      Total:
+                      Total (AUD):
                     </dt>
                     <dd className="col-span-2 text-gray-500">
                       ${invoiceData.total_amount}
