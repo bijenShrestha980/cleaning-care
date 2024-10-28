@@ -7,14 +7,9 @@ declare module "axios" {
   }
 }
 
-const baseUrlLocal =
-  process.env.NODE_ENV === "development"
-    ? process.env.api_dev || ""
-    : process.env.api_prod || "";
-
 // Axios instance
 export const axiosLocal = Axios.create({
-  baseURL: `${baseUrlLocal}/api`,
+  baseURL: `/api`,
 });
 
 axiosLocal.interceptors.request.use(
