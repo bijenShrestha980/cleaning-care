@@ -24,7 +24,7 @@ const getInvoiceSend = async (id: number) => {
 
 const getInvoiceDownload = async (id: number) => {
   const response = (await axios.get(`/invoices/${id}/download`)) as Blob;
-  download(response, "invoice_${id}.pdf", "application/pdf");
+  download(response, `invoice_${id}.pdf`, "application/pdf");
 };
 
 export const useAllInvoice = (query?: QueryParams) =>
