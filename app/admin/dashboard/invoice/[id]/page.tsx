@@ -1,4 +1,5 @@
 "use client";
+import { Fragment } from "react";
 import { format } from "date-fns";
 import { Download, LoaderCircle } from "lucide-react";
 
@@ -14,7 +15,6 @@ import {
 import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
 import { useDeleteInvoice } from "@/features/invoice/api/use-delete-invoice";
-import { Fragment } from "react";
 
 const ViewInvoice = ({ params }: { params: { id: number } }) => {
   const {
@@ -34,9 +34,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
     refetch,
     isPending: downloadIsPending,
     isFetching: downloadIsFetching,
-  } = useInvoiceDownload(
-    invoiceData?.send_user_quote_id ? invoiceData?.send_user_quote_id : null
-  );
+  } = useInvoiceDownload(params.id);
 
   const { mutate: deleteInvoice, isPending: deleteIsPending } =
     useDeleteInvoice();
@@ -121,7 +119,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
               <div className="border border-gray-200 p-4 rounded-lg space-y-4">
                 <div className="hidden sm:grid sm:grid-cols-4">
                   <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">
-                    Item
+                    Service
                   </div>
                   {/* <div className="text-start text-xs font-medium text-gray-500 uppercase">
                     Qty
@@ -139,11 +137,14 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                 {invoiceData.invoice_items &&
                   invoiceData.invoice_items.map((item, index) => (
                     <Fragment key={index}>
-                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 items-end">
                         <div className="col-span-full sm:col-span-2">
                           <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                            Item
+                            Service
                           </h5>
+                          <p className="text-slate-400">
+                            {item.service_category.category_name}
+                          </p>
                           <p className="font-medium text-gray-800">
                             {item.service_category_item.item_name}
                           </p>

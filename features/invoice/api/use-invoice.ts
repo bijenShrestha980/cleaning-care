@@ -24,11 +24,12 @@ const getInvoiceSend = async (id: number | null) => {
   }
 };
 
-const getInvoiceDownload = async (id: number | null) => {
-  if (id) {
-    const response = (await axios.get(`/invoices/${id}/download`)) as Blob;
-    download(response, "invoice.pdf", "application/pdf");
-  }
+const getInvoiceDownload = async (id: number) => {
+  const response = (await axios.get(`/invoices/${id}/download`, {
+    responseType: "blob",
+  })) as BlobPart;
+  const blob = new Blob([response], { type: "application/pdf" });
+  download(blob, `invoice_${id}.pdf`, "application/pdf");
 };
 
 export const useAllInvoice = (query?: QueryParams) =>
@@ -50,9 +51,9 @@ export const useInvoiceSend = (id: number | null) =>
     enabled: false,
   });
 
-export const useInvoiceDownload = (id: number | null) =>
+export const useInvoiceDownload = (id: number) =>
   useQuery({
-    queryKey: ["invoice", id],
+    queryKey: ["invoice-download", id],
     queryFn: () => getInvoiceDownload(id),
     enabled: false,
   });

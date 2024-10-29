@@ -616,6 +616,10 @@ export const invoiceSchema = z.object({
           item_name: z.string(),
           price: z.string(),
         }),
+        service_category: z.object({
+          id: z.number(),
+          category_name: z.string(),
+        }),
       })
     )
     .optional(),
