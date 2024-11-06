@@ -162,13 +162,20 @@ const ChangePasswordForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" animation={"scale_in"} disabled={createIsPending}>
-          {createIsPending ? (
-            <LoaderCircle className="animate-spin" width={20} height={20} />
-          ) : (
-            "Save changes"
-          )}
-        </Button>
+        <div className="flex justify-end gap-4">
+          <Button
+            type="submit"
+            animation={"scale_in"}
+            disabled={createIsPending}
+            className="w-full md:w-fit"
+          >
+            {createIsPending ? (
+              <LoaderCircle className="animate-spin" width={20} height={20} />
+            ) : (
+              "Save changes"
+            )}
+          </Button>
+        </div>
       </form>
     </Form>
   );

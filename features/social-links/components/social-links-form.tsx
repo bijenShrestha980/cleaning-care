@@ -140,7 +140,7 @@ const FormComponent = ({
             type="submit"
             animation={"scale_in"}
             disabled={createIsPending}
-            className="w-full md:w-[86px]"
+            className="w-full md:w-fit"
           >
             {createIsPending ? (
               <LoaderCircle className="animate-spin" width={20} height={20} />
