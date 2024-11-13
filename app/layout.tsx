@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter as FontInter } from "next/font/google";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import TanstackProvider from "@/providers/tanstack-provider";
@@ -41,6 +42,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-QMPK2W9W6E"
+        ></Script>
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          
+            gtag('config', 'G-QMPK2W9W6E');
+          `}
+        </Script>
+      </head>
       <body
         className={`${fontInter.variable} ${montserratSans.variable} ${montserratItalic.variable} ${bricolageGrotesqueSans.variable} min-h-screen bg-background antialiased`}
       >

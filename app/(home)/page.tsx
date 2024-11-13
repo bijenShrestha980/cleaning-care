@@ -6,6 +6,7 @@ import RequestCallbackForm from "@/features/request-callback/components/request-
 import ServicesSection from "@/features/services/components/services-section";
 import WhyChooseUsSection from "@/features/why-choose-us-heading/components/why-choose-us-section";
 import { banner1 } from "@/constants/images";
+import Review from "@/features/review/components/review";
 
 const services = [
   {
@@ -52,42 +53,7 @@ export default function Home() {
         {/* Why Choose Us */}
         <WhyChooseUsSection />
         {/* Customer Review */}
-        <section className="flex flex-col items-center">
-          <div className="mb-12 max-w-[765px] flex flex-col items-center">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
-              Customer Reviews
-            </h4>
-            <p className="text-[#191919] opacity-60 text-base md:text-xl text-center">
-              Read what our satisfied customers have to say about our cleaning
-              services.
-            </p>
-          </div>
-          <div className="grid lg:grid-cols-2 items-center gap-[72px]">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="px-4 w-full flex flex-row items-center gap-4"
-              >
-                <CustomImage
-                  src={service.img}
-                  alt={service.title}
-                  containerClassName="w-[64px] h-[64px] shrink-0"
-                  fill
-                  sizes="64px"
-                  className="object-cover object-center rounded-full"
-                />
-                <div className="flex flex-col gap-1">
-                  <h5 className="text-primary text-base md:text-xl font-semibold">
-                    {service.title}
-                  </h5>
-                  <p className="text-primary line-clamp-4">
-                    {service.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <Review />
         <Divider />
         {/* Customer Review */}
         <CustomerReview />
