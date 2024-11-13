@@ -291,7 +291,7 @@ const CategoryForm = ({
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
             >
-              Cancle
+              Cancel
             </Button>
           </Link>
           <Button

@@ -319,7 +319,7 @@ const QuotActionForm = ({
               className="w-full md:w-[86px]"
               disabled={createIsPending || deleteIsPending}
             >
-              Cancle
+              Cancel
             </Button>
           </Link>
           {quote.status === "received_from_user" && (
