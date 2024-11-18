@@ -5,9 +5,9 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Quote } from "../data/schema";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { confirmations, quoteStatuses } from "@/constants/table-data";
-import { QuoteTableRowActions } from "./quote-table-row-actions";
 import { Badge } from "@/components/ui/badge";
+import { confirmations } from "@/constants/table-data";
+import { QuoteTableRowActions } from "./quote-table-row-actions";
 
 export const quoteColumns: ColumnDef<Quote>[] = [
   {

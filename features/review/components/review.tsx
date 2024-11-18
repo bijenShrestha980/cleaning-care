@@ -17,7 +17,7 @@ const Review = async () => {
   };
 
   // Shuffle the reviews array and take the first 4 items
-  const shuffledReviews = reviews.result.reviews.sort(
+  const shuffledReviews = reviews?.result?.reviews.sort(
     () => 0.5 - Math.random()
   );
   const randomReviews = shuffledReviews.slice(0, 4);

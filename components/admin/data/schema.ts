@@ -1,6 +1,7 @@
 import { StaticImageData } from "next/image";
 import { z } from "zod";
 import validator, { isPostalCode } from "validator";
+import { stat } from "fs";
 
 // Define the file size limit and accepted file types as constants
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes
@@ -265,13 +266,15 @@ export const quoteSchema = z.object({
       message: "Email is required",
     })
     .email(),
-  phone_number: z.string().refine(validator.isMobilePhone),
+  phone_number: z
+    .string()
+    .refine((value) => /^(\+614|\+61|0)[0-9]{9}$/.test(value)),
   address: z.string().min(1, {
     message: "Address is required",
   }),
   postal_code: z.string(),
   quote: z.string().min(1, {
-    message: "Quote is required",
+    message: "Please write a detailed description of the work required",
   }),
   service_category_ids: z.array(z.number()).optional(),
   status: z
@@ -591,6 +594,22 @@ export const bankAccountDetailsSchema = z.object({
   account_bsb: z.string().min(1, { message: "Account bsb is required" }),
 });
 
+export const newItemSchema = z
+  .array(
+    z.object({
+      price: z.number(),
+      item_name: z.string(),
+      service_category_id: z.string(),
+      service_category_item_id: z.string(),
+      status: z.enum(["active", "inactive"]),
+      // service_category: z.object({
+      //   id: z.number(),
+      //   category_name: z.string(),
+      // }),
+    })
+  )
+  .optional();
+
 export const invoiceSchema = z.object({
   id: z.number().optional(),
   send_user_quote_id: z.number().optional(),
@@ -612,6 +631,8 @@ export const invoiceSchema = z.object({
     .array(
       z.object({
         price: z.number(),
+        service_category_id: z.number(),
+        service_category_item_id: z.number(),
         service_category_item: z.object({
           item_name: z.string(),
           price: z.string(),
@@ -620,6 +641,22 @@ export const invoiceSchema = z.object({
           id: z.number(),
           category_name: z.string(),
         }),
+      })
+    )
+    .optional(),
+  // invoice_items: z.object({}).optional(),
+  new_items: z
+    .array(
+      z.object({
+        price: z.number(),
+        item_name: z.string(),
+        service_category_id: z.string(),
+        service_category_item_id: z.string(),
+        status: z.enum(["active", "inactive"]),
+        // service_category: z.object({
+        //   id: z.number(),
+        //   category_name: z.string(),
+        // }),
       })
     )
     .optional(),
@@ -641,6 +678,7 @@ export const invoiceSchema = z.object({
       ]),
     })
     .optional(),
+
   subtotal: z.number().optional(),
   surge_fee: z.number().optional(),
   created_at: z.string().optional(),
@@ -679,5 +717,7 @@ export type WhyChooseUs = z.infer<typeof whyChooseUsSchema>;
 export type WhyChooseUsFeatures = z.infer<typeof whyChooseUsFeaturesSchema>;
 
 export type BankAccountDetails = z.infer<typeof bankAccountDetailsSchema>;
+
+export type NewItem = z.infer<typeof newItemSchema>;
 
 export type Invoice = z.infer<typeof invoiceSchema>;

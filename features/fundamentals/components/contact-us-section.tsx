@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import GoogleMapComponent from "./map";
+import GoogleMapComponent from "../../../components/map";
 import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
-import { Skeleton } from "./ui/skeleton";
-import Error from "./ui/error";
+import { Skeleton } from "../../../components/ui/skeleton";
+import Error from "../../../components/ui/error";
 
-const CustomerReview = () => {
+const ContactUsSection = () => {
   const {
     data: fundamentalData,
     isPending: fundamentalIsPending,
@@ -32,6 +32,15 @@ const CustomerReview = () => {
           </div>
         ) : (
           <div>
+            {/* <iframe
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d405526.5552027223!2d149.08495203508016!3d-35.18127231476792!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e05188a55c96bdf%3A0x3e8aa5c34f28461d!2sCleaningCare!5e0!3m2!1sen!2snp!4v1731787450069!5m2!1sen!2snp"
+              width="600"
+              height="450"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe> */}
             <GoogleMapComponent
               value={
                 typeof fundamentalData?.google_map === "string"
@@ -119,4 +128,4 @@ const CustomerReview = () => {
   );
 };
 
-export default CustomerReview;
+export default ContactUsSection;

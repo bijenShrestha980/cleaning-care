@@ -1,7 +1,7 @@
 "use client";
 import { Fragment } from "react";
 import { format } from "date-fns";
-import { Download, LoaderCircle } from "lucide-react";
+import { Download, LoaderCircle, Send } from "lucide-react";
 
 import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
@@ -11,6 +11,7 @@ import { logoColor } from "@/constants/icons";
 import {
   useInvoiceById,
   useInvoiceDownload,
+  useInvoiceSend,
 } from "@/features/invoice/api/use-invoice";
 import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
@@ -23,6 +24,13 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
     isError,
     isFetching,
   } = useInvoiceById(params.id);
+
+  const {
+    isSuccess: invoiceIsSuccess,
+    refetch: refetchInvoice,
+    isError: invoiceIsError,
+    isFetching: invoiceIsFetching,
+  } = useInvoiceSend(params.id);
 
   const {
     data: fundamentalData,
@@ -51,28 +59,39 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
       <div className="max-w-[85rem] sm:px-6 lg:px-8 mx-auto my-4 sm:my-10">
         <div className="w-full md:w-11/12 lg:w-3/4 mx-auto">
           <div className="flex flex-col p-4 sm:p-10 bg-white rounded-xl shadow-[rgba(0,0,0,0.15)_0px_5px_15px_0px]">
-            <div className="flex justify-between">
-              <div>
-                <CustomImage
-                  src={logoColor}
-                  alt="logo"
-                  fill
-                  sizes="(max-width: 640px) 100px, 100px"
-                  containerClassName="w-[100px] h-[75px]"
-                />
-              </div>
-
-              <div className="text-end">
-                <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">
-                  Invoice # {invoiceData.invoice_number}
+            <div className="border-b pb-2">
+              <CustomImage
+                src={logoColor}
+                alt="logo"
+                fill
+                sizes="(max-width: 640px) 100px, 100px"
+                containerClassName="w-[140px] h-[105px]"
+              />
+              <div className="flex justify-center">
+                <h2 className="text-md md:text-3xl font-semibold text-gray-800">
+                  Invoice
                 </h2>
+              </div>
+              <div className="text-end">
                 <span className="mt-1 block text-gray-500">
                   {invoiceData.send_user_quote_id}
                 </span>
-
                 <address className="mt-4 not-italic text-gray-800">
                   {fundamentalData.site_address}
                 </address>
+                <span className="mt-1 block text-gray-500">
+                  {fundamentalData.contact_number1}
+                  {fundamentalData.contact_number2
+                    ? `/${fundamentalData.contact_number2}`
+                    : ""}
+                </span>
+                <span className="mt-1 block text-gray-500">
+                  {fundamentalData.email1}
+                  {fundamentalData.email2 ? `/${fundamentalData.email2}` : ""}
+                </span>
+                <span className="mt-1 block text-gray-500">
+                  www.cleaningcare.au
+                </span>
               </div>
             </div>
 
@@ -81,19 +100,30 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                 <h3 className="text-lg font-semibold text-gray-800">
                   Bill to:
                 </h3>
-                <h3 className="text-lg font-semibold text-gray-800">
+                <p className="text-lg text-gray-600">
                   {invoiceData.send_user_quote?.full_name}
-                </h3>
-                <address className="mt-2 not-italic text-gray-500">
+                </p>
+                <address className="text-md text-gray-600">
                   {invoiceData.send_user_quote?.address}
                 </address>
               </div>
 
               <div className="sm:text-end space-y-2">
                 <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    Invoice Details:
+                  </h3>
                   <dl className="grid sm:grid-cols-5 gap-x-3">
                     <dt className="col-span-3 font-semibold text-gray-800">
-                      Invoice date:
+                      Invoice Number:
+                    </dt>
+                    <dd className="col-span-2 text-gray-500">
+                      {invoiceData.invoice_number}
+                    </dd>
+                  </dl>
+                  <dl className="grid sm:grid-cols-5 gap-x-3">
+                    <dt className="col-span-3 font-semibold text-gray-800">
+                      Date:
                     </dt>
                     <dd className="col-span-2 text-gray-500">
                       {invoiceData.created_at
@@ -116,49 +146,28 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
             </div>
 
             <div className="mt-6">
-              <div className="border border-gray-200 p-4 rounded-lg space-y-4">
-                <div className="hidden sm:grid sm:grid-cols-4">
-                  <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">
-                    Service
+              <div className="border border-gray-200 rounded-md space-y-4">
+                <div className="hidden sm:grid sm:grid-cols-3 bg-slate-100 p-2">
+                  <div className="sm:col-span-2 text-xs font-semibold uppercase">
+                    S.N. Service
                   </div>
-                  {/* <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                    Qty
-                  </div> */}
-                  <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                    Rate
-                  </div>
-                  <div className="text-end text-xs font-medium text-gray-500 uppercase">
-                    Amount (AUD)
+                  <div className="text-end text-xs font-semibold uppercase">
+                    Price (AUD)
                   </div>
                 </div>
-
-                <div className="hidden sm:block border-b border-gray-200"></div>
-
                 {invoiceData.invoice_items &&
                   invoiceData.invoice_items.map((item, index) => (
                     <Fragment key={index}>
-                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 items-end">
+                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end">
                         <div className="col-span-full sm:col-span-2">
                           <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                             Service
                           </h5>
-                          <p className="text-slate-400">
-                            {item.service_category.category_name}
-                          </p>
                           <p className="font-medium text-gray-800">
                             {item.service_category_item.item_name}
                           </p>
                         </div>
-                        {/* <div>
-                          <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                            Qty
-                          </h5>
-                          <p className="text-gray-800">1</p>
-                        </div> */}
                         <div>
-                          <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                            Rate
-                          </h5>
                           <p className="text-gray-800">
                             {item.service_category_item.price}
                           </p>
@@ -275,7 +284,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
             </Button>
             <Button
               variant={"outline"}
-              className="flex gap-2"
+              className="flex gap-2 md:w-[156px]"
               type="button"
               disabled={downloadIsFetching}
               onClick={() => refetch()}
@@ -289,12 +298,29 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                 </>
               )}
             </Button>
+            <Button
+              className="flex gap-2 md:w-[156px] bg-gradient-to-r from-slate-600 to-slate-500"
+              // variant={"success"}
+              type="button"
+              disabled={invoiceIsFetching}
+              onClick={() => refetchInvoice()}
+            >
+              {invoiceIsFetching ? (
+                <LoaderCircle className="animate-spin" width={20} height={20} />
+              ) : (
+                <>
+                  <Send size={16} />
+                  Send Invoice
+                </>
+              )}
+            </Button>
             <InvoiceGenerate
               id={Number(params.id)}
               invoice={{
                 discount: invoiceData.discount,
                 due_date: invoiceData.due_date,
               }}
+              invoice_items={invoiceData.invoice_items}
             />
             {/* <Button className="flex gap-2" >
               <Printer size={16} />

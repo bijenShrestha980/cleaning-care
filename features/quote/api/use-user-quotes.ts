@@ -18,12 +18,12 @@ const getQuote = async (id: number) => {
 
 export const useAllQuote = (query?: QueryParams) =>
   useQuery({
-    queryKey: ["user-send-quote", query],
+    queryKey: ["user-quote"],
     queryFn: () => getAllQuote(query || {}),
   });
 
 export const useQuote = (id: number) =>
   useQuery({
-    queryKey: ["user-send-quote", id],
+    queryKey: ["user-quote", id],
     queryFn: () => getQuote(id),
   });

@@ -1,33 +1,10 @@
 import Banner from "@/components/banner";
 import Divider from "@/components/ui/divider";
-import { CustomImage } from "@/components/ui/custom-image";
-import CustomerReview from "@/components/customer-review";
+import ContactUs from "@/features/fundamentals/components/contact-us-section";
 import RequestCallbackForm from "@/features/request-callback/components/request-callback-form";
 import ServicesSection from "@/features/services/components/services-section";
 import WhyChooseUsSection from "@/features/why-choose-us-heading/components/why-choose-us-section";
-import { banner1 } from "@/constants/images";
 import Review from "@/features/review/components/review";
-
-const services = [
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-];
 
 export default function Home() {
   return (
@@ -55,8 +32,8 @@ export default function Home() {
         {/* Customer Review */}
         <Review />
         <Divider />
-        {/* Customer Review */}
-        <CustomerReview />
+        {/* Contsct Us */}
+        <ContactUs />
         <Divider />
         {/* Request a Callback */}
         <RequestCallbackForm />

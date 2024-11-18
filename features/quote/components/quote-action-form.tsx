@@ -9,15 +9,10 @@ import { LoaderCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormField } from "@/components/ui/form";
 
 import {
   Quote,
@@ -27,9 +22,6 @@ import {
 import { useCreateQuoteToUser } from "../api/use-create-user-quote";
 import { useDeleteQuote } from "../api/use-delete-user-quote";
 import QuoteStatus from "./quote-status";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 
 const QuotActionForm = ({
   quote,
@@ -104,7 +96,7 @@ const QuotActionForm = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
         <div className="grid md:grid-cols-2 gap-4 w-full">
-          <div className="p-4 bg-primary-foreground rounded-lg border border-dashed">
+          <div className="p-4 h-fit bg-primary-foreground rounded-lg border border-dashed">
             <h5 className="font-semibold mb-4">Client Information</h5>
             <div className="flex flex-col gap-3">
               <span className="flex w-full bg-slate-100 rounded-md p-3">

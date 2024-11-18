@@ -190,7 +190,7 @@ const CategoryForm = ({
                       Item name
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Item 1" {...field} />
+                      <Input placeholder={`Item ${index + 1}`} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
