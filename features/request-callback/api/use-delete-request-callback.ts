@@ -25,7 +25,7 @@ export const useDeleteRequestCallback = (id: any) => {
           title: "Deleted Successfully",
           variant: "default",
         });
-        router.push("/admin/dashboard/request-callback");
+        router.push("/cleaning-care-admin/dashboard/request-callback");
       }
     },
     onError: (error) => {

@@ -62,7 +62,7 @@ export const useCreateQuoteToUser = () => {
           title: "Success",
           description: "Quote sent to user successfully",
         });
-        router.push("/admin/dashboard/quote");
+        router.push("/cleaning-care-admin/dashboard/quote");
       }
     },
     onError: (error) => {

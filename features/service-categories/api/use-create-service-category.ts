@@ -24,7 +24,7 @@ export const useCreateServiceCategory = () => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/service/categories");
+        router.push("/cleaning-care-admin/dashboard/service/categories");
       }
     },
     onError: (error) => {

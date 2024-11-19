@@ -74,7 +74,7 @@ export const whyChooseUsColumns: ColumnDef<WhyChooseUs>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/why-choose-us/heading/${row.original.id}`}
+          href={`/cleaning-care-admin/dashboard/why-choose-us/heading/${row.original.id}`}
         >
           View
         </Link>

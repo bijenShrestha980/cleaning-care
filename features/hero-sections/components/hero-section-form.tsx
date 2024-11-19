@@ -239,7 +239,7 @@ const HeroSectionForm = ({
             </Button>
           )}
           <Link
-            href="/admin/dashboard/settings/landing-page"
+            href="/cleaning-care-admin/dashboard/settings/landing-page"
             className="w-full md:w-[86px]"
           >
             <Button
@@ -249,7 +249,7 @@ const HeroSectionForm = ({
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
             >
-              Cancle
+              Cancel
             </Button>
           </Link>
           <Button

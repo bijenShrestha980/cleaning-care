@@ -30,7 +30,7 @@ export const useReadNotification = () => {
         //   title: "Success",
         //   description: "Invoice generated successfully",
         // });
-        // router.push("/admin/dashboard/quote");
+        // router.push("/cleaning-care-admin/dashboard/quote");
       }
     },
     onError: (error) => {

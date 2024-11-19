@@ -19,8 +19,8 @@ import {
 import { CustomImage } from "@/components/ui/custom-image";
 import SidebarToggle from "./sidebar-toggle";
 
+import { logoColor } from "@/constants/icons";
 import { axiosLocal } from "@/lib/axios";
-import { user_1 } from "@/constants/images";
 import { useLogout } from "@/features/logout/api/use-logout";
 import NotificationButton from "@/features/notification/components/notification-button";
 
@@ -33,7 +33,7 @@ const Nav = () => {
   const logout = async () => {
     refetch();
     await axiosLocal.get("/logout");
-    router.refresh();
+    router.push("/cleaning-care-admin");
   };
 
   return (
@@ -48,7 +48,7 @@ const Nav = () => {
           <DropdownMenu>
             <DropdownMenuTrigger className="focus-visible:outline-none h-10 flex justify-between items-center gap-1">
               <CustomImage
-                src={user_1}
+                src={logoColor}
                 alt="avatar"
                 fill
                 sizes="40px"
@@ -61,7 +61,7 @@ const Nav = () => {
               <div className="flex gap-3 px-4 py-[14px]">
                 <div className="relative">
                   <CustomImage
-                    src={user_1}
+                    src={logoColor}
                     alt="avatar"
                     fill
                     sizes="40px"

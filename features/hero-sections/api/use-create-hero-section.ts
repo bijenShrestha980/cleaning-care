@@ -24,7 +24,7 @@ export const useCreateHeroSection = () => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/settings/landing-page");
+        router.push("/cleaning-care-admin/dashboard/settings/landing-page");
       }
     },
     onError: (error) => {

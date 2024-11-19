@@ -190,7 +190,7 @@ const CategoryForm = ({
                       Item name
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Item 1" {...field} />
+                      <Input placeholder={`Item ${index + 1}`} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -281,7 +281,7 @@ const CategoryForm = ({
             </Button>
           )}
           <Link
-            href="/admin/dashboard/service/categories"
+            href="/cleaning-care-admin/dashboard/service/categories"
             className="w-full sm:w-[86px]"
           >
             <Button
@@ -291,7 +291,7 @@ const CategoryForm = ({
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
             >
-              Cancle
+              Cancel
             </Button>
           </Link>
           <Button

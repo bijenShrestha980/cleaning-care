@@ -33,6 +33,7 @@ import {
 import { quoteSchema } from "@/components/admin/data/schema";
 import { useCreateQuote } from "@/features/quote/api/use-create-user-quote";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 interface Category {
   id?: number;
@@ -65,7 +66,7 @@ const QuoteForm = ({
     defaultValues: {
       full_name: "",
       email: "",
-      phone_number: "",
+      phone_number: "+61",
       address: "",
       postal_code: "",
       quote: "",
@@ -226,8 +227,11 @@ const QuoteForm = ({
                                 category.id &&
                                 selectedCategories.includes(category.id)
                             )
-                            .map((category) => category.label)
-                            .join(", ")
+                            .map((category) => (
+                              <Badge key={category.id} className="mr-2">
+                                {category.label}
+                              </Badge>
+                            ))
                         : "Select category..."}
                     </div>
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
