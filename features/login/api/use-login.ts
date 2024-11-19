@@ -37,7 +37,7 @@ export const useLogin = () => {
       } else {
         try {
           await createSession(data.token);
-          router.push("/admin/dashboard");
+          router.push("/cleaning-care-admin/dashboard");
         } catch (error) {
           console.log("error", error);
         }

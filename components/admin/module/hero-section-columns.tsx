@@ -83,7 +83,7 @@ export const heroSectionColumns: ColumnDef<HeroSection>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/settings/landing-page/${row.original.id}`}
+          href={`/cleaning-care-admin/dashboard/settings/landing-page/${row.original.id}`}
         >
           View
         </Link>

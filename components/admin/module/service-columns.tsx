@@ -80,7 +80,7 @@ export const serviceColumns: ColumnDef<Service>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/service/service-list/${row.original.id}`}
+          href={`/cleaning-care-admin/dashboard/service/service-list/${row.original.id}`}
         >
           View
         </Link>

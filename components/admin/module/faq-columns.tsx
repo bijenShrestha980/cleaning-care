@@ -76,7 +76,7 @@ export const faqColumns: ColumnDef<Faq>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/settings/faqs/view-faqs`}
+          href={`/cleaning-care-admin/dashboard/settings/faqs/view-faqs`}
         >
           View
         </Link>

@@ -27,7 +27,7 @@ const NotificationDetails = () => {
     send_user_quote_id: number;
     id: number;
   }) => {
-    router.push(`/admin/dashboard/quote/${send_user_quote_id}`);
+    router.push(`/cleaning-care-admin/dashboard/quote/${send_user_quote_id}`);
     readNotification({
       data: {
         id,

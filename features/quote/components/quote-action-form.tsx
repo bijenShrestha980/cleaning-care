@@ -304,7 +304,10 @@ const QuotActionForm = ({
               )}
             </Button>
           )}
-          <Link href="/admin/dashboard/quote" className="w-full sm:w-[86px]">
+          <Link
+            href="/cleaning-care-admin/dashboard/quote"
+            className="w-full sm:w-[86px]"
+          >
             <Button
               variant={"outline"}
               animation={"scale_in"}

@@ -24,7 +24,7 @@ export const useCreateWhyChooseUsFeatures = () => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/why-choose-us/features");
+        router.push("/cleaning-care-admin/dashboard/why-choose-us/features");
       }
     },
     onError: (error) => {

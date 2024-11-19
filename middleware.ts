@@ -3,8 +3,8 @@ import { cookies } from "next/headers";
 import { decrypt } from "@/lib/session";
 
 // 1. Specify protected and public routes
-const protectedRoutesPrefix = "/admin/dashboard";
-const publicRoutes = ["/admin"];
+const protectedRoutesPrefix = "/cleaning-care-admin/dashboard";
+const publicRoutes = ["/cleaning-care-admin"];
 
 export default async function middleware(req: NextRequest) {
   // 2. Check if the current route is protected or public
@@ -16,14 +16,16 @@ export default async function middleware(req: NextRequest) {
   const cookie = cookies().get("session")?.value;
   const session = await decrypt(cookie);
 
-  // 4. Redirect to /admin/dashboard if the user is authenticated and on a public route
+  // 4. Redirect to /cleaning-care-admin/dashboard if the user is authenticated and on a public route
   if (isPublicRoute && session?.data) {
-    return NextResponse.redirect(new URL("/admin/dashboard", req.nextUrl));
+    return NextResponse.redirect(
+      new URL("/cleaning-care-admin/dashboard", req.nextUrl)
+    );
   }
 
-  // 5. Redirect to /admin if the user is not authenticated and on a protected route
+  // 5. Redirect to /cleaning-care-admin if the user is not authenticated and on a protected route
   if (isProtectedRoute && !session?.data) {
-    return NextResponse.redirect(new URL("/admin", req.nextUrl));
+    return NextResponse.redirect(new URL("/cleaning-care-admin", req.nextUrl));
   }
 
   return NextResponse.next();

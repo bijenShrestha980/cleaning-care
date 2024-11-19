@@ -10,7 +10,7 @@ import {
 
 const adminRoutes = [
   {
-    layout: "admin/dashboard",
+    layout: "cleaning-care-admin/dashboard",
     sidebar: true,
     pages: [
       {

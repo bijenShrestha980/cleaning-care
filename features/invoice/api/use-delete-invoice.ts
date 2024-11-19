@@ -26,7 +26,7 @@ export const useDeleteInvoice = () => {
           description: data?.message,
           variant: "default",
         });
-        router.push("/admin/dashboard/invoice");
+        router.push("/cleaning-care-admin/dashboard/invoice");
       }
     },
     onError: (error) => {

@@ -281,7 +281,7 @@ const CategoryForm = ({
             </Button>
           )}
           <Link
-            href="/admin/dashboard/service/categories"
+            href="/cleaning-care-admin/dashboard/service/categories"
             className="w-full sm:w-[86px]"
           >
             <Button

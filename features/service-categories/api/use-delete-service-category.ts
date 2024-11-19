@@ -25,7 +25,7 @@ export const useDeleteServiceCategory = () => {
           title: "Deleted Successfully",
           variant: "default",
         });
-        router.push("/admin/dashboard/service/categories");
+        router.push("/cleaning-care-admin/dashboard/service/categories");
       }
     },
     onError: (error) => {

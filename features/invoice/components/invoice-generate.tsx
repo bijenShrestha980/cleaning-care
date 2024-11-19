@@ -81,14 +81,15 @@ const InvoiceGenerate = ({
     isSuccess: createIsSuccess,
   } = useCreateInvoice();
 
-  const {
-    isSuccess: invoiceIsSuccess,
-    refetch,
-    isError: invoiceIsError,
-    isFetching: invoiceIsFetching,
-  } = useInvoiceSend(
-    createInvoiceData?.invoice?.id ? createInvoiceData?.invoice?.id : null
-  );
+  // const {
+  //   isSuccess: invoiceIsSuccess,
+  //   refetch,
+  //   isError: invoiceIsError,
+  //   isFetching: invoiceIsFetching,
+  // } = useInvoiceSend(
+  //   createInvoiceData?.invoice?.id ? createInvoiceData?.invoice?.id : null
+  // );
+  console.log(createInvoiceData?.invoice?.id);
 
   const {
     mutate: updateInvoice,
@@ -136,7 +137,9 @@ const InvoiceGenerate = ({
 
   useEffect(() => {
     if (createIsSuccess) {
-      router.push(`/admin/dashboard/invoice/${createInvoiceData?.invoice?.id}`);
+      router.push(
+        `/cleaning-care-admin/dashboard/invoice/${createInvoiceData?.invoice?.id}`
+      );
     }
   }, [createInvoiceData?.invoice?.id, createIsSuccess, router]);
 
@@ -399,7 +402,7 @@ const InvoiceGenerate = ({
                                 <FormMessage />
                               </FormItem>
                             )}
-                          />{" "}
+                          />
                           <FormField
                             control={form.control}
                             name={`new_items.${index}.price`}
@@ -435,9 +438,9 @@ const InvoiceGenerate = ({
               type="submit"
               animation={"scale_in"}
               className="w-full h-[46px]"
-              disabled={createIsPending || updateIsPending || invoiceIsFetching}
+              disabled={createIsPending || updateIsPending}
             >
-              {createIsPending || invoiceIsFetching ? (
+              {createIsPending ? (
                 <LoaderCircle className="animate-spin" width={20} height={20} />
               ) : invoice ? (
                 "Update Invoice"

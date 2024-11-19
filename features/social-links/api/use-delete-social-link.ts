@@ -25,7 +25,7 @@ export const useDeleteService = () => {
           title: "Deleted Successfully",
           variant: "default",
         });
-        router.push("/admin/dashboard/settings/fundamental");
+        router.push("/cleaning-care-admin/dashboard/settings/fundamental");
       }
     },
     onError: (error) => {

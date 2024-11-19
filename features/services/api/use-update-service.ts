@@ -30,7 +30,7 @@ export const useUpdateService = (id: number | string | undefined) => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/service/service-list");
+        router.push("/cleaning-care-admin/dashboard/service/service-list");
       }
     },
     onError: (error) => {

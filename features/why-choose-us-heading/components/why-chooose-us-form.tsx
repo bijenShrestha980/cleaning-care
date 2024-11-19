@@ -158,7 +158,7 @@ const WhyChooseUsForm = ({
             </Button>
           )}
           <Link
-            href="/admin/dashboard/why-choose-us/heading"
+            href="/cleaning-care-admin/dashboard/why-choose-us/heading"
             className="w-full md:w-[86px]"
           >
             <Button

@@ -648,7 +648,14 @@ export const invoiceSchema = z.object({
   new_items: z
     .array(
       z.object({
-        price: z.number(),
+        price: z
+          .number()
+          .min(1, {
+            message: "Price is required",
+          })
+          .max(9999, {
+            message: "Price is too high",
+          }),
         item_name: z.string(),
         service_category_id: z.string(),
         service_category_item_id: z.string(),

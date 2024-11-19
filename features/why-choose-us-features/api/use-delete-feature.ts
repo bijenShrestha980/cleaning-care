@@ -25,7 +25,7 @@ export const useDeleteWhyChooseUsFeatures = () => {
           title: "Deleted Successfully",
           variant: "default",
         });
-        router.push("/admin/dashboard/why-choose-us/features");
+        router.push("/cleaning-care-admin/dashboard/why-choose-us/features");
       }
     },
     onError: (error) => {

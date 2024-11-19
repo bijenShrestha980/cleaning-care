@@ -238,7 +238,7 @@ const FeaturesForm = ({
             </Button>
           )}
           <Link
-            href="/admin/dashboard/why-choose-us"
+            href="/cleaning-care-admin/dashboard/why-choose-us"
             className="w-full md:w-[86px]"
           >
             <Button

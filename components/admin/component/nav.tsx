@@ -33,7 +33,7 @@ const Nav = () => {
   const logout = async () => {
     refetch();
     await axiosLocal.get("/logout");
-    router.push("/admin");
+    router.push("/cleaning-care-admin");
   };
 
   return (

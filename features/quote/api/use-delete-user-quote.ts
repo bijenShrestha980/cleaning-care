@@ -26,7 +26,7 @@ export const useDeleteQuote = () => {
           description: data?.message,
           variant: "default",
         });
-        router.push("/admin/dashboard/quote");
+        router.push("/cleaning-care-admin/dashboard/quote");
       }
     },
     onError: (error) => {

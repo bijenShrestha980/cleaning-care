@@ -90,7 +90,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/invoice/${row.original.id}`}
+          href={`/cleaning-care-admin/dashboard/invoice/${row.original.id}`}
         >
           View
         </Link>

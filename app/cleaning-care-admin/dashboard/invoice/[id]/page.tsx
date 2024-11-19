@@ -16,6 +16,7 @@ import {
 import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
 import { useDeleteInvoice } from "@/features/invoice/api/use-delete-invoice";
+import { useBankAccountDetails } from "@/features/bank/api/use-bank";
 
 const ViewInvoice = ({ params }: { params: { id: number } }) => {
   const {
@@ -39,6 +40,12 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
   } = useAllFundamental();
 
   const {
+    data: bankData,
+    isPending: bankIsPending,
+    isError: bankIsError,
+  } = useBankAccountDetails();
+
+  const {
     refetch,
     isPending: downloadIsPending,
     isFetching: downloadIsFetching,
@@ -47,10 +54,25 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
   const { mutate: deleteInvoice, isPending: deleteIsPending } =
     useDeleteInvoice();
 
-  if (isPending || isFetching || fundamentalIsPending) {
+  // Group items by service_category.category_name
+  const groupedItems =
+    invoiceData &&
+    invoiceData?.invoice_items?.reduce(
+      (acc: { [key: string]: typeof invoiceData.invoice_items }, item) => {
+        const categoryName = item.service_category.category_name;
+        if (!acc[categoryName]) {
+          acc[categoryName] = [];
+        }
+        acc[categoryName].push(item);
+        return acc;
+      },
+      {}
+    );
+
+  if (isPending || isFetching || fundamentalIsPending || bankIsPending) {
     return <Loading />;
   }
-  if (isError || fundamentalIsError) {
+  if (isError || fundamentalIsError || bankIsError) {
     return <Error />;
   }
   return (
@@ -146,8 +168,8 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
             </div>
 
             <div className="mt-6">
-              <div className="border border-gray-200 rounded-md space-y-4">
-                <div className="hidden sm:grid sm:grid-cols-3 bg-slate-100 p-2">
+              <div className="border border-gray-200 rounded-md">
+                <div className="hidden sm:grid sm:grid-cols-3 bg-[#f8fafc] p-4">
                   <div className="sm:col-span-2 text-xs font-semibold uppercase">
                     S.N. Service
                   </div>
@@ -155,43 +177,39 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                     Price (AUD)
                   </div>
                 </div>
-                {invoiceData.invoice_items &&
-                  invoiceData.invoice_items.map((item, index) => (
-                    <Fragment key={index}>
-                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end">
-                        <div className="col-span-full sm:col-span-2">
-                          <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                            Service
-                          </h5>
-                          <p className="font-medium text-gray-800">
-                            {item.service_category_item.item_name}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-gray-800">
-                            {item.service_category_item.price}
-                          </p>
-                        </div>
-                        <div>
-                          <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                            Amount (AUD)
-                          </h5>
-                          <p className="sm:text-end text-gray-800">
-                            ${item.price}
-                          </p>
-                        </div>
+                {groupedItems &&
+                  Object.keys(groupedItems).map((categoryName) => (
+                    <div key={categoryName}>
+                      <div className="px-4 py-1 border-y bg-[#edf2f7]">
+                        <p className="text-lg font-semibold">{categoryName}</p>
                       </div>
-                      <div
-                        className={`sm:hidden border-b border-gray-200
-                        ${
-                          invoiceData?.invoice_items &&
-                          index !== invoiceData?.invoice_items.length - 1
-                            ? ""
-                            : "hidden"
-                        }
-                          `}
-                      ></div>
-                    </Fragment>
+                      {groupedItems[categoryName].map((item, index) => (
+                        <Fragment key={index}>
+                          <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end border-y px-4 py-1">
+                            <div className="col-span-full sm:col-span-2">
+                              <p className="font-medium text-gray-800">
+                                &nbsp;&nbsp;&nbsp;{index + 1}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {item.service_category_item.item_name}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-gray-800">
+                                {item.service_category_item.price}
+                              </p>
+                            </div>
+                            <div>
+                              <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                                &nbsp;&nbsp;&nbsp;Price (AUD)
+                              </h5>
+                              <p className="sm:text-end text-gray-800">
+                                &nbsp;&nbsp;&nbsp;{item.price}
+                              </p>
+                            </div>
+                          </div>
+                        </Fragment>
+                      ))}
+                    </div>
                   ))}
               </div>
             </div>
@@ -200,71 +218,57 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
               <div className="w-full max-w-2xl sm:text-end space-y-2">
                 <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
                   <dl className="grid sm:grid-cols-5 gap-x-3">
-                    <dt className="col-span-3 font-semibold text-gray-800">
+                    <dt className="col-span-4 text-gray-500">
                       Subtotal (including HST):
                     </dt>
-                    <dd className="col-span-2 text-gray-500">
-                      ${invoiceData.subtotal}
+                    <dd className="col-span-1 text-gray-500">
+                      AUD {invoiceData.subtotal}
                     </dd>
                   </dl>
 
                   <dl className="grid sm:grid-cols-5 gap-x-3">
-                    <dt className="col-span-3 font-semibold text-gray-800">
-                      Surge fee:
-                    </dt>
-                    <dd className="col-span-2 text-gray-500">
-                      {invoiceData.surge_fee}%
-                    </dd>
-                  </dl>
-
-                  <dl className="grid sm:grid-cols-5 gap-x-3">
-                    <dt className="col-span-3 font-semibold text-gray-800">
-                      Discount:
-                    </dt>
-                    <dd className="col-span-2 text-gray-500">
+                    <dt className="col-span-4 text-gray-500">Discount:</dt>
+                    <dd className="col-span-1 text-gray-500">
                       {invoiceData.discount}%
                     </dd>
                   </dl>
 
                   <dl className="grid sm:grid-cols-5 gap-x-3">
-                    <dt className="col-span-3 font-semibold text-gray-800">
-                      Total (AUD):
+                    <dt className="col-span-4 text-gray-500">Surge fee:</dt>
+                    <dd className="col-span-1 text-gray-500">
+                      {invoiceData.surge_fee}%
+                    </dd>
+                  </dl>
+
+                  <dl className="grid sm:grid-cols-5 gap-x-3">
+                    <dt className="col-span-4 text-gray-500">
+                      Total Amount Due:
                     </dt>
-                    <dd className="col-span-2 text-gray-500">
-                      ${invoiceData.total_amount}
+                    <dd className="col-span-1 text-gray-500">
+                      AUD {invoiceData.total_amount}
                     </dd>
                   </dl>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 sm:mt-12">
-              <h4 className="text-lg font-semibold text-gray-800">
-                Thank you!
-              </h4>
-              <p className="text-gray-500">
-                If you have any questions concerning this invoice, use the
-                following contact information:
-              </p>
-              <div className="mt-2">
-                <p className="block text-sm font-medium text-gray-800">
-                  {fundamentalData.email1}
+            <div className="mt-8 sm:mt-12 bg-[#f8fafc] rounded-md border p-2">
+              <p className="font-semibold text-gray-900 mb-2">Bank Details</p>
+              <div className="flex gap-2 items-center">
+                <p className="block font-medium text-gray-800">Bank Name:</p>
+                <p className="block text-gray-800">{bankData.bank_name}</p>
+              </div>
+              <div className="flex gap-2 items-center">
+                <p className="block font-medium text-gray-800">
+                  Account Number:
                 </p>
-                <p className="block text-sm font-medium text-gray-800">
-                  {fundamentalData.email2}
-                </p>
-                <p className="block text-sm font-medium text-gray-800">
-                  {fundamentalData.contact_number1}
-                </p>
-                <p className="block text-sm font-medium text-gray-800">
-                  {fundamentalData.contact_number2}
-                </p>
+                <p className="block text-gray-800">{bankData.account_number}</p>
+              </div>
+              <div className="flex gap-2 items-center">
+                <p className="block font-medium text-gray-800">Account BSB:</p>
+                <p className="block text-gray-800">{bankData.account_bsb}</p>
               </div>
             </div>
-
-            <p className="mt-5 text-sm text-gray-500">
-              {fundamentalData.copyright}
-            </p>
           </div>
 
           <div className="w-full mt-6 flex flex-col md:flex-row justify-end gap-3">
