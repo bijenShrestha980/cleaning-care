@@ -4,6 +4,8 @@ import GoogleMapComponent from "../../../components/map";
 import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import { Skeleton } from "../../../components/ui/skeleton";
 import Error from "../../../components/ui/error";
+import { convertTimeFormat } from "@/lib/convert-time-format";
+import { convertDaysRange } from "@/lib/convert-days-range";
 
 const ContactUsSection = () => {
   const {
@@ -62,11 +64,23 @@ const ContactUsSection = () => {
             ) : (
               <>
                 <p className="text-md md:text-xl text-primary">
-                  {fundamentalData?.open_day?.split(",").join("-")}
+                  {fundamentalData?.open_day
+                    ? convertDaysRange(fundamentalData?.open_day)
+                    : "Closed"}
                 </p>
-                <p className="text-md md:text-xl text-primary">
-                  {fundamentalData?.open_time?.split(",").join(" - ")}
+                <p className="text-md md:text-xl text-primary pb-4">
+                  {convertTimeFormat(fundamentalData?.open_time)}
                 </p>
+                {fundamentalData?.s_open_day && (
+                  <>
+                    <p className="text-md md:text-xl text-primary">
+                      {fundamentalData?.s_open_day?.split(",").join("-")}
+                    </p>
+                    <p className="text-md md:text-xl text-primary">
+                      {convertTimeFormat(fundamentalData?.s_open_time)}
+                    </p>
+                  </>
+                )}
               </>
             )}
           </div>

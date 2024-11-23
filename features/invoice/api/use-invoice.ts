@@ -46,7 +46,7 @@ export const useInvoiceById = (id: number) =>
 
 export const useInvoiceSend = (id: number | null) =>
   useQuery({
-    queryKey: ["invoice", id],
+    queryKey: ["invoice-send", id],
     queryFn: () => getInvoiceSend(id),
     enabled: false,
   });

@@ -27,6 +27,7 @@ import { CustomImage } from "@/components/ui/custom-image";
 import { useCreateFundamental } from "@/features/fundamentals/api/use-create-fundamental";
 import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import { quillModules } from "@/constants/quill-module";
+import { sortDays } from "@/lib/sort-days";
 
 const SiteAdminComp = () => {
   const { data: fundamentals, isPending, isError } = useAllFundamental();
@@ -47,6 +48,8 @@ const SiteAdminComp = () => {
       contact_number2={fundamentals?.contact_number2}
       open_day={fundamentals?.open_day}
       open_time={fundamentals?.open_time}
+      s_open_day={fundamentals?.s_open_day}
+      s_open_time={fundamentals?.s_open_time}
       site_logo={null}
       image_url={fundamentals?.image_url}
       copyright={fundamentals?.copyright}
@@ -71,6 +74,8 @@ const SiteAdminForm = ({
   contact_number2,
   open_day,
   open_time,
+  s_open_day,
+  s_open_time,
   site_logo,
   image_url,
   copyright,
@@ -83,6 +88,11 @@ const SiteAdminForm = ({
     image_url || null
   );
   const [time, setTime] = useState<string[]>(["09:00", "18:00"]);
+  const [satTime, setSatTime] = useState<string[]>(["09:00", "18:00"]);
+  const [isSat, setIsSat] = useState(
+    false || s_open_day === "Sat" ? true : false
+  );
+
   const { mutate: createFundamental, isPending: createIsPending } =
     useCreateFundamental();
 
@@ -99,6 +109,8 @@ const SiteAdminForm = ({
       contact_number2: contact_number2 || "",
       open_day: open_day || "",
       open_time: open_time || "09:00,18:00",
+      s_open_day: s_open_day || "",
+      s_open_time: s_open_time || "09:00,18:00",
       site_logo: null,
       copyright: copyright || "",
       google_map: google_map || {
@@ -120,8 +132,18 @@ const SiteAdminForm = ({
     formData.append("contact_number1", values.contact_number1);
     values.contact_number2 &&
       formData.append("contact_number2", values.contact_number2);
-    values.open_day && formData.append("open_day", values.open_day);
+    values.open_day &&
+      formData.append(
+        "open_day",
+        values.open_day
+          .split(",")
+          .filter((day) => day !== "Sat")
+          .join(",")
+      );
     values.open_time && formData.append("open_time", values.open_time);
+    values.open_day.includes("Sat") && formData.append("s_open_day", "Sat");
+    values.open_day.includes("Sat") &&
+      formData.append("s_open_time", values.s_open_time);
     values.site_logo && formData.append("site_logo", values.site_logo);
     formData.append("copyright", values.copyright);
     formData.append("google_map", JSON.stringify(values.google_map));
@@ -130,13 +152,16 @@ const SiteAdminForm = ({
     values.privacy_policy &&
       formData.append("privacy_policy", values.privacy_policy);
     values.license && formData.append("license", values.license);
-
     createFundamental(formData as any);
   }
 
   useEffect(() => {
     form.setValue("open_time", time.join(","));
   }, [form, time]);
+
+  useEffect(() => {
+    form.setValue("s_open_time", satTime.join(","));
+  }, [form, satTime]);
 
   return (
     <Form {...form}>
@@ -338,9 +363,11 @@ const SiteAdminForm = ({
                     size={"lg"}
                     variant={"outline"}
                     type="multiple"
-                    onValueChange={(value) =>
-                      form.setValue("open_day", value.join(","))
-                    }
+                    onValueChange={(value) => {
+                      const sortedDays = sortDays(value.join(","));
+                      form.setValue("open_day", sortedDays);
+                      setIsSat(value.includes("Sat"));
+                    }}
                     value={field.value.split(",")}
                     className="flex-wrap"
                   >
@@ -394,6 +421,38 @@ const SiteAdminForm = ({
                       Sat
                     </ToggleGroupItem>
                   </ToggleGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="s_open_time"
+            render={({ field }) => (
+              <FormItem
+                className={`animate-in slide-in-from-top ${
+                  isSat ? "" : "hidden"
+                }`}
+              >
+                <FormLabel className="font-normal text-sm">
+                  Saturday Time
+                </FormLabel>
+                <FormControl>
+                  <div className="flex gap-2">
+                    <Input
+                      type="time"
+                      className="w-fit select-none"
+                      defaultValue={form.getValues("s_open_time").split(",")[0]}
+                      onChange={(e) => setSatTime([e.target.value, time[1]])}
+                    />
+                    <Input
+                      type="time"
+                      className="w-fit select-none"
+                      defaultValue={form.getValues("s_open_time").split(",")[1]}
+                      onChange={(e) => setSatTime([time[0], e.target.value])}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

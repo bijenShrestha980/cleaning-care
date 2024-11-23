@@ -8,7 +8,7 @@ const Heading = () => {
     <section>
       <div className="w-full flex justify-between mb-3">
         <p className="font-medium mb-4">Heading</p>
-        <Link href="/admin/dashboard/why-choose-us/heading/add-heading">
+        <Link href="/cleaning-care-admin/dashboard/why-choose-us/heading/add-heading">
           <Button animation={"scale_in"}>
             <Plus size={20} className="mr-2" />
             Add

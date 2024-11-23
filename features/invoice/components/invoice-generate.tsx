@@ -89,7 +89,6 @@ const InvoiceGenerate = ({
   // } = useInvoiceSend(
   //   createInvoiceData?.invoice?.id ? createInvoiceData?.invoice?.id : null
   // );
-  console.log(createInvoiceData?.invoice?.id);
 
   const {
     mutate: updateInvoice,
@@ -133,8 +132,6 @@ const InvoiceGenerate = ({
     name: "new_items",
   });
 
-  // console.log(form.);
-
   useEffect(() => {
     if (createIsSuccess) {
       router.push(
@@ -151,8 +148,6 @@ const InvoiceGenerate = ({
   }, [updateIsSuccess]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("first", values);
-    // createInvoice({ data: values, id: id });
     if (invoice) {
       updateInvoice({ data: values, id: id });
     } else {

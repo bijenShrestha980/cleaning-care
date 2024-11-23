@@ -11,7 +11,7 @@ const FAQ = () => {
     <section>
       <div className="w-full flex justify-between mb-3">
         <p className="font-medium mb-4">FAQs</p>
-        <Link href="/admin/dashboard/settings/faqs/view-faqs">
+        <Link href="/cleaning-care-admin/dashboard/settings/faqs/view-faqs">
           <Button animation={"scale_in"}>
             <Plus size={20} className="mr-2" />
             Add

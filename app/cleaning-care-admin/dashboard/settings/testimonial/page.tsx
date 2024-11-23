@@ -10,7 +10,7 @@ const Testimonials = () => {
     <section>
       <div className="w-full flex justify-between mb-3">
         <p className="font-medium mb-4">Testimonials</p>
-        <Link href="/admin/dashboard/settings/testimonial/view-testimonial">
+        <Link href="/cleaning-care-admin/dashboard/settings/testimonial/view-testimonial">
           <Button animation={"scale_in"}>
             <Plus size={20} className="mr-2" />
             Add

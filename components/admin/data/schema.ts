@@ -352,6 +352,8 @@ export const siteAdminSchema = z.object({
   ]),
   open_day: z.string(),
   open_time: z.string(),
+  s_open_day: z.string().optional(),
+  s_open_time: z.string().optional(),
   image_url: z.string().optional(),
   site_logo: z.union([
     z
@@ -626,6 +628,21 @@ export const invoiceSchema = z.object({
     .max(100, {
       message: "Invalid discount percentage",
     })
+    .optional(),
+  grouped_items: z
+    .array(
+      z.object({
+        category_id: z.number(),
+        category_name: z.string(),
+        items: z.array(
+          z.object({
+            id: z.number(),
+            item_name: z.string(),
+            price: z.number(),
+          })
+        ),
+      })
+    )
     .optional(),
   invoice_items: z
     .array(
