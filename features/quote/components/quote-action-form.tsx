@@ -93,58 +93,61 @@ const QuotActionForm = ({
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-        <div className="grid md:grid-cols-2 gap-4 w-full">
-          <div className="p-4 h-fit bg-primary-foreground rounded-lg border border-dashed">
-            <h5 className="font-semibold mb-4">Client Information</h5>
-            <div className="flex flex-col gap-3">
-              <span className="flex w-full bg-slate-100 rounded-md p-3">
-                <p className="w-1/5">Name</p>
-                <span className="font-semibold w-4/5 text-end lg:text-start">
-                  {quote.full_name}
-                </span>
+    <div className="grid gap-4">
+      <div className="grid md:grid-cols-2 gap-4 w-full">
+        <div className="p-4 h-fit bg-primary-foreground rounded-lg border border-dashed">
+          <h5 className="font-semibold mb-4">Client Information</h5>
+          <div className="flex flex-col gap-3">
+            <span className="flex w-full bg-slate-100 rounded-md p-3">
+              <p className="w-1/5">Name</p>
+              <span className="font-semibold w-4/5 text-end lg:text-start">
+                {quote.full_name}
               </span>
-              <span className="flex w-full bg-slate-100 rounded-md p-3">
-                <p className="w-1/5">Email</p>
-                <span className="font-semibold w-4/5 text-end lg:text-start">
-                  {quote.email}
-                </span>
+            </span>
+            <span className="flex w-full bg-slate-100 rounded-md p-3">
+              <p className="w-1/5">Email</p>
+              <span className="font-semibold w-4/5 text-end lg:text-start">
+                {quote.email}
               </span>
-              <span className="flex w-full bg-slate-100 rounded-md p-3">
-                <p className="w-1/5">Phone: </p>
-                <span className="font-semibold w-4/5 text-end lg:text-start">
-                  {quote.phone_number ? quote.phone_number : "---"}
-                </span>
+            </span>
+            <span className="flex w-full bg-slate-100 rounded-md p-3">
+              <p className="w-1/5">Phone: </p>
+              <span className="font-semibold w-4/5 text-end lg:text-start">
+                {quote.phone_number ? quote.phone_number : "---"}
               </span>
-              <span className="flex w-full bg-slate-100 rounded-md p-3">
-                <p className="w-1/5">Address</p>
-                <span className="font-semibold w-4/5 text-end lg:text-start">
-                  {quote.address}
-                </span>
+            </span>
+            <span className="flex w-full bg-slate-100 rounded-md p-3">
+              <p className="w-1/5">Address</p>
+              <span className="font-semibold w-4/5 text-end lg:text-start">
+                {quote.address}
               </span>
-              <span className="flex w-full bg-slate-100 rounded-md p-3">
-                <p className="w-1/5">Postal code</p>
-                <span className="font-semibold w-4/5 text-end lg:text-start">
-                  {quote.postal_code ? quote.postal_code : "---"}
-                </span>
+            </span>
+            <span className="flex w-full bg-slate-100 rounded-md p-3">
+              <p className="w-1/5">Postal code</p>
+              <span className="font-semibold w-4/5 text-end lg:text-start">
+                {quote.postal_code ? quote.postal_code : "---"}
               </span>
-              <span className="flex flex-col md:flex-row w-full bg-slate-100 rounded-md p-3">
-                <p className="w-1/5">Message:</p>
-                <span className="w-4/5">{quote.quote}</span>
-              </span>
-            </div>
+            </span>
+            <span className="flex flex-col md:flex-row w-full bg-slate-100 rounded-md p-3">
+              <p className="w-1/5">Message:</p>
+              <span className="w-4/5">{quote.quote}</span>
+            </span>
           </div>
-          <div className="p-4 bg-primary-foreground rounded-lg border border-dashed w-full flex flex-col justify-between items-end">
-            <div className="w-full">
-              <div className="flex flex-col xl:flex-row justify-between gap-2 mb-4">
-                <h5 className="font-semibold">Service Information</h5>
+        </div>
+        <div className="p-4 bg-primary-foreground rounded-lg border border-dashed w-full flex flex-col justify-between items-end">
+          <div className="w-full">
+            <div className="flex flex-col xl:flex-row justify-between gap-2 mb-4">
+              <h5 className="font-semibold">Service Information</h5>
 
-                <div className="flex gap-2">
-                  <QuoteStatus quote={quote} />
-                </div>
+              <div className="flex gap-2">
+                <QuoteStatus quote={quote} />
               </div>
-              <div className="flex flex-col gap-2">
+            </div>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col gap-2"
+              >
                 {serviceCategoriesData.map((category, index) =>
                   quote.senduserquoteservice?.map((service, _) =>
                     service.service_category_id === category.id ? (
@@ -279,61 +282,61 @@ const QuotActionForm = ({
                     ) : null
                   )
                 )}
-              </div>
-            </div>
-            <span className="flex items-center gap-2 mt-4 font-bricolageGrotesqueSans">
-              Total cost :<h4>${totalCost}</h4>
-            </span>
+              </form>
+            </Form>
           </div>
+          <span className="flex items-center gap-2 mt-4 font-bricolageGrotesqueSans">
+            Total cost :<h4>${totalCost}</h4>
+          </span>
         </div>
+      </div>
 
-        <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-md">
-          {quote.id && (
-            <Button
-              variant={"ghost"}
-              animation={"scale_in"}
-              className="w-full md:w-[86px]"
-              disabled={createIsPending || deleteIsPending}
-              type="button"
-              onClick={() => quote.id && deleteQuote(quote.id)}
-            >
-              {deleteIsPending ? (
-                <LoaderCircle className="animate-spin" width={20} height={20} />
-              ) : (
-                "Delete"
-              )}
-            </Button>
-          )}
-          <Link
-            href="/cleaning-care-admin/dashboard/quote"
-            className="w-full sm:w-[86px]"
+      <div className="flex justify-center sm:justify-end gap-4 w-full fixed bottom-0 right-0 p-4 bg-slate-200 sm:bg-gradient-to-r xl:from-white xl:via-white xl:to-slate-200 from-white to-slate-200 rounded-t-md">
+        {quote.id && (
+          <Button
+            variant={"ghost"}
+            animation={"scale_in"}
+            className="w-full md:w-[86px]"
+            disabled={createIsPending || deleteIsPending}
+            type="button"
+            onClick={() => quote.id && deleteQuote(quote.id)}
           >
-            <Button
-              variant={"outline"}
-              animation={"scale_in"}
-              className="w-full md:w-[86px]"
-              disabled={createIsPending || deleteIsPending}
-            >
-              Cancel
-            </Button>
-          </Link>
-          {quote.status === "received_from_user" && (
-            <Button
-              type="submit"
-              animation={"scale_in"}
-              className="w-full md:w-[86px]"
-              disabled={createIsPending || deleteIsPending}
-            >
-              {createIsPending ? (
-                <LoaderCircle className="animate-spin" width={20} height={20} />
-              ) : (
-                "Proceed"
-              )}
-            </Button>
-          )}
-        </div>
-      </form>
-    </Form>
+            {deleteIsPending ? (
+              <LoaderCircle className="animate-spin" width={20} height={20} />
+            ) : (
+              "Delete"
+            )}
+          </Button>
+        )}
+        <Link
+          href="/cleaning-care-admin/dashboard/quote"
+          className="w-full sm:w-[86px]"
+        >
+          <Button
+            variant={"outline"}
+            animation={"scale_in"}
+            className="w-full md:w-[86px]"
+            disabled={createIsPending || deleteIsPending}
+          >
+            Cancel
+          </Button>
+        </Link>
+        {quote.status === "received_from_user" && (
+          <Button
+            type="submit"
+            animation={"scale_in"}
+            className="w-full md:w-[86px]"
+            disabled={createIsPending || deleteIsPending}
+          >
+            {createIsPending ? (
+              <LoaderCircle className="animate-spin" width={20} height={20} />
+            ) : (
+              "Proceed"
+            )}
+          </Button>
+        )}
+      </div>
+    </div>
   );
 };
 

@@ -1,5 +1,6 @@
 "use client";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { Download, LoaderCircle, Send } from "lucide-react";
 
@@ -7,7 +8,6 @@ import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
 import { CustomImage } from "@/components/ui/custom-image";
 import { Button } from "@/components/ui/button";
-import { logoColor } from "@/constants/icons";
 import {
   useInvoiceById,
   useInvoiceDownload,
@@ -17,8 +17,11 @@ import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
 import { useDeleteInvoice } from "@/features/invoice/api/use-delete-invoice";
 import { useBankAccountDetails } from "@/features/bank/api/use-bank";
+import { logoColor } from "@/constants/icons";
+import { toast } from "@/hooks/use-toast";
 
 const ViewInvoice = ({ params }: { params: { id: number } }) => {
+  const router = useRouter();
   const {
     data: invoiceData,
     isPending,
@@ -31,6 +34,8 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
     refetch: refetchInvoice,
     isError: invoiceIsError,
     isFetching: invoiceIsFetching,
+    data: invoiceSendData,
+    isFetched: invoiceIsFetched,
   } = useInvoiceSend(params.id);
 
   const {
@@ -54,20 +59,42 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
   const { mutate: deleteInvoice, isPending: deleteIsPending } =
     useDeleteInvoice();
 
+  useEffect(() => {
+    if (invoiceIsFetched) {
+      if (invoiceIsSuccess) {
+        toast({
+          title: "Success",
+          description: "Invoice sent successfully",
+          variant: "default",
+        });
+        router.push("/cleaning-care-admin/dashboard/invoice");
+      }
+      if (invoiceIsError) {
+        toast({
+          title: "Error",
+          description: "Failed to send invoice",
+          variant: "destructive",
+        });
+      }
+    }
+  }, [invoiceIsSuccess, invoiceIsError, invoiceIsFetched, router]);
+
   // Group items by service_category.category_name
-  const groupedItems =
-    invoiceData &&
-    invoiceData?.invoice_items?.reduce(
-      (acc: { [key: string]: typeof invoiceData.invoice_items }, item) => {
-        const categoryName = item.service_category.category_name;
-        if (!acc[categoryName]) {
-          acc[categoryName] = [];
-        }
-        acc[categoryName].push(item);
-        return acc;
-      },
-      {}
-    );
+  // const groupedItems =
+  //   invoiceData &&
+  //   invoiceData?.invoice_items?.reduce(
+  //     (acc: { [key: string]: typeof invoiceData.invoice_items }, item) => {
+  //       const categoryName = item.service_category.category_name;
+  //       if (!acc[categoryName]) {
+  //         acc[categoryName] = [];
+  //       }
+  //       acc[categoryName].push(item);
+  //       return acc;
+  //     },
+  //     {}
+  //   );
+
+  console.log(invoiceData);
 
   if (isPending || isFetching || fundamentalIsPending || bankIsPending) {
     return <Loading />;
@@ -95,10 +122,10 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                 </h2>
               </div>
               <div className="text-end">
-                <span className="mt-1 block text-gray-500">
-                  {invoiceData.send_user_quote_id}
+                <span className="mt-1 block text-gray-800 font-medium">
+                  Cleaning Care
                 </span>
-                <address className="mt-4 not-italic text-gray-800">
+                <address className="mt-1 not-italic text-gray-500">
                   {fundamentalData.site_address}
                 </address>
                 <span className="mt-1 block text-gray-500">
@@ -177,28 +204,25 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                     Price (AUD)
                   </div>
                 </div>
-                {groupedItems &&
-                  Object.keys(groupedItems).map((categoryName) => (
-                    <div key={categoryName}>
+                {invoiceData.grouped_items &&
+                  invoiceData?.grouped_items.map((group, index) => (
+                    <div key={index}>
                       <div className="px-4 py-1 border-y bg-[#edf2f7]">
-                        <p className="text-lg font-semibold">{categoryName}</p>
+                        <p className="text-lg font-semibold">
+                          {group.category_name}
+                        </p>
                       </div>
-                      {groupedItems[categoryName].map((item, index) => (
-                        <Fragment key={index}>
+                      {group.items.map((item, j) => (
+                        <Fragment key={j}>
                           <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end border-y px-4 py-1">
                             <div className="col-span-full sm:col-span-2">
                               <p className="font-medium text-gray-800">
-                                &nbsp;&nbsp;&nbsp;{index + 1}
+                                &nbsp;&nbsp;&nbsp;{j + 1}
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                {item.service_category_item.item_name}
+                                {item.item_name}
                               </p>
                             </div>
-                            <div>
-                              <p className="text-gray-800">
-                                {item.service_category_item.price}
-                              </p>
-                            </div>
-                            <div>
+                            <div className="col-span-full sm:col-span-2">
                               <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                                 &nbsp;&nbsp;&nbsp;Price (AUD)
                               </h5>
@@ -225,13 +249,14 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                       AUD {invoiceData.subtotal}
                     </dd>
                   </dl>
-
-                  <dl className="grid sm:grid-cols-5 gap-x-3">
-                    <dt className="col-span-4 text-gray-500">Discount:</dt>
-                    <dd className="col-span-1 text-gray-500">
-                      {invoiceData.discount}%
-                    </dd>
-                  </dl>
+                  {(invoiceData.discount ?? 0) > 0 && (
+                    <dl className="grid sm:grid-cols-5 gap-x-3">
+                      <dt className="col-span-4 text-gray-500">Discount:</dt>
+                      <dd className="col-span-1 text-gray-500">
+                        {invoiceData.discount}%
+                      </dd>
+                    </dl>
+                  )}
 
                   <dl className="grid sm:grid-cols-5 gap-x-3">
                     <dt className="col-span-4 text-gray-500">Surge fee:</dt>
@@ -241,10 +266,10 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                   </dl>
 
                   <dl className="grid sm:grid-cols-5 gap-x-3">
-                    <dt className="col-span-4 text-gray-500">
+                    <dt className="col-span-4 text-gray-800 font-semibold">
                       Total Amount Due:
                     </dt>
-                    <dd className="col-span-1 text-gray-500">
+                    <dd className="col-span-1 text-gray-800 font-semibold">
                       AUD {invoiceData.total_amount}
                     </dd>
                   </dl>
