@@ -2,99 +2,133 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
+import { Input } from "./ui/input";
 
-export default function GoogleMaps({
-  width,
-  height,
-  value,
-  onChange,
-}: {
+interface GoogleMapsProps {
   width?: string;
   height?: string;
   value?: { lat: number; lng: number };
   onChange?: (coords: { lat: number; lng: number }) => void;
-}) {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
-  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>();
+}
 
-  useEffect(() => {
-    const initializeMap = async () => {
+export default function GoogleMaps({
+  width = "100%",
+  height = "400px",
+  value,
+  onChange,
+}: GoogleMapsProps) {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
+
+  const initializeMap = async () => {
+    try {
       const loader = new Loader({
         apiKey: process.env.google_api_key as string,
+        libraries: ["places"], // Required for the search bar
         version: "weekly",
       });
 
       await loader.load();
 
-      const locationInMap = value || {
-        lat: 43.734952570403,
-        lng: -79.39714192370195,
-      };
+      const defaultLocation = value || { lat: 43.73495, lng: -79.39714 };
 
       const options: google.maps.MapOptions = {
-        center: locationInMap,
+        center: defaultLocation,
         zoom: 15,
         mapId: "cleaning-care",
       };
 
-      const map = new google.maps.Map(
+      const mapInstance = new google.maps.Map(
         mapRef.current as HTMLDivElement,
         options
       );
+      setMap(mapInstance);
 
-      // Create a draggable marker
+      // Initialize marker
       const newMarker = new google.maps.Marker({
-        position: locationInMap,
-        map: map,
+        position: defaultLocation,
+        map: mapInstance,
         draggable: true,
       });
-
-      // Update marker state
       setMarker(newMarker);
 
-      // Add drag event listener to the marker
+      // Add marker dragend event
       newMarker.addListener("dragend", (event: google.maps.MapMouseEvent) => {
         if (event.latLng) {
-          // Get latitude and longitude
-          const lat = event.latLng.lat();
-          const lng = event.latLng.lng();
-          setCoords({ lat, lng });
+          updateCoords(event.latLng.lat(), event.latLng.lng());
         }
       });
 
-      // Add click event listener to the map
-      map.addListener("click", (event: google.maps.MapMouseEvent) => {
+      // Add map click event
+      mapInstance.addListener("click", (event: google.maps.MapMouseEvent) => {
         if (event.latLng) {
-          // Move the marker to the clicked location
           newMarker.setPosition(event.latLng);
-
-          // Get latitude and longitude
-          const lat = event.latLng.lat();
-          const lng = event.latLng.lng();
-          setCoords({ lat, lng });
+          updateCoords(event.latLng.lat(), event.latLng.lng());
         }
       });
-    };
 
+      // Initialize Autocomplete
+      if (searchRef.current) {
+        const autocomplete = new google.maps.places.Autocomplete(
+          searchRef.current,
+          {
+            fields: ["geometry"],
+          }
+        );
+
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          if (place.geometry && place.geometry.location) {
+            const lat = place.geometry.location.lat();
+            const lng = place.geometry.location.lng();
+
+            mapInstance.setCenter({ lat, lng });
+            newMarker.setPosition({ lat, lng });
+            updateCoords(lat, lng);
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Failed to initialize Google Maps:", error);
+    }
+  };
+
+  const updateCoords = (lat: number, lng: number) => {
+    if (onChange) onChange({ lat, lng });
+  };
+
+  useEffect(() => {
     initializeMap();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (coords && onChange) {
-      onChange(coords);
+    if (value && map && marker) {
+      marker.setPosition(value);
+      map.setCenter(value);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coords]);
+  }, [value]);
 
   return (
-    <div
-      ref={mapRef}
-      style={{
-        height: `${height ? `${height}px` : "400px"}`,
-        width: `${width ? `${width}px` : "100%"}`,
-      }}
-    />
+    <div className="relative h-full">
+      {/* Search Input */}
+      <Input
+        ref={searchRef}
+        type="text"
+        placeholder="Search"
+        className="mb-4 bg-white absolute -bottom-3 left-1 w-24 sm:w-52 h-10 z-10"
+      />
+      {/* Map Container */}
+      <div
+        ref={mapRef}
+        style={{
+          height: height,
+          width: width,
+        }}
+      />
+    </div>
   );
 }
