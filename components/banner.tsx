@@ -135,7 +135,8 @@ const Banner = () => {
                 </span>
                 <span className="flex items-center gap-[9px]">
                   <p className="text-primary-foreground text-base font-normal">
-                    {(Math.random() * (4.9 - 3.5) + 3.5).toFixed(1)} / 5
+                    {/* {(Math.random() * (4.9 - 3.5) + 3.5).toFixed(1)} / 5 */}
+                    5 / 5
                   </p>
                   <p className="text-primary-foreground text-base font-normal">
                     ({Math.floor(Math.random() * (50 - 20 + 1)) + 20}k Reviews)

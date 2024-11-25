@@ -337,7 +337,7 @@ const Items = ({ index, form }: { index: number; form: any }) => {
               <FormField
                 control={form.control}
                 name={`grouped_items.${index}.items.${i}.item_name`}
-                render={({ field }) => (
+                render={() => (
                   <FormItem className="space-y-0 flex items-center gap-2">
                     {"status" in item && item.status !== undefined ? (
                       <Button
@@ -354,7 +354,9 @@ const Items = ({ index, form }: { index: number; form: any }) => {
                     )}
                     <FormControl>
                       <Input
-                        {...field}
+                        {...form.register(
+                          `grouped_items.${index}.items.${i}.item_name`
+                        )}
                         disabled={"status" in item && item.status === undefined}
                         className="border h-8 py-0 mt-0 w-auto font-medium shadow-none disabled:opacity-80"
                       />
@@ -415,7 +417,9 @@ const Items = ({ index, form }: { index: number; form: any }) => {
                   <FormItem className="flex sm:justify-end">
                     <FormControl>
                       <Input
-                        {...field}
+                        {...form.register(
+                          `grouped_items.${index}.items.${i}.price`
+                        )}
                         type="number"
                         onChange={(event) =>
                           field.onChange(+event.target.value)
