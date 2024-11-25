@@ -31,6 +31,7 @@ const ViewServiceCategory = ({ params }: { params: { id: number } }) => {
                 item_name: item.item_name,
                 price: parseInt(item.price),
                 status: item.status,
+                id: item.id,
               }))
             : [
                 {

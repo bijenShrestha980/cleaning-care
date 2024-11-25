@@ -1,6 +1,6 @@
 const daysOrder = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export const sortDays = (days) => {
+export const sortDays = (days: string) => {
   return days
     .split(",")
     .filter((day) => day) // Remove empty strings

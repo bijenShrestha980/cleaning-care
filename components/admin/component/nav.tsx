@@ -34,6 +34,7 @@ const Nav = () => {
     refetch();
     await axiosLocal.get("/logout");
     router.push("/cleaning-care-admin");
+    location.reload();
   };
 
   return (

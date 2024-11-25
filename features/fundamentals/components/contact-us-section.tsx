@@ -65,7 +65,12 @@ const ContactUsSection = () => {
               <>
                 <p className="text-md md:text-xl text-primary">
                   {fundamentalData?.open_day
-                    ? convertDaysRange(fundamentalData?.open_day)
+                    ? convertDaysRange(
+                        fundamentalData?.open_day
+                          .split(",")
+                          .filter((day) => day !== "Sat")
+                          .join(",")
+                      )
                     : "Closed"}
                 </p>
                 <p className="text-md md:text-xl text-primary pb-4">
@@ -77,7 +82,8 @@ const ContactUsSection = () => {
                       {fundamentalData?.s_open_day?.split(",").join("-")}
                     </p>
                     <p className="text-md md:text-xl text-primary">
-                      {convertTimeFormat(fundamentalData?.s_open_time)}
+                      {fundamentalData?.s_open_time &&
+                        convertTimeFormat(fundamentalData?.s_open_time)}
                     </p>
                   </>
                 )}

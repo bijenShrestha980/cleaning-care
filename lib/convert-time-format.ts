@@ -1,6 +1,6 @@
-export const convertTimeFormat = (time) => {
+export const convertTimeFormat = (time: string) => {
   const [start, end] = time.split(",");
-  const formatTime = (t) => {
+  const formatTime = (t: string) => {
     const [hour, minute] = t.split(":");
     const h = parseInt(hour, 10);
     const ampm = h >= 12 ? "pm" : "am";

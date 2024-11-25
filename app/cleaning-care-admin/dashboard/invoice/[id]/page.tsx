@@ -79,23 +79,6 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
     }
   }, [invoiceIsSuccess, invoiceIsError, invoiceIsFetched, router]);
 
-  // Group items by service_category.category_name
-  // const groupedItems =
-  //   invoiceData &&
-  //   invoiceData?.invoice_items?.reduce(
-  //     (acc: { [key: string]: typeof invoiceData.invoice_items }, item) => {
-  //       const categoryName = item.service_category.category_name;
-  //       if (!acc[categoryName]) {
-  //         acc[categoryName] = [];
-  //       }
-  //       acc[categoryName].push(item);
-  //       return acc;
-  //     },
-  //     {}
-  //   );
-
-  console.log(invoiceData);
-
   if (isPending || isFetching || fundamentalIsPending || bankIsPending) {
     return <Loading />;
   }
@@ -349,7 +332,7 @@ const ViewInvoice = ({ params }: { params: { id: number } }) => {
                 discount: invoiceData.discount,
                 due_date: invoiceData.due_date,
               }}
-              invoice_items={invoiceData.invoice_items}
+              invoice_items={invoiceData.grouped_items}
             />
             {/* <Button className="flex gap-2" >
               <Printer size={16} />

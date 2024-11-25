@@ -132,18 +132,12 @@ const SiteAdminForm = ({
     formData.append("contact_number1", values.contact_number1);
     values.contact_number2 &&
       formData.append("contact_number2", values.contact_number2);
-    values.open_day &&
-      formData.append(
-        "open_day",
-        values.open_day
-          .split(",")
-          .filter((day) => day !== "Sat")
-          .join(",")
-      );
+    values.open_day && formData.append("open_day", values.open_day);
     values.open_time && formData.append("open_time", values.open_time);
     values.open_day.includes("Sat") && formData.append("s_open_day", "Sat");
-    values.open_day.includes("Sat") &&
+    if (values.open_day.includes("Sat") && values.s_open_time) {
       formData.append("s_open_time", values.s_open_time);
+    }
     values.site_logo && formData.append("site_logo", values.site_logo);
     formData.append("copyright", values.copyright);
     formData.append("google_map", JSON.stringify(values.google_map));
@@ -155,6 +149,7 @@ const SiteAdminForm = ({
     createFundamental(formData as any);
   }
 
+  console.log(form.getValues("open_day"));
   useEffect(() => {
     form.setValue("open_time", time.join(","));
   }, [form, time]);
@@ -443,13 +438,17 @@ const SiteAdminForm = ({
                     <Input
                       type="time"
                       className="w-fit select-none"
-                      defaultValue={form.getValues("s_open_time").split(",")[0]}
+                      defaultValue={
+                        form.getValues("s_open_time")?.split(",")[0] || "09:00"
+                      }
                       onChange={(e) => setSatTime([e.target.value, time[1]])}
                     />
                     <Input
                       type="time"
                       className="w-fit select-none"
-                      defaultValue={form.getValues("s_open_time").split(",")[1]}
+                      defaultValue={
+                        form.getValues("s_open_time")?.split(",")[1] || "18:00"
+                      }
                       onChange={(e) => setSatTime([time[0], e.target.value])}
                     />
                   </div>

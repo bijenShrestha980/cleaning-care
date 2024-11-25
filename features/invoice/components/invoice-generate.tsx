@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -16,7 +16,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
-import { invoiceSchema, NewItem } from "@/components/admin/data/schema";
+import {
+  GroupedItems,
+  InvoiceItem,
+  invoiceSchema,
+} from "@/components/admin/data/schema";
 import {
   Dialog,
   DialogContent,
@@ -46,7 +50,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCreateInvoice } from "../api/use-create-invoice";
-import { useInvoiceSend } from "../api/use-invoice";
 import { useUpdateInvoice } from "../api/use-update-invoice";
 import { cn } from "@/lib/utils";
 
@@ -57,19 +60,7 @@ const InvoiceGenerate = ({
 }: {
   id: number;
   invoice?: { discount?: number; due_date?: string };
-  invoice_items?: {
-    price: number;
-    service_category_id: number;
-    service_category_item_id: number;
-    service_category_item: {
-      price: string;
-      item_name: string;
-    };
-    service_category: {
-      id: number;
-      category_name: string;
-    };
-  }[];
+  invoice_items?: GroupedItems;
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const router = useRouter();
@@ -81,28 +72,11 @@ const InvoiceGenerate = ({
     isSuccess: createIsSuccess,
   } = useCreateInvoice();
 
-  // const {
-  //   isSuccess: invoiceIsSuccess,
-  //   refetch,
-  //   isError: invoiceIsError,
-  //   isFetching: invoiceIsFetching,
-  // } = useInvoiceSend(
-  //   createInvoiceData?.invoice?.id ? createInvoiceData?.invoice?.id : null
-  // );
-
   const {
     mutate: updateInvoice,
     isPending: updateIsPending,
     isSuccess: updateIsSuccess,
   } = useUpdateInvoice(id);
-
-  type InvoiceItem = {
-    service_category_id: number;
-    service_category_item_id: number;
-    price: number;
-    category_name: string;
-    item_name: string;
-  };
 
   const formSchema = invoiceSchema;
 
@@ -112,24 +86,14 @@ const InvoiceGenerate = ({
       id: id,
       discount: invoice?.discount || 0,
       due_date: invoice?.due_date || undefined,
-      new_items: invoice_items?.map((item) => ({
-        service_category_id: item.service_category_id.toString(),
-        service_category_item_id: item.service_category_item_id.toString(),
-        price: item.price,
-        status: "active",
-        item_name: item.service_category_item.item_name,
-      })),
+      new_items: [],
+      grouped_items: invoice_items || [],
     },
   });
 
-  const {
-    fields: itemFields,
-    append: itemAppend,
-    remove: itemRemove,
-    insert: itemInsert,
-  } = useFieldArray({
+  const { fields } = useFieldArray({
     control: form.control,
-    name: "new_items",
+    name: "grouped_items",
   });
 
   useEffect(() => {
@@ -147,16 +111,27 @@ const InvoiceGenerate = ({
     }
   }, [updateIsSuccess]);
 
+  // console.log(form.formState.errors);
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const new_items: InvoiceItem[] = (values.grouped_items ?? [])
+      .map((item: any) => {
+        return item.items.map((i: any) => ({
+          service_category_id: item.category_id,
+          service_category_item_id: i.id,
+          price: i.price,
+          item_name: i.item_name,
+          status: i.status ? i.status : "active",
+        }));
+      })
+      .flat();
+    const { grouped_items, ...restValues } = values;
+
     if (invoice) {
-      updateInvoice({ data: values, id: id });
+      updateInvoice({ data: { ...restValues, new_items: new_items }, id });
     } else {
-      createInvoice({ data: values, id: id });
+      createInvoice({ data: values, id });
     }
   }
-
-  // Track unique service_category_id values
-  const uniqueServiceCategoryItems = new Set<number>();
 
   return (
     <Dialog
@@ -220,7 +195,7 @@ const InvoiceGenerate = ({
                               variant={"outline"}
                               size={"lg"}
                               className={cn(
-                                "justify-start text-left font-normal bg-[#EDEDED] px-3 h-[46px]",
+                                "justify-start text-left font-normal px-3 h-[46px]",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
@@ -264,14 +239,13 @@ const InvoiceGenerate = ({
                           placeholder="Enter discount"
                           type="number"
                           {...field}
-                          onChange={(e) => {
-                            if (e.target.value === "") {
-                              field.onChange(0);
-                            } else {
-                              field.onChange(parseFloat(e.target.value));
-                            }
-                          }}
-                          className="bg-[#EDEDED]"
+                          onChange={(event) =>
+                            field.onChange(+event.target.value)
+                          }
+                          onWheel={() =>
+                            document.activeElement instanceof HTMLElement &&
+                            document.activeElement.blur()
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -280,154 +254,33 @@ const InvoiceGenerate = ({
                 />
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-4">
-                {invoice &&
-                  itemFields.map((item, index) => {
-                    const isUnique = !uniqueServiceCategoryItems.has(
-                      parseInt(item.service_category_id)
-                    );
-                    uniqueServiceCategoryItems.add(
-                      parseInt(item.service_category_id)
-                    );
-                    return (
-                      <div
-                        key={index}
-                        className={`grid sm:grid-cols-2 gap-4 mb-4 pb-5 animate-in slide-in-from-top rounded-xl p-4 ${
-                          item.service_category_item_id === "0"
-                            ? "bg-slate-100"
-                            : "bg-primary-foreground"
-                        }`}
-                      >
-                        <div className="col-span-2 flex justify-between items-center">
-                          {index === 0 ? (
-                            <FormLabel className="text-md font-semibold text-[#191919]">
-                              Services
-                            </FormLabel>
-                          ) : (
-                            <span />
-                          )}
+              {invoice_items && (
+                <div className="border border-gray-200 rounded-md">
+                  <div className="hidden sm:grid sm:grid-cols-3 bg-[#f8fafc] p-4">
+                    <div className="sm:col-span-2 text-xs font-semibold uppercase">
+                      S.N. Service
+                    </div>
+                    <div className="text-end text-xs font-semibold uppercase">
+                      Price (AUD)
+                    </div>
+                  </div>
 
-                          <div className="w-full flex gap-4 justify-end">
-                            {!isUnique && (
-                              <Button
-                                type="button"
-                                className="w-fit"
-                                variant={"outline"}
-                                animation={"scale_in"}
-                                onClick={() => itemRemove(index)}
-                              >
-                                <Trash2 size={16} />
-                              </Button>
-                            )}
-                            {isUnique && (
-                              <Button
-                                type="button"
-                                animation={"scale_both"}
-                                size={"sm"}
-                                onClick={() =>
-                                  itemAppend({
-                                    item_name: "",
-                                    price: 0,
-                                    status: "active",
-                                    service_category_id:
-                                      item.service_category_id,
-                                    service_category_item_id: "0",
-                                  })
-                                }
-                              >
-                                Add Item
-                              </Button>
-                            )}
+                  {fields.map((item, i) => {
+                    return (
+                      <div key={i}>
+                        <div className="relative">
+                          <div className="px-4 py-1 border-y bg-[#edf2f7] ">
+                            <p className="text-lg font-semibold">
+                              {item.category_name}
+                            </p>
                           </div>
-                        </div>
-                        <div className="col-span-2 grid sm:grid-cols-1 gap-2">
-                          <FormField
-                            control={form.control}
-                            name={`new_items.${index}.item_name`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Item Name</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    {...field}
-                                    disabled={
-                                      item.service_category_item_id !== "0"
-                                    }
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`new_items.${index}.status`}
-                            render={({ field }) => (
-                              <FormItem className="col-span-2 sm:col-span-1">
-                                <FormLabel className="font-normal text-sm">
-                                  Status
-                                </FormLabel>
-                                <FormControl>
-                                  <Select
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value}
-                                    disabled={
-                                      item.service_category_item_id !== "0"
-                                    }
-                                  >
-                                    <SelectTrigger className="border-[#A7B2C3] focus:bg-transparent [&>svg]:opacity-100 [&>svg]:text-[#5065F6]">
-                                      <SelectValue placeholder="Status" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      <SelectItem
-                                        value="active"
-                                        className="text-[#374253] focus:bg-grey-40"
-                                      >
-                                        Active
-                                      </SelectItem>
-                                      <SelectItem
-                                        value="inactive"
-                                        className="text-[#374253] focus:bg-grey-40"
-                                      >
-                                        Inactive
-                                      </SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`new_items.${index}.price`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Price</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    {...field}
-                                    type="number"
-                                    onChange={(e) => {
-                                      if (e.target.value === "") {
-                                        field.onChange(0);
-                                      } else {
-                                        field.onChange(
-                                          parseFloat(e.target.value)
-                                        );
-                                      }
-                                    }}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                          <Items index={i} form={form} />
                         </div>
                       </div>
                     );
                   })}
-              </div>
+                </div>
+              )}
             </div>
             <Button
               type="submit"
@@ -447,6 +300,142 @@ const InvoiceGenerate = ({
         </Form>
       </DialogContent>
     </Dialog>
+  );
+};
+
+const Items = ({ index, form }: { index: number; form: any }) => {
+  const { fields, remove, append } = useFieldArray({
+    control: form.control,
+    name: `grouped_items.${index}.items`,
+  });
+  return (
+    <>
+      <Button
+        variant={"outline"}
+        className="absolute top-[5px] right-[3px] h-7 w-[74px]"
+        type="button"
+        animation={"scale_both"}
+        size={"sm"}
+        onClick={() =>
+          append({
+            item_name: "",
+            price: 0,
+            status: "active",
+            id: 0,
+          })
+        }
+      >
+        Add Item
+      </Button>
+      {fields.map((item, i) => (
+        <Fragment key={i}>
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end border-y px-4 py-2">
+            <div className="col-span-full sm:col-span-2">
+              <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                &nbsp;&nbsp;&nbsp;Item name
+              </h5>
+              <FormField
+                control={form.control}
+                name={`grouped_items.${index}.items.${i}.item_name`}
+                render={({ field }) => (
+                  <FormItem className="space-y-0 flex items-center gap-2">
+                    {"status" in item && item.status !== undefined ? (
+                      <Button
+                        type="button"
+                        className="h-7 w-fit p-2"
+                        variant={"outline"}
+                        animation={"scale_in"}
+                        onClick={() => remove(i)}
+                      >
+                        <Trash2 size={16} />
+                      </Button>
+                    ) : (
+                      <p className="font-medium text-gray-800">{i + 1}&nbsp;</p>
+                    )}
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={"status" in item && item.status === undefined}
+                        className="border h-8 py-0 mt-0 w-auto font-medium shadow-none disabled:opacity-80"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="col-span-full sm:col-span-1">
+              {"status" in item && item.status !== undefined && (
+                <FormField
+                  control={form.control}
+                  name={`grouped_items.${index}.items.${i}.status`}
+                  render={({ field }) => (
+                    <FormItem className="col-span-2 sm:col-span-1">
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value || "active"}
+                          disabled={
+                            "status" in item && item.status === undefined
+                          }
+                        >
+                          <SelectTrigger className="h-8 w-24 border-none shadow-none focus:bg-transparent [&>svg]:opacity-100 [&>svg]:text-[#5065F6]">
+                            <SelectValue placeholder="Status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem
+                              value="active"
+                              className="text-[#374253] focus:bg-grey-40"
+                            >
+                              Active
+                            </SelectItem>
+                            <SelectItem
+                              value="inactive"
+                              className="text-[#374253] focus:bg-grey-40"
+                            >
+                              Inactive
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+            </div>
+            <div className="col-span-full sm:col-span-1">
+              <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                &nbsp;&nbsp;&nbsp;Price (AUD)
+              </h5>
+              <FormField
+                control={form.control}
+                name={`grouped_items.${index}.items.${i}.price`}
+                render={({ field }) => (
+                  <FormItem className="flex sm:justify-end">
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        onChange={(event) =>
+                          field.onChange(+event.target.value)
+                        }
+                        onWheel={() =>
+                          document.activeElement instanceof HTMLElement &&
+                          document.activeElement.blur()
+                        }
+                        className="sm:text-end border-none h-8 w-auto font-medium shadow-none disabled:text-gray-700 disabled:opacity-100"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+        </Fragment>
+      ))}
+    </>
   );
 };
 

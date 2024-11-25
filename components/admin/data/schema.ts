@@ -70,6 +70,7 @@ export const serviceCategorySchema = z.object({
           message: "Price is too high",
         }),
       status: z.enum(["active", "inactive"]),
+      id: z.number().optional(),
     })
   ),
   servicecategoryitems: z
@@ -599,21 +600,50 @@ export const bankAccountDetailsSchema = z.object({
 export const newItemSchema = z
   .array(
     z.object({
-      price: z.number(),
+      price: z
+        .number()
+        .int()
+        .positive()
+        .min(1, {
+          message: "Price is required",
+        })
+        .max(9999, {
+          message: "Price is too high",
+        }),
       item_name: z.string(),
-      service_category_id: z.string(),
-      service_category_item_id: z.string(),
-      status: z.enum(["active", "inactive"]),
-      // service_category: z.object({
-      //   id: z.number(),
-      //   category_name: z.string(),
-      // }),
+      category_id: z.number().optional(),
+      status: z.enum(["active", "inactive"]).optional(),
+    })
+  )
+  .optional();
+
+export const invoiceItemSchema = z.object({
+  id: z.number().optional(),
+  category_id: z.number().optional(),
+  item_name: z.string().min(1, { message: "Item name is required" }),
+  price: z
+    .number()
+    .min(1, {
+      message: "Price is required",
+    })
+    .max(9999, {
+      message: "Price is too high",
+    }),
+  status: z.enum(["active", "inactive"]).optional(),
+});
+
+export const groupedItemsSchema = z
+  .array(
+    z.object({
+      category_id: z.number(),
+      category_name: z.string(),
+      items: z.array(invoiceItemSchema),
     })
   )
   .optional();
 
 export const invoiceSchema = z.object({
-  id: z.number().optional(),
+  id: z.number(),
   send_user_quote_id: z.number().optional(),
   invoice_number: z.string().optional(),
   // quote_id: z.number().min(1, { message: "Quote id is required" }),
@@ -629,61 +659,9 @@ export const invoiceSchema = z.object({
       message: "Invalid discount percentage",
     })
     .optional(),
-  grouped_items: z
-    .array(
-      z.object({
-        category_id: z.number(),
-        category_name: z.string(),
-        items: z.array(
-          z.object({
-            id: z.number(),
-            item_name: z.string(),
-            price: z.number(),
-          })
-        ),
-      })
-    )
-    .optional(),
-  invoice_items: z
-    .array(
-      z.object({
-        price: z.number(),
-        service_category_id: z.number(),
-        service_category_item_id: z.number(),
-        service_category_item: z.object({
-          item_name: z.string(),
-          price: z.string(),
-        }),
-        service_category: z.object({
-          id: z.number(),
-          category_name: z.string(),
-        }),
-      })
-    )
-    .optional(),
-  // invoice_items: z.object({}).optional(),
-  new_items: z
-    .array(
-      z.object({
-        price: z
-          .number()
-          .min(1, {
-            message: "Price is required",
-          })
-          .max(9999, {
-            message: "Price is too high",
-          }),
-        item_name: z.string(),
-        service_category_id: z.string(),
-        service_category_item_id: z.string(),
-        status: z.enum(["active", "inactive"]),
-        // service_category: z.object({
-        //   id: z.number(),
-        //   category_name: z.string(),
-        // }),
-      })
-    )
-    .optional(),
+  grouped_items: groupedItemsSchema,
+  invoice_items: groupedItemsSchema,
+  new_items: newItemSchema,
   send_user_quote: z
     .object({
       full_name: z.string(),
@@ -741,6 +719,10 @@ export type WhyChooseUs = z.infer<typeof whyChooseUsSchema>;
 export type WhyChooseUsFeatures = z.infer<typeof whyChooseUsFeaturesSchema>;
 
 export type BankAccountDetails = z.infer<typeof bankAccountDetailsSchema>;
+
+export type GroupedItems = z.infer<typeof groupedItemsSchema>;
+
+export type InvoiceItem = z.infer<typeof invoiceItemSchema>;
 
 export type NewItem = z.infer<typeof newItemSchema>;
 

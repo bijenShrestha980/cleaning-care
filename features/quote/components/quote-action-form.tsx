@@ -87,7 +87,7 @@ const QuotActionForm = ({
     );
     setTotalCost(total);
   }, [serviceCategoriesData, quote.senduserquoteservice]);
-
+  // console.log(form.formState.errors);
   function onSubmit(values: z.infer<typeof formSchema>) {
     createQuote(values as any);
   }
@@ -321,20 +321,31 @@ const QuotActionForm = ({
             Cancel
           </Button>
         </Link>
-        {quote.status === "received_from_user" && (
-          <Button
-            type="submit"
-            animation={"scale_in"}
-            className="w-full md:w-[86px]"
-            disabled={createIsPending || deleteIsPending}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-2"
           >
-            {createIsPending ? (
-              <LoaderCircle className="animate-spin" width={20} height={20} />
-            ) : (
-              "Proceed"
+            {quote.status === "received_from_user" && (
+              <Button
+                type="submit"
+                animation={"scale_in"}
+                className="w-full md:w-[86px]"
+                disabled={createIsPending || deleteIsPending}
+              >
+                {createIsPending ? (
+                  <LoaderCircle
+                    className="animate-spin"
+                    width={20}
+                    height={20}
+                  />
+                ) : (
+                  "Proceed"
+                )}
+              </Button>
             )}
-          </Button>
-        )}
+          </form>
+        </Form>
       </div>
     </div>
   );

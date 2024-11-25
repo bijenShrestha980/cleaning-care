@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import download from "downloadjs";
 import { axios } from "@/lib/axios";
 import { createQueryParams } from "@/lib/create-query-params";
-import { QueryParams } from "@/types";
 import { Invoice } from "@/components/admin/data/schema";
+import { QueryParams } from "@/types";
 
 const getAllInvoice = async (query?: QueryParams) => {
   const response = await axios.get(
