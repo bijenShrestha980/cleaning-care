@@ -1,6 +1,7 @@
 import { StaticImageData } from "next/image";
 import { z } from "zod";
 import validator, { isPostalCode } from "validator";
+import { stat } from "fs";
 
 // Define the file size limit and accepted file types as constants
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes
@@ -69,6 +70,7 @@ export const serviceCategorySchema = z.object({
           message: "Price is too high",
         }),
       status: z.enum(["active", "inactive"]),
+      id: z.number().optional(),
     })
   ),
   servicecategoryitems: z
@@ -265,13 +267,15 @@ export const quoteSchema = z.object({
       message: "Email is required",
     })
     .email(),
-  phone_number: z.string().refine(validator.isMobilePhone),
+  phone_number: z
+    .string()
+    .refine((value) => /^(\+614|\+61|0)[0-9]{9}$/.test(value)),
   address: z.string().min(1, {
     message: "Address is required",
   }),
   postal_code: z.string(),
   quote: z.string().min(1, {
-    message: "Quote is required",
+    message: "Please write a detailed description of the work required",
   }),
   service_category_ids: z.array(z.number()).optional(),
   status: z
@@ -349,6 +353,8 @@ export const siteAdminSchema = z.object({
   ]),
   open_day: z.string(),
   open_time: z.string(),
+  s_open_day: z.string().optional(),
+  s_open_time: z.string().optional(),
   image_url: z.string().optional(),
   site_logo: z.union([
     z
@@ -591,8 +597,53 @@ export const bankAccountDetailsSchema = z.object({
   account_bsb: z.string().min(1, { message: "Account bsb is required" }),
 });
 
-export const invoiceSchema = z.object({
+export const newItemSchema = z
+  .array(
+    z.object({
+      price: z
+        .number()
+        .int()
+        .positive()
+        .min(1, {
+          message: "Price is required",
+        })
+        .max(9999, {
+          message: "Price is too high",
+        }),
+      item_name: z.string(),
+      category_id: z.number().optional(),
+      status: z.enum(["active", "inactive"]).optional(),
+    })
+  )
+  .optional();
+
+export const invoiceItemSchema = z.object({
   id: z.number().optional(),
+  category_id: z.number().optional(),
+  item_name: z.string().min(1, { message: "Item name is required" }),
+  price: z
+    .number()
+    .min(1, {
+      message: "Price is required",
+    })
+    .max(9999, {
+      message: "Price is too high",
+    }),
+  status: z.enum(["active", "inactive"]).optional(),
+});
+
+export const groupedItemsSchema = z
+  .array(
+    z.object({
+      category_id: z.number(),
+      category_name: z.string(),
+      items: z.array(invoiceItemSchema),
+    })
+  )
+  .optional();
+
+export const invoiceSchema = z.object({
+  id: z.number(),
   send_user_quote_id: z.number().optional(),
   invoice_number: z.string().optional(),
   // quote_id: z.number().min(1, { message: "Quote id is required" }),
@@ -608,21 +659,9 @@ export const invoiceSchema = z.object({
       message: "Invalid discount percentage",
     })
     .optional(),
-  invoice_items: z
-    .array(
-      z.object({
-        price: z.number(),
-        service_category_item: z.object({
-          item_name: z.string(),
-          price: z.string(),
-        }),
-        service_category: z.object({
-          id: z.number(),
-          category_name: z.string(),
-        }),
-      })
-    )
-    .optional(),
+  grouped_items: groupedItemsSchema,
+  invoice_items: groupedItemsSchema,
+  new_items: newItemSchema,
   send_user_quote: z
     .object({
       full_name: z.string(),
@@ -641,6 +680,7 @@ export const invoiceSchema = z.object({
       ]),
     })
     .optional(),
+
   subtotal: z.number().optional(),
   surge_fee: z.number().optional(),
   created_at: z.string().optional(),
@@ -679,5 +719,11 @@ export type WhyChooseUs = z.infer<typeof whyChooseUsSchema>;
 export type WhyChooseUsFeatures = z.infer<typeof whyChooseUsFeaturesSchema>;
 
 export type BankAccountDetails = z.infer<typeof bankAccountDetailsSchema>;
+
+export type GroupedItems = z.infer<typeof groupedItemsSchema>;
+
+export type InvoiceItem = z.infer<typeof invoiceItemSchema>;
+
+export type NewItem = z.infer<typeof newItemSchema>;
 
 export type Invoice = z.infer<typeof invoiceSchema>;

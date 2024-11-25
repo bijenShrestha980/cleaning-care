@@ -762,7 +762,7 @@ const ServiceForm = ({
             </Button>
           )}
           <Link
-            href="/admin/dashboard/service/service-list"
+            href="/cleaning-care-admin/dashboard/service/service-list"
             className="w-full sm:w-[86px]"
           >
             <Button
@@ -772,7 +772,7 @@ const ServiceForm = ({
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
             >
-              Cancle
+              Cancel
             </Button>
           </Link>
           <Button

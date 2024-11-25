@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Divider from "@/components/ui/divider";
-import CustomerReview from "@/components/customer-review";
+import CustomerReview from "@/features/fundamentals/components/contact-us-section";
 import { CustomImage } from "@/components/ui/custom-image";
 import RequestCallbackForm from "@/features/request-callback/components/request-callback-form";
 import { banner1 } from "@/constants/images";

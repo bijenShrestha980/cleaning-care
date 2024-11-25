@@ -27,7 +27,7 @@ const NotificationButton = () => {
     return <Skeleton className="w-10 h-10 rounded-full" />;
   }
   return (
-    <Link href="/admin/dashboard/notification">
+    <Link href="/cleaning-care-admin/dashboard/notification">
       <Button
         animation={"scale_in"}
         type="button"

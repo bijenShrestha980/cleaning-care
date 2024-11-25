@@ -25,7 +25,7 @@ const LandingPage = () => {
       >
         <div className="flex flex-col gap-4">
           <div className="w-full flex justify-end">
-            <Link href="/admin/dashboard/settings/landing-page/add-hero-section">
+            <Link href="/cleaning-care-admin/dashboard/settings/landing-page/add-hero-section">
               <Button animation={"scale_in"}>
                 <Plus size={20} className="mr-2" />
                 Add

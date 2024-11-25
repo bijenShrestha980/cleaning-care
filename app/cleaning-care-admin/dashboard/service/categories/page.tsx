@@ -1,23 +1,23 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import WhyChooseUsDetails from "@/features/why-choose-us-heading/components/why-choose-us-details";
+import ServiceCategoriesDetails from "@/features/service-categories/components/categories-details";
 
-const Heading = () => {
+const Categories = () => {
   return (
     <section>
       <div className="w-full flex justify-between mb-3">
-        <p className="font-medium mb-4">Heading</p>
-        <Link href="/admin/dashboard/why-choose-us/heading/add-heading">
+        <p className="font-medium mb-4">Categories</p>
+        <Link href="/cleaning-care-admin/dashboard/service/categories/add-category">
           <Button animation={"scale_in"}>
             <Plus size={20} className="mr-2" />
             Add
           </Button>
         </Link>
       </div>
-      <WhyChooseUsDetails />
+      <ServiceCategoriesDetails />
     </section>
   );
 };
 
-export default Heading;
+export default Categories;

@@ -24,7 +24,7 @@ export const useCreateService = () => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/service/service-list");
+        router.push("/cleaning-care-admin/dashboard/service/service-list");
       }
     },
     onError: (error) => {

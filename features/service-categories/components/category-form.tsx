@@ -30,6 +30,8 @@ import {
 import { useCreateServiceCategory } from "@/features/service-categories/api/use-create-service-category";
 import { useUpdateServiceCategory } from "@/features/service-categories/api/use-update-service-category";
 import { useDeleteServiceCategory } from "@/features/service-categories/api/use-delete-service-category";
+import { useDeleteServiceCategoryItem } from "../api/use-delete-service-category-item";
+import { useEffect, useState } from "react";
 
 const CategoryForm = ({
   serviceCategory,
@@ -44,8 +46,14 @@ const CategoryForm = ({
     useCreateServiceCategory();
   const { mutate: updateServiceCategory, isPending: updateIsPending } =
     useUpdateServiceCategory(id);
-  const { mutate: deleteStyle, isPending: deleteIsPending } =
+  const { mutate: deleteCategory, isPending: deleteIsPending } =
     useDeleteServiceCategory();
+  const {
+    mutate: deleteCategoryItem,
+    isPending: deleteItemIsPending,
+    isSuccess: deleteItemIsSuccess,
+  } = useDeleteServiceCategoryItem();
+  const [index, setIndex] = useState<number>();
 
   const formSchema = serviceCategorySchema;
 
@@ -72,6 +80,12 @@ const CategoryForm = ({
     name: "items",
     control: form.control,
   });
+
+  useEffect(() => {
+    if (deleteItemIsSuccess) {
+      itemRemove(index);
+    }
+  }, [deleteItemIsSuccess, index, itemRemove]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (id) {
@@ -154,33 +168,34 @@ const CategoryForm = ({
               Add Item
             </Button>
           </div>
-          {itemFields.map((_, index) => (
+          {itemFields.map((item, index) => (
             <div
               key={index}
               className={`grid sm:grid-cols-2 gap-4 mb-4 pb-5 animate-in slide-in-from-top ${
                 index !== itemFields.length - 1 ? "border-b" : ""
               }`}
             >
-              {index !== 0 && (
-                <>
-                  <span />
-                  <div
-                    className="
+              <span />
+              <div
+                className="
                   w-full flex gap-4 justify-end
                 "
-                  >
-                    <Button
-                      type="button"
-                      className="w-fit"
-                      variant={"outline"}
-                      animation={"scale_in"}
-                      onClick={() => itemRemove(index)}
-                    >
-                      <Trash2 size={16} />
-                    </Button>
-                  </div>
-                </>
-              )}
+              >
+                <Button
+                  type="button"
+                  className="w-fit"
+                  variant={"outline"}
+                  animation={"scale_in"}
+                  onClick={() =>
+                    items &&
+                    items[index].id !== undefined &&
+                    (deleteCategoryItem(items[index].id), setIndex(index))
+                  }
+                  disabled={deleteItemIsPending}
+                >
+                  <Trash2 size={16} />
+                </Button>
+              </div>
               <FormField
                 control={form.control}
                 name={`items.${index}.item_name`}
@@ -190,7 +205,7 @@ const CategoryForm = ({
                       Item name
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Item 1" {...field} />
+                      <Input placeholder={`Item ${index + 1}`} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -271,7 +286,7 @@ const CategoryForm = ({
               className="w-full md:w-[86px]"
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
-              onClick={() => deleteStyle(id)}
+              onClick={() => deleteCategory(id)}
             >
               {deleteIsPending ? (
                 <LoaderCircle className="animate-spin" width={20} height={20} />
@@ -281,7 +296,7 @@ const CategoryForm = ({
             </Button>
           )}
           <Link
-            href="/admin/dashboard/service/categories"
+            href="/cleaning-care-admin/dashboard/service/categories"
             className="w-full sm:w-[86px]"
           >
             <Button
@@ -291,7 +306,7 @@ const CategoryForm = ({
               disabled={createIsPending || updateIsPending || deleteIsPending}
               type="button"
             >
-              Cancle
+              Cancel
             </Button>
           </Link>
           <Button

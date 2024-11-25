@@ -82,7 +82,7 @@ export const categoryColumns: ColumnDef<ServiceCategory>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/service/categories/${row.original.id}`}
+          href={`/cleaning-care-admin/dashboard/service/categories/${row.original.id}`}
         >
           View
         </Link>

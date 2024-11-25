@@ -163,7 +163,7 @@ const FaqForm = () => {
             animation={"scale_in"}
             className="w-[86px]"
           >
-            Cancle
+            Cancel
           </Button>
           <Button type="submit" animation={"scale_in"} className="w-[86px]">
             Save

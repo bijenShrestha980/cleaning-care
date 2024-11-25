@@ -30,7 +30,7 @@ export const useUpdateSocialLinks = (id: number | string | undefined) => {
           variant: "destructive",
         });
       } else {
-        router.push("/admin/dashboard/settings/fundamental");
+        router.push("/cleaning-care-admin/dashboard/settings/fundamental");
       }
     },
     onError: (error) => {

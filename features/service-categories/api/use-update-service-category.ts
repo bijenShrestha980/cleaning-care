@@ -34,7 +34,7 @@ export const useUpdateServiceCategory = (id: number | string | undefined) => {
         // if (id !== undefined) {
         //   queryClient.invalidateQueries(["service-category", id]);
         // }
-        router.push("/admin/dashboard/service/categories");
+        router.push("/cleaning-care-admin/dashboard/service/categories");
       }
     },
     onError: (error) => {

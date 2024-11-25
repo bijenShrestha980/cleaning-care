@@ -83,7 +83,7 @@ export const testimonialColumns: ColumnDef<Testimonial>[] = [
       <div className="w-[80px]">
         <Link
           className="font-normal text-[13px] text-[#5065F6]"
-          href={`/admin/dashboard/settings/testimonial/view-testimonial`}
+          href={`/cleaning-care-admin/dashboard/settings/testimonial/view-testimonial`}
         >
           View
         </Link>

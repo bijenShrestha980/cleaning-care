@@ -1,32 +1,10 @@
 import Banner from "@/components/banner";
 import Divider from "@/components/ui/divider";
-import { CustomImage } from "@/components/ui/custom-image";
-import CustomerReview from "@/components/customer-review";
+import ContactUs from "@/features/fundamentals/components/contact-us-section";
 import RequestCallbackForm from "@/features/request-callback/components/request-callback-form";
 import ServicesSection from "@/features/services/components/services-section";
 import WhyChooseUsSection from "@/features/why-choose-us-heading/components/why-choose-us-section";
-import { banner1 } from "@/constants/images";
-
-const services = [
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-  {
-    img: banner1,
-    title: "Residential Cleaning",
-    description:
-      "Our professional residential cleaning services ensure your home is spotless and comfortable. From kitchens to bedrooms, we’ve got you covered.",
-  },
-];
+import Review from "@/features/review/components/review";
 
 export default function Home() {
   return (
@@ -52,45 +30,10 @@ export default function Home() {
         {/* Why Choose Us */}
         <WhyChooseUsSection />
         {/* Customer Review */}
-        <section className="flex flex-col items-center">
-          <div className="mb-12 max-w-[765px] flex flex-col items-center">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
-              Customer Reviews
-            </h4>
-            <p className="text-[#191919] opacity-60 text-base md:text-xl text-center">
-              Read what our satisfied customers have to say about our cleaning
-              services.
-            </p>
-          </div>
-          <div className="grid lg:grid-cols-2 items-center gap-[72px]">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="px-4 w-full flex flex-row items-center gap-4"
-              >
-                <CustomImage
-                  src={service.img}
-                  alt={service.title}
-                  containerClassName="w-[64px] h-[64px] shrink-0"
-                  fill
-                  sizes="64px"
-                  className="object-cover object-center rounded-full"
-                />
-                <div className="flex flex-col gap-1">
-                  <h5 className="text-primary text-base md:text-xl font-semibold">
-                    {service.title}
-                  </h5>
-                  <p className="text-primary line-clamp-4">
-                    {service.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <Review />
         <Divider />
-        {/* Customer Review */}
-        <CustomerReview />
+        {/* Contsct Us */}
+        <ContactUs />
         <Divider />
         {/* Request a Callback */}
         <RequestCallbackForm />
