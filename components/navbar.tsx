@@ -39,8 +39,8 @@ export function Navbar() {
                   alt="Logo"
                   priority
                   fill
-                  sizes="(max-width: 640px) 77px, 57px"
-                  containerClassName="w-[57px] md:w-[77px] h-[60px] md:h-[80px]"
+                  sizes="(max-width: 640px) 55px, 77px"
+                  containerClassName="w-[57px] md:w-[67px] h-[60px] md:h-[70px]"
                 />
               </NavigationMenuLink>
             </Link>
