@@ -27,7 +27,7 @@ const QuoteDialogue = ({
   } = useAllServiceCategories();
 
   if (serviceCategoryIsPending) {
-    return <Skeleton className="w-[188px] h-10" />;
+    return <Skeleton className="w-[188px] h-9" />;
   }
   if (serviceCategoryIsError) {
     return (
@@ -42,7 +42,7 @@ const QuoteDialogue = ({
       onOpenChange={(isOpen) => !isOpen && setIsDialogOpen(false)}
     >
       <DialogTrigger asChild onClick={() => setIsDialogOpen(true)}>
-        <Button variant="success" size="lg">
+        <Button variant="success" size="lg" className="h-9">
           Get service quote
         </Button>
       </DialogTrigger>

@@ -1,20 +1,25 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import Error from "@/components/ui/error";
-import Loading from "@/components/ui/loading";
 import { CustomImage } from "@/components/ui/custom-image";
 import CustomEditor from "@/components/editor";
-import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
+import { SiteAdmin } from "@/components/admin/data/schema";
 import { banner1 } from "@/constants/images";
 
-const Privacy = () => {
-  const {
-    data: fundamentalData,
-    isPending: fundamentalIsPending,
-    isError: fundamentalIsError,
-  } = useAllFundamental();
+const getFundamental = async () => {
+  const response = await fetch(`${process.env.url}/api/get-fundamental`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as SiteAdmin;
+};
+
+const Privacy = async () => {
+  const fundamentalData = await getFundamental();
 
   return (
     <main className="-translate-y-[104px]">
@@ -43,19 +48,13 @@ const Privacy = () => {
           </Link>
         </div>
       </div>
-      {fundamentalIsError ? (
-        <Error />
-      ) : fundamentalIsPending ? (
-        <Loading />
-      ) : (
-        <div className="p-5 md:p-10">
-          <CustomEditor
-            value={fundamentalData?.privacy_policy}
-            readOnly={true}
-            theme={"bubble"}
-          />
-        </div>
-      )}
+      <div className="p-5 md:p-10">
+        <CustomEditor
+          value={fundamentalData?.privacy_policy}
+          readOnly={true}
+          theme={"bubble"}
+        />
+      </div>
     </main>
   );
 };

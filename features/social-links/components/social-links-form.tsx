@@ -38,8 +38,8 @@ const SocialLinksForm = () => {
     <FormComponent
       facebook={socialLinks[0]?.facebook}
       instagram={socialLinks[0]?.instagram}
-      twitter={socialLinks[0]?.twitter}
-      youtube={socialLinks[0]?.youtube}
+      // twitter={socialLinks[0]?.twitter}
+      // youtube={socialLinks[0]?.youtube}
     />
   );
 };
@@ -65,8 +65,8 @@ const FormComponent = ({
     defaultValues: {
       facebook: facebook || "",
       instagram: instagram || "",
-      twitter: twitter || "",
-      youtube: youtube || "",
+      // twitter: twitter || "",
+      // youtube: youtube || "",
     },
   });
 
@@ -106,7 +106,7 @@ const FormComponent = ({
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="twitter"
           render={({ field }) => (
@@ -131,7 +131,7 @@ const FormComponent = ({
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <span />
 

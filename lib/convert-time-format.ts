@@ -1,5 +1,5 @@
 export const convertTimeFormat = (time: string) => {
-  const [start, end] = time.split(",");
+  const [start, end] = time?.split(",");
   const formatTime = (t: string) => {
     const [hour, minute] = t.split(":");
     const h = parseInt(hour, 10);

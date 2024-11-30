@@ -5,11 +5,26 @@ import RequestCallbackForm from "@/features/request-callback/components/request-
 import ServicesSection from "@/features/services/components/services-section";
 import WhyChooseUsSection from "@/features/why-choose-us-heading/components/why-choose-us-section";
 import Review from "@/features/review/components/review";
+import { HeroSection } from "@/components/admin/data/schema";
 
-export default function Home() {
+const getHeroSection = async () => {
+  const response = await fetch(`${process.env.url}/api/get-all-hero-section`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as HeroSection[];
+};
+
+const Home = async () => {
+  const heroSection = await getHeroSection();
   return (
     <main className="-translate-y-[104px]">
-      <Banner />
+      <Banner heroSectionData={heroSection} />
       <div className="p-5 md:p-10">
         <Divider />
         {/* Overview of Services */}
@@ -40,4 +55,6 @@ export default function Home() {
       </div>
     </main>
   );
-}
+};
+
+export default Home;

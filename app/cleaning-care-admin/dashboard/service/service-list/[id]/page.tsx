@@ -31,7 +31,7 @@ const ViewService = ({ params }: { params: { id: number } }) => {
           section_one_description: serviceData?.section_one_description ?? "",
           section_one_image: null,
           section_one_image_url: serviceData?.section_one_image_url,
-          section_two_title: serviceData?.section_one_image_url ?? "",
+          section_two_title: serviceData?.section_two_title ?? "",
           section_two_description: serviceData?.section_two_description ?? "",
           service_items: serviceData?.serviceitems
             ? serviceData?.serviceitems.map((item) => ({

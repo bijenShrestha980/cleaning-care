@@ -1,16 +1,21 @@
-"use client";
-
-import React from "react";
 import Divider from "@/components/ui/divider";
-import { useAllWhyChooseUs } from "../api/use-why-choose-us";
-import { Skeleton } from "@/components/ui/skeleton";
+import { WhyChooseUs } from "@/components/admin/data/schema";
 
-const WhyChooseUsValuesSection = () => {
-  const {
-    data: whyChooseUs,
-    isPending: whyChooseUsIsPending,
-    isError: whyChooseUsIsError,
-  } = useAllWhyChooseUs();
+const getWhyChooseUs = async () => {
+  const response = await fetch(`${process.env.url}/api/get-why-choose-us`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as WhyChooseUs[];
+};
+
+const WhyChooseUsValuesSection = async () => {
+  const whyChooseUs = await getWhyChooseUs();
 
   const colors = ["#8CC540", "#F0B419", "#F06292", "#4FC3F7"];
 
@@ -30,26 +35,22 @@ const WhyChooseUsValuesSection = () => {
             </p>
           </div>
           <div className="w-full shrink-1 grid sm:grid-cols-2 gap-4 md:gap-12">
-            {whyChooseUsIsPending
-              ? Array.from({ length: 3 }).map((_, index) => (
-                  <Skeleton className="h-[108px] w-full mb-3" key={index} />
-                ))
-              : whyChooseUs
-                  ?.find((item) => item.type === "values")
-                  ?.features?.map((item, index) => (
-                    <div
-                      className="w-full h-full p-4 rounded-xl"
-                      style={{ backgroundColor: colors[index % colors.length] }}
-                      key={index}
-                    >
-                      <p className="font-semibold text-secondary-foreground text-xl leading-6 mb-2 uppercase">
-                        {item.feature_title}
-                      </p>
-                      <p className="text-secondary-foreground text-sm leading-4">
-                        {item.feature_short_description}
-                      </p>
-                    </div>
-                  ))}
+            {whyChooseUs
+              ?.find((item) => item.type === "values")
+              ?.features?.map((item, index) => (
+                <div
+                  className="w-full h-full p-4 rounded-xl"
+                  style={{ backgroundColor: colors[index % colors.length] }}
+                  key={index}
+                >
+                  <p className="font-semibold text-secondary-foreground text-xl leading-6 mb-2 uppercase">
+                    {item.feature_title}
+                  </p>
+                  <p className="text-secondary-foreground text-sm leading-4">
+                    {item.feature_short_description}
+                  </p>
+                </div>
+              ))}
           </div>
         </section>
         <Divider />

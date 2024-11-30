@@ -1,14 +1,21 @@
-"use client";
 import { CheckCheck } from "lucide-react";
-import { useAllWhyChooseUs } from "../api/use-why-choose-us";
-import { Skeleton } from "@/components/ui/skeleton";
+import { WhyChooseUs } from "@/components/admin/data/schema";
 
-const WhyChooseUsServiceSection = () => {
-  const {
-    data: whyChooseUs,
-    isPending: whyChooseUsIsPending,
-    isError: whyChooseUsIsError,
-  } = useAllWhyChooseUs();
+const getWhyChooseUs = async () => {
+  const response = await fetch(`${process.env.url}/api/get-why-choose-us`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as WhyChooseUs[];
+};
+
+const WhyChooseUsServiceSection = async () => {
+  const whyChooseUs = await getWhyChooseUs();
 
   if (whyChooseUs?.find((item) => item.type === "bookservice")) {
     return (
@@ -25,25 +32,21 @@ const WhyChooseUsServiceSection = () => {
           </p>
         </div>
         <div className="w-full shrink-1 bg-[#F2FAFF] px-4 py-5">
-          {whyChooseUsIsPending
-            ? Array.from({ length: 3 }).map((_, index) => (
-                <Skeleton className="h-[108px] w-full mb-3" key={index} />
-              ))
-            : whyChooseUs
-                ?.find((item) => item.type === "bookservice")
-                ?.features?.map((item, index) => (
-                  <div className="flex gap-3 mb-6" key={index}>
-                    <CheckCheck stroke="#8CC540" size={36} />
-                    <div className="w-full ">
-                      <h5 className="text-[#191919] text-base md:text-xl font-semibold mb-2">
-                        {item.feature_title}
-                      </h5>
-                      <p className="text-[#191919] text-sm md:text-base">
-                        {item.feature_short_description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+          {whyChooseUs
+            ?.find((item) => item.type === "bookservice")
+            ?.features?.map((item, index) => (
+              <div className="flex gap-3 mb-6" key={index}>
+                <CheckCheck stroke="#8CC540" size={36} />
+                <div className="w-full ">
+                  <h5 className="text-[#191919] text-base md:text-xl font-semibold mb-2">
+                    {item.feature_title}
+                  </h5>
+                  <p className="text-[#191919] text-sm md:text-base">
+                    {item.feature_short_description}
+                  </p>
+                </div>
+              </div>
+            ))}
         </div>
       </section>
     );

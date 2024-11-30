@@ -387,10 +387,10 @@ export const siteAdminSchema = z.object({
 });
 
 export const socialLinksSchema = z.object({
-  facebook: z.string().url(),
-  instagram: z.string().url(),
-  twitter: z.string().url(),
-  youtube: z.string().url(),
+  facebook: z.string(),
+  instagram: z.string(),
+  // twitter: z.string(),
+  // youtube: z.string(),
 });
 
 export const changePasswordSchema = z

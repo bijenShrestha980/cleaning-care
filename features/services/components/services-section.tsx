@@ -1,48 +1,46 @@
-"use client";
-import { banner1 } from "@/constants/images";
-import { useAllServices } from "../api/use-service";
-import Image from "next/image";
-import { Skeleton } from "@/components/ui/skeleton";
 import { CustomImage } from "@/components/ui/custom-image";
+import { Service } from "@/components/admin/data/schema";
 
-const ServicesSection = () => {
-  const {
-    data: services,
-    isPending: servicesIsPending,
-    isError: servicesIsError,
-  } = useAllServices();
+const getServices = async () => {
+  const response = await fetch(`${process.env.url}/api/get-all-services`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as Service[];
+};
+
+const ServicesSection = async () => {
+  const services = await getServices();
 
   return (
-    <div className="w-full flex flex-wrap justify-center gap-4 md:gap-10">
-      {servicesIsPending
-        ? Array.from({ length: 3 }).map((_, index) => (
-            <Skeleton
-              className="h-[365px] w-full md:w-[470px] mb-3"
-              key={index}
+    <div className="w-full flex flex-wrap justify-center">
+      {services &&
+        services.slice(0, 3).map((service, index) => (
+          <div
+            key={index}
+            className="w-full md:w-[470px] p-2 md:p-4 lg:p-6 flex flex-col items-center gap-4 lg:gap-6"
+          >
+            <CustomImage
+              src={service?.banner_image_url || ""}
+              alt="Residential Cleaning"
+              fill
+              sizes="225px"
+              containerClassName="w-[175px] h-[175px] lg:w-[225px] lg:h-[225px]"
+              className="rounded-full w-full h-full object-cover object-center"
             />
-          ))
-        : services &&
-          services.slice(0, 3).map((service, index) => (
-            <div
-              key={index}
-              className="p-6 flex flex-col items-center gap-2 md:gap-4"
-            >
-              <CustomImage
-                src={service?.banner_image_url || banner1}
-                alt="Residential Cleaning"
-                fill
-                sizes="225px"
-                containerClassName="w-[225px] h-[225px]"
-                className="rounded-full w-[225px] h-[225px] object-cover object-center"
-              />
-              <h5 className="text-primary text-lg md:text-2xl font-medium text-center">
-                {service.service_name}
-              </h5>
-              <p className="text-base md:text-lg text-primary opacity-50 text-center">
-                {service.short_description}
-              </p>
-            </div>
-          ))}
+            <h5 className="text-primary text-lg md:text-2xl font-medium text-center">
+              {service.service_name}
+            </h5>
+            <p className="text-base md:text-lg text-primary opacity-50 text-center">
+              {service.short_description}
+            </p>
+          </div>
+        ))}
     </div>
   );
 };

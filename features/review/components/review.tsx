@@ -1,11 +1,15 @@
 import { Star } from "lucide-react";
 import { CustomImage } from "@/components/ui/custom-image";
 
-const Review = async () => {
-  let data = await fetch(
+const getReviews = async () => {
+  const response = await fetch(
     `https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJ32vJVYoYBS4RHUYoT8Olij4&fields=reviews&key=${process.env.google_api_key}`
   );
-  let reviews = (await data.json()) as {
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data as {
     result: {
       reviews: {
         author_name: string;
@@ -15,6 +19,10 @@ const Review = async () => {
       }[];
     };
   };
+};
+
+const Review = async () => {
+  const reviews = await getReviews();
 
   // Shuffle the reviews array and take the first 4 items
   const shuffledReviews = reviews?.result?.reviews.sort(
