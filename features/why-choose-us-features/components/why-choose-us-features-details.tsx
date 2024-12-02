@@ -12,8 +12,6 @@ const WhyChooseUsFeaturesDetails = () => {
     isError: whyChooseUsFeaturesIsError,
   } = useWhyChooseUsFeatures();
 
-  console.log(whyChooseUsFeaturesData);
-
   if (whyChooseUsFeaturesIsPending) {
     return <Loading />;
   }

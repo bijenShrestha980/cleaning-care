@@ -40,3 +40,16 @@ export const useHeroSection = (id: number) =>
     queryKey: ["hero-sections", id],
     queryFn: () => getHeroSection(id),
   });
+
+export const fetchHeroSection = async () => {
+  const response = await fetch(`${process.env.url}/api/get-all-hero-section`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as HeroSection[];
+};

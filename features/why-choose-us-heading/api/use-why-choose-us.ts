@@ -40,3 +40,16 @@ export const useWhyChooseUsById = (id: number) =>
     queryKey: ["why-choose-us", id],
     queryFn: () => getWhyChooseUsById(id),
   });
+
+export const fetchWhyChooseUs = async () => {
+  const response = await fetch(`${process.env.url}/api/get-why-choose-us`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as WhyChooseUs[];
+};

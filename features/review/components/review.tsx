@@ -1,28 +1,9 @@
 import { Star } from "lucide-react";
 import { CustomImage } from "@/components/ui/custom-image";
-
-const getReviews = async () => {
-  const response = await fetch(
-    `https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJ32vJVYoYBS4RHUYoT8Olij4&fields=reviews&key=${process.env.google_api_key}`
-  );
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error("Something went wrong!");
-  }
-  return data as {
-    result: {
-      reviews: {
-        author_name: string;
-        profile_photo_url: string;
-        text: string;
-        rating: number;
-      }[];
-    };
-  };
-};
+import { fetchReviews } from "../api/use-reviews";
 
 const Review = async () => {
-  const reviews = await getReviews();
+  const reviews = await fetchReviews();
 
   // Shuffle the reviews array and take the first 4 items
   const shuffledReviews = reviews?.result?.reviews.sort(
@@ -41,9 +22,9 @@ const Review = async () => {
           services.
         </p>
       </div>
-      <div className="grid lg:grid-cols-2 items-center gap-[72px]">
+      <div className="grid lg:grid-cols-2 items-center gap-8 md:gap-[72px]">
         {randomReviews.map((review, index) => (
-          <div key={index} className="px-4 w-full flex flex-row  gap-4">
+          <div key={index} className="px-4 w-full flex flex-row gap-2 md:gap-4">
             <CustomImage
               src={review.profile_photo_url}
               alt={review.author_name}
@@ -53,7 +34,7 @@ const Review = async () => {
               className="object-cover object-center rounded-full"
             />
             <div className="flex flex-col gap-1">
-              <h5 className="text-primary text-base md:text-xl font-semibold">
+              <h5 className="text-primary text-base md:text-xl font-semibold line-clamp-1">
                 {review.author_name}
               </h5>
               <p className="text-primary line-clamp-4">{review.text}</p>

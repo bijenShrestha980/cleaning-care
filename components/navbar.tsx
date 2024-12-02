@@ -1,10 +1,7 @@
-"use client";
-
 import * as React from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -23,10 +20,10 @@ import {
 import { CustomImage } from "@/components/ui/custom-image";
 import { logo } from "@/constants/images";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
-import { useAllServices } from "@/features/services/api/use-service";
+import { fetchAllServices } from "@/features/services/api/use-service";
 
-export function Navbar() {
-  const { data: servicesData, isPending } = useAllServices();
+export const Navbar = async () => {
+  const servicesData = await fetchAllServices();
   return (
     <div className="max-w-full flex items-center justify-between py-3 px-10">
       <NavigationMenu>
@@ -84,18 +81,13 @@ export function Navbar() {
                   </AccordionTrigger>
                   <AccordionContent>
                     <ul className="grid w-full gap-1 px-1 md:grid-cols-1">
-                      {isPending ? (
-                        <Skeleton className="h-[40px] w-full" />
-                      ) : (
-                        servicesData &&
-                        servicesData.map((component) => (
-                          <ListItem
-                            key={component.id}
-                            title={component.service_name}
-                            href={component.service_category_id?.toString()}
-                          />
-                        ))
-                      )}
+                      {servicesData.map((component) => (
+                        <ListItem
+                          key={component.id}
+                          title={component.service_name}
+                          href={component.service_category_id?.toString()}
+                        />
+                      ))}
                     </ul>
                   </AccordionContent>
                 </AccordionItem>
@@ -118,18 +110,13 @@ export function Navbar() {
             <NavigationMenuTrigger>Services</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-1 ">
-                {isPending ? (
-                  <Skeleton className="h-[40px] w-full" />
-                ) : (
-                  servicesData &&
-                  servicesData.map((component) => (
-                    <ListItem
-                      key={component.id}
-                      title={component.service_name}
-                      href={component.service_category_id?.toString()}
-                    />
-                  ))
-                )}
+                {servicesData.map((component) => (
+                  <ListItem
+                    key={component.id}
+                    title={component.service_name}
+                    href={component.service_category_id?.toString()}
+                  />
+                ))}
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
@@ -154,7 +141,7 @@ export function Navbar() {
       </NavigationMenu>
     </div>
   );
-}
+};
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,

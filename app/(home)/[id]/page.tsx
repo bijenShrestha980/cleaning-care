@@ -3,26 +3,10 @@ import { CustomImage } from "@/components/ui/custom-image";
 import { banner1 } from "@/constants/images";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 import WhyChooseUsServiceSection from "@/features/why-choose-us-heading/components/why-choose-us-service-section";
-import { Service } from "@/components/admin/data/schema";
-
-const getServiceByCategoryId = async (id: number) => {
-  const response = await fetch(
-    `${process.env.url}/api/get-service-by-category/${id}`,
-    {
-      next: {
-        revalidate: 60,
-      },
-    }
-  );
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error("Something went wrong!");
-  }
-  return data.data as Service;
-};
+import { fetchServiceByCategoryId } from "@/features/services/api/use-service";
 
 const Services = async ({ params }: { params: { id: number } }) => {
-  const serviceData = await getServiceByCategoryId(params.id);
+  const serviceData = await fetchServiceByCategoryId(params.id);
   return (
     <main className="-translate-y-[104px]">
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">
@@ -37,10 +21,10 @@ const Services = async ({ params }: { params: { id: number } }) => {
         />
         <div className="w-full h-full absolute top-0 -z-10 bg-transbg" />
         <div className="w-full h-full absolute top-5 left-0 flex flex-col justify-center items-center text-center px-4">
-          <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[64px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3">
+          <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[64px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3 line-clamp-1">
             {serviceData?.service_name}
           </h1>
-          <p className="text-primary-foreground text-md md:text-2xl mb-9">
+          <p className="text-primary-foreground text-md md:text-2xl mb-9 line-clamp-3">
             {serviceData?.short_description}
           </p>
           <QuoteDialogue
@@ -53,13 +37,13 @@ const Services = async ({ params }: { params: { id: number } }) => {
         </div>
       </div>
       <div className="w-full p-5 md:p-10 flex flex-col items-center">
-        <p className="mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic">
+        <p className="mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic line-clamp-4">
           {serviceData?.long_description}
         </p>
         <Divider />
         <section className="w-full flex flex-col xl:flex-row items-end lg:items-start justify-between gap-4 lg:gap-16">
           <div className="w-full flex flex-col gap-3">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold">
+            <h4 className="text-primary text-3xl md:text-[42px] font-semibold line-clamp-2">
               {serviceData?.section_one_title}
             </h4>
             <p className="text-[#191919] opacity-60 text-base md:text-xl">
@@ -79,10 +63,10 @@ const Services = async ({ params }: { params: { id: number } }) => {
         {/* Overview of Services */}
         <section className="w-full flex flex-col items-center">
           <div className="mb-12 max-w-[765px] flex flex-col items-center">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
+            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center line-clamp-1">
               {serviceData?.section_two_title}
             </h4>
-            <p className="text-[#191919] opacity-60 text-base md:text-xl text-center">
+            <p className="text-[#191919] opacity-60 text-base md:text-xl text-center line-clamp-3">
               {serviceData?.section_two_description}
             </p>
           </div>
@@ -104,7 +88,7 @@ const Services = async ({ params }: { params: { id: number } }) => {
                   <h5 className="text-[#191919] opacity-60 text-base md:text-xl font-semibold text-center">
                     {service.item_name}
                   </h5>
-                  <p className="text-sm md:text-base text-[#191919] opacity-60 text-center">
+                  <p className="text-sm md:text-base text-[#191919] opacity-60 text-center line-clamp-5">
                     {service.short_description}
                   </p>
                 </div>

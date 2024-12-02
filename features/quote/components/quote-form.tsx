@@ -290,7 +290,7 @@ const QuoteForm = ({
               </FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Enter message"
+                  placeholder="Ex. House Cleaning - 3beds + 2 baths"
                   {...field}
                   className="bg-[#EDEDED]"
                   rows={6}

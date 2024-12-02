@@ -21,7 +21,6 @@ export const useCreateRequestCallback = () => {
           variant: "destructive",
         });
       } else {
-        console.log(data);
         toast({
           title: "Success",
           description: data?.message,

@@ -1,11 +1,11 @@
 import React from "react";
-import IframeMap from "@/components/iframe-map";
 import { convertTimeFormat } from "@/lib/convert-time-format";
 import { convertDaysRange } from "@/lib/convert-days-range";
 import { fetchAllFundamental } from "../api/use-fundamental";
 
 const ContactUsSection = async () => {
   const fundamentalData = await fetchAllFundamental();
+
   return (
     <section className="flex flex-col items-center w-full">
       <div className="mb-12 max-w-[765px] flex flex-col items-center">
@@ -16,8 +16,13 @@ const ContactUsSection = async () => {
           Reach us with the following details
         </p>
       </div>
-      <div className="grid lg:grid-cols-2 items-center gap-[72px] w-full">
-        <IframeMap iframeHtml={JSON.parse(fundamentalData?.google_map)} />
+      <div className="grid lg:grid-cols-2 items-center md:gap-[72px] w-full">
+        <iframe
+          src={fundamentalData?.google_map?.split("src=")[1]?.split(`"`)[1]}
+          style={{ border: 0, width: "100%", height: "450px" }}
+          allowFullScreen={true}
+          loading="lazy"
+        />
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-8">
           <div>
             <p className="font-semibold text-base text-primary opacity-50 uppercase">

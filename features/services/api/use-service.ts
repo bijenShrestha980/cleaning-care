@@ -51,3 +51,32 @@ export const useServiceByCategoryId = (id: number) =>
     queryKey: ["service", id],
     queryFn: () => getServiceByCategoryId(id),
   });
+
+export const fetchAllServices = async () => {
+  const response = await fetch(`${process.env.url}/api/get-all-services`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as Service[];
+};
+
+export const fetchServiceByCategoryId = async (id: number) => {
+  const response = await fetch(
+    `${process.env.url}/api/get-service-by-category/${id}`,
+    {
+      next: {
+        revalidate: 60,
+      },
+    }
+  );
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as Service;
+};

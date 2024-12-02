@@ -13,7 +13,13 @@ import { CustomImage } from "./ui/custom-image";
 import { HeroSection } from "./admin/data/schema";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 
-const Banner = ({ heroSectionData }: { heroSectionData: HeroSection[] }) => {
+const Banner = ({
+  heroSectionData,
+  user_ratings_total,
+}: {
+  heroSectionData: HeroSection[];
+  user_ratings_total: number;
+}) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
@@ -57,10 +63,10 @@ const Banner = ({ heroSectionData }: { heroSectionData: HeroSection[] }) => {
             <div className="w-full h-full absolute top-0 -z-10 bg-transbg" />
 
             <div className="max-w-[316px] md:max-w-[816px] absolute top-[187px] left-[40px] sm:left-[55px]">
-              <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[72px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3">
+              <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[72px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3 line-clamp-2">
                 {item.title}
               </h1>
-              <p className="text-primary-foreground text-md md:text-2xl mb-9">
+              <p className="text-primary-foreground text-md md:text-2xl mb-9 line-clamp-4">
                 {item.description}
               </p>
 
@@ -110,7 +116,7 @@ const Banner = ({ heroSectionData }: { heroSectionData: HeroSection[] }) => {
                     5 / 5
                   </p>
                   <p className="text-primary-foreground text-base font-normal">
-                    40k Reviews
+                    {user_ratings_total} Reviews
                   </p>
                 </span>
               </div>

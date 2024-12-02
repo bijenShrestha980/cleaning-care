@@ -35,7 +35,6 @@ let cachedSession: { token: string } | null = null;
 // Function to verify and cache the session
 export const verifySession = async (): Promise<{ token: string } | null> => {
   if (cachedSession) {
-    console.log("cachedSession");
     return {
       token: cachedSession.token,
     };
