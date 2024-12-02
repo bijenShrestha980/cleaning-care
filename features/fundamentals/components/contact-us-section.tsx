@@ -1,24 +1,11 @@
 import React from "react";
-import GoogleMapComponent from "../../../components/map";
+import IframeMap from "@/components/iframe-map";
 import { convertTimeFormat } from "@/lib/convert-time-format";
 import { convertDaysRange } from "@/lib/convert-days-range";
-
-const getFundamental = async () => {
-  const response = await fetch(`${process.env.url}/api/get-fundamental`, {
-    next: {
-      revalidate: 60,
-    },
-  });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error("Something went wrong!");
-  }
-  return data.data;
-};
+import { fetchAllFundamental } from "../api/use-fundamental";
 
 const ContactUsSection = async () => {
-  const fundamentalData = await getFundamental();
-
+  const fundamentalData = await fetchAllFundamental();
   return (
     <section className="flex flex-col items-center w-full">
       <div className="mb-12 max-w-[765px] flex flex-col items-center">
@@ -30,15 +17,7 @@ const ContactUsSection = async () => {
         </p>
       </div>
       <div className="grid lg:grid-cols-2 items-center gap-[72px] w-full">
-        <div>
-          <GoogleMapComponent
-            value={
-              typeof fundamentalData?.google_map === "string"
-                ? JSON.parse(fundamentalData?.google_map)
-                : fundamentalData?.google_map
-            }
-          />
-        </div>
+        <IframeMap iframeHtml={JSON.parse(fundamentalData?.google_map)} />
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-8">
           <div>
             <p className="font-semibold text-base text-primary opacity-50 uppercase">

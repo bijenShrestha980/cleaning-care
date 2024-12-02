@@ -2,24 +2,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CustomImage } from "@/components/ui/custom-image";
 import CustomEditor from "@/components/editor";
-import { SiteAdmin } from "@/components/admin/data/schema";
+import { fetchAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import { banner1 } from "@/constants/images";
 
-const getFundamental = async () => {
-  const response = await fetch(`${process.env.url}/api/get-fundamental`, {
-    next: {
-      revalidate: 60,
-    },
-  });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error("Something went wrong!");
-  }
-  return data.data as SiteAdmin;
-};
-
 const License = async () => {
-  const fundamentalData = await getFundamental();
+  const fundamentalData = await fetchAllFundamental();
   return (
     <main className="-translate-y-[104px]">
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">

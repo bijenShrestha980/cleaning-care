@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import Divider from "@/components/ui/divider";
-import CustomerReview from "@/features/fundamentals/components/contact-us-section";
 import { CustomImage } from "@/components/ui/custom-image";
+import CustomerReview from "@/features/fundamentals/components/contact-us-section";
 import RequestCallbackForm from "@/features/request-callback/components/request-callback-form";
+import { fetchAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import { banner1 } from "@/constants/images";
 
-const ContactUs = () => {
+const ContactUs = async () => {
+  const fundamentalData = await fetchAllFundamental();
   return (
     <main className="-translate-y-[104px]">
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">
@@ -26,8 +28,10 @@ const ContactUs = () => {
           <p className="text-primary-foreground text-md md:text-2xl mb-9">
             Get in Touch
           </p>
-          <Button variant="success" size="lg">
-            Call for Inquires
+          <Button variant="success" size="lg" asChild>
+            <a href={`tel:${fundamentalData.contact_number1}`}>
+              Call for Inquires
+            </a>
           </Button>
         </div>
       </div>

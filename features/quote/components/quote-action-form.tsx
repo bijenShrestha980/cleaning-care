@@ -47,30 +47,7 @@ const QuotActionForm = ({
       service_category_id: quote.senduserquoteservice?.map(
         (service) => service.service_category_id
       ),
-      categories: quote.senduserquoteservice?.reduce(
-        (
-          acc: Record<
-            number,
-            { service_category_item_id: number[]; price: string[] }
-          >,
-          service
-        ) => {
-          acc[service.service_category_id] = {
-            service_category_item_id:
-              service.servicecategory.servicecategoryitems.map(
-                (item) => item.id
-              ),
-            price: service.servicecategory.servicecategoryitems.map(
-              (item) => item.price
-            ),
-          };
-          return acc;
-        },
-        {} as Record<
-          number,
-          { service_category_item_id: number[]; price: string[] }
-        >
-      ),
+      categories: {},
     },
   });
 
@@ -87,8 +64,12 @@ const QuotActionForm = ({
     );
     setTotalCost(total);
   }, [serviceCategoriesData, quote.senduserquoteservice]);
+
   // console.log(form.formState.errors);
+  // console.log(form.getValues("categories"));
+
   function onSubmit(values: z.infer<typeof formSchema>) {
+    // console.log(values);
     createQuote(values as any);
   }
 
@@ -155,9 +136,16 @@ const QuotActionForm = ({
                         className="w-full flex flex-col gap-4 bg-slate-100 rounded-md shadow-md p-3"
                         key={index}
                       >
-                        <p className="font-semibold font-bricolageGrotesqueSans">
-                          {category.category_name}
-                        </p>
+                        <div className="flex gap-2 items-center">
+                          <p className="font-semibold font-bricolageGrotesqueSans">
+                            {category.category_name}
+                          </p>
+                          {form.formState.errors.categories?.[category.id] && (
+                            <p className="font-semibold font-bricolageGrotesqueSans text-destructive">
+                              Atleast one service is required
+                            </p>
+                          )}
+                        </div>
                         {category.servicecategoryitems?.map((item, j) => (
                           <FormField
                             control={form.control}
@@ -229,7 +217,11 @@ const QuotActionForm = ({
                                         ) {
                                           form.setValue(
                                             `categories.${category.id}`,
-                                            undefined
+                                            {
+                                              //@ts-ignore
+                                              service_category_item_id:
+                                                undefined,
+                                            }
                                           );
                                         }
                                       }}

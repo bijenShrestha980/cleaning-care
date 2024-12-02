@@ -76,7 +76,6 @@ const SiteAdminForm = ({
   open_time,
   s_open_day,
   s_open_time,
-  site_logo,
   image_url,
   copyright,
   google_map,
@@ -105,7 +104,7 @@ const SiteAdminForm = ({
       site_address: site_address || "",
       email1: email1 || "",
       email2: email2 || "",
-      contact_number1: contact_number1 || "",
+      contact_number1: contact_number1 || "+61",
       contact_number2: contact_number2 || "",
       open_day: open_day || "",
       open_time: open_time || "09:00,18:00",
@@ -113,10 +112,7 @@ const SiteAdminForm = ({
       s_open_time: s_open_time || "09:00,18:00",
       site_logo: null,
       copyright: copyright || "",
-      google_map: google_map || {
-        lat: 43.734952570403,
-        lng: -79.39714192370195,
-      },
+      google_map: google_map || "",
       term_condition: term_condition || "",
       privacy_policy: privacy_policy || "",
       license: license || "",
@@ -149,7 +145,6 @@ const SiteAdminForm = ({
     createFundamental(formData as any);
   }
 
-  console.log(form.getValues("open_day"));
   useEffect(() => {
     form.setValue("open_time", time.join(","));
   }, [form, time]);
@@ -458,7 +453,7 @@ const SiteAdminForm = ({
             )}
           />
         </div>
-        <FormField
+        {/* <FormField
           control={form.control}
           name="google_map"
           render={({ field }) => (
@@ -473,7 +468,22 @@ const SiteAdminForm = ({
               <FormMessage />
             </FormItem>
           )}
+        /> */}
+
+        <FormField
+          control={form.control}
+          name="google_map"
+          render={({ field }) => (
+            <FormItem className="col-span-2 sm:col-span-1">
+              <FormLabel className="font-normal text-sm">Location</FormLabel>
+              <FormControl>
+                <Input placeholder="Location" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
+
         <span />
 
         <Separator className="col-span-2 mt-4" />

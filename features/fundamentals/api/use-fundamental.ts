@@ -29,3 +29,16 @@ export const useAllFundamental = (query?: QueryParams) =>
     queryKey: ["fundamental", query],
     queryFn: () => getAllFundamental(query || {}),
   });
+
+export const fetchAllFundamental = async () => {
+  const response = await fetch(`${process.env.url}/api/get-fundamental`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as SiteAdmin;
+};

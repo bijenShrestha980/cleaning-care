@@ -209,7 +209,7 @@ const QuoteForm = ({
           name="service_category_ids"
           render={({ field: { onChange } }) => (
             <div className="space-y-2 col-span-2">
-              <FormLabel className="font-normal text-sm">Categories</FormLabel>
+              <FormLabel className="font-normal text-sm">Service</FormLabel>
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -232,16 +232,16 @@ const QuoteForm = ({
                                 {category.label}
                               </Badge>
                             ))
-                        : "Select category..."}
+                        : "Select service..."}
                     </div>
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="sm:w-[462px] p-0">
                   <Command>
-                    <CommandInput placeholder="Search category..." />
+                    <CommandInput placeholder="Search service..." />
                     <CommandList>
-                      <CommandEmpty>No category found.</CommandEmpty>
+                      <CommandEmpty>No service found.</CommandEmpty>
                       <CommandGroup>
                         {categories.map((category) => (
                           <CommandItem

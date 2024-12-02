@@ -342,9 +342,11 @@ export const siteAdminSchema = z.object({
   site_address: z.string().min(1, { message: "Site address is required" }),
   email1: z.string().email(),
   email2: z.union([z.literal(""), z.string().email()]),
-  contact_number1: z.string().refine(validator.isMobilePhone, {
-    message: "Invalid contact number",
-  }),
+  contact_number1: z
+    .string()
+    .refine((value) => /^(\+614|\+61|0)[0-9]{9}$/.test(value), {
+      message: "Australian contact number is required",
+    }),
   contact_number2: z.union([
     z.literal(""),
     z
@@ -375,12 +377,13 @@ export const siteAdminSchema = z.object({
     z.string(),
   ]),
   copyright: z.string().min(1, { message: "Copy right is required" }),
-  google_map: z
-    .object({
-      lat: z.number(),
-      lng: z.number(),
-    })
-    .optional(),
+  // google_map: z
+  //   .object({
+  //     lat: z.number(),
+  //     lng: z.number(),
+  //   })
+  //   .optional(),
+  google_map: z.string(),
   term_condition: z.string().optional(),
   privacy_policy: z.string().optional(),
   license: z.string().optional(),
@@ -434,8 +437,8 @@ export const requestCallbackSchema = z.object({
   first_name: z.string().min(1, { message: "First name is required" }),
   last_name: z.string().min(1, { message: "Last name is required" }),
   email: z.string().email(),
-  phone: z.string().refine(validator.isMobilePhone, {
-    message: "Invalid phone number",
+  phone: z.string().refine((value) => /^(\+614|\+61|0)[0-9]{9}$/.test(value), {
+    message: "Australian contact number is required",
   }),
 });
 
