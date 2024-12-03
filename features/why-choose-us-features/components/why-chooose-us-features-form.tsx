@@ -46,8 +46,9 @@ const FeaturesForm = ({
   id?: string | number;
 }) => {
   const [logoPreview, setLogoPreview] = useState<string | null>(
-    whyChooseUs?.icon_url || null
+    `${process.env.url}/storage/${whyChooseUs?.icon}` || null
   );
+
   const {
     data: whyChooseUsData,
     isPending: whyChooseUsIsPending,
@@ -238,7 +239,7 @@ const FeaturesForm = ({
             </Button>
           )}
           <Link
-            href="/cleaning-care-admin/dashboard/why-choose-us"
+            href="/cleaning-care-admin/dashboard/why-choose-us/features"
             className="w-full md:w-[86px]"
           >
             <Button

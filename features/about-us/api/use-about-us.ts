@@ -29,3 +29,16 @@ export const useAboutUs = (query?: QueryParams) =>
     queryKey: ["about-us", query],
     queryFn: () => getAboutUs(query || {}),
   });
+
+export const fetchAboutUs = async () => {
+  const response = await fetch(`${process.env.url}/api/get-about-us`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as AboutUs;
+};

@@ -1,25 +1,13 @@
 import { CheckCheck } from "lucide-react";
-import { WhyChooseUs } from "@/components/admin/data/schema";
-
-const getWhyChooseUs = async () => {
-  const response = await fetch(`${process.env.url}/api/get-why-choose-us`, {
-    next: {
-      revalidate: 60,
-    },
-  });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error("Something went wrong!");
-  }
-  return data.data as WhyChooseUs[];
-};
+import { fetchWhyChooseUs } from "../api/use-why-choose-us";
 
 const WhyChooseUsServiceSection = async () => {
-  const whyChooseUs = await getWhyChooseUs();
+  const whyChooseUs = await fetchWhyChooseUs();
 
-  if (whyChooseUs?.find((item) => item.type === "bookservice")) {
-    return (
-      <section className="w-full flex flex-col xl:flex-row items-end lg:items-start justify-between gap-4 lg:gap-16">
+  return (
+    <section className="w-full flex flex-col xl:flex-row items-end lg:items-start justify-between gap-4 lg:gap-16">
+      {(whyChooseUs?.find((item) => item.type === "chooseus")?.features
+        ?.length ?? 0) > 0 && (
         <div className="w-full">
           <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3">
             {whyChooseUs?.find((item) => item.type === "bookservice")?.title}
@@ -31,6 +19,9 @@ const WhyChooseUsServiceSection = async () => {
             }
           </p>
         </div>
+      )}
+      {(whyChooseUs?.find((item) => item.type === "bookservice")?.features
+        ?.length ?? 0) > 0 && (
         <div className="w-full shrink-1 bg-[#F2FAFF] px-4 py-5">
           {whyChooseUs
             ?.find((item) => item.type === "bookservice")
@@ -48,9 +39,9 @@ const WhyChooseUsServiceSection = async () => {
               </div>
             ))}
         </div>
-      </section>
-    );
-  }
+      )}
+    </section>
+  );
 };
 
 export default WhyChooseUsServiceSection;

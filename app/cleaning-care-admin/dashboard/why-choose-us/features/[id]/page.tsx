@@ -27,7 +27,7 @@ const ViewWhyChooseFeature = ({ params }: { params: { id: number } }) => {
           why_choose_us_id: String(featureData?.why_choose_us_id),
           feature_title: featureData?.feature_title,
           feature_short_description: featureData?.feature_short_description,
-          icon: null,
+          icon: featureData?.icon,
         }}
         id={featureData?.id}
       />

@@ -4,22 +4,11 @@ import Divider from "@/components/ui/divider";
 import { CustomImage } from "@/components/ui/custom-image";
 import WhyChooseUsValuesSection from "@/features/why-choose-us-heading/components/why-choose-us-values-section";
 import WhyChooseUsServiceSection from "@/features/why-choose-us-heading/components/why-choose-us-service-section";
-
-const getAboutUs = async () => {
-  const response = await fetch(`${process.env.url}/api/get-about-us`, {
-    next: {
-      revalidate: 60,
-    },
-  });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error("Something went wrong!");
-  }
-  return data.data;
-};
+import { fetchAboutUs } from "@/features/about-us/api/use-about-us";
 
 const AboutUs = async () => {
-  const aboutUsData = await getAboutUs();
+  const aboutUsData = await fetchAboutUs();
+
   return (
     <main className="-translate-y-[104px]">
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">
@@ -66,8 +55,8 @@ const AboutUs = async () => {
             alt="logo"
             fill
             sizes="376px"
-            containerClassName="w-full lg:w-[376px] h-full lg:h-[277px]"
-            className="w-full lg:w-[376px] h-full lg:h-[277px] object-contain hidden md:block"
+            containerClassName="w-full md:w-[376px] h-full md:h-[277px] hidden md:block"
+            className="w-full h-full object-contain"
           />
         </section>
         <Divider />

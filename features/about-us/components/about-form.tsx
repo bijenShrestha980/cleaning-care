@@ -29,7 +29,7 @@ import Loading from "@/components/ui/loading";
 import Error from "@/components/ui/error";
 import { CustomImage } from "@/components/ui/custom-image";
 import { AboutUs, aboutUsSchema } from "@/components/admin/data/schema";
-import { useAboutUs } from "../api/use-service-about-us";
+import { useAboutUs } from "../api/use-about-us";
 import { useCreateAboutUs } from "../api/use-create-about-us";
 import { useUpdateAboutUs } from "../api/use-update-about-us";
 
