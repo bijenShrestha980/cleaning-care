@@ -23,7 +23,7 @@ const Home = async () => {
         {/* Overview of Services */}
         <section className="flex flex-col items-center">
           <div className="mb-12 max-w-[765px] flex flex-col items-center">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center line-clamp-1">
+            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center line-clamp-2">
               Overview of Services
             </h4>
             <p className="text-[#191919] opacity-60 text-base md:text-xl text-center line-clamp-4">
