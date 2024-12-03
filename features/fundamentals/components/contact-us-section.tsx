@@ -16,14 +16,14 @@ const ContactUsSection = async () => {
           Reach us with the following details
         </p>
       </div>
-      <div className="grid lg:grid-cols-2 items-center md:gap-[72px] w-full">
+      <div className="grid lg:grid-cols-2 items-center gap-8 md:gap-[72px] w-full">
         <iframe
           src={fundamentalData?.google_map?.split("src=")[1]?.split(`"`)[1]}
           style={{ border: 0, width: "100%", height: "450px" }}
           allowFullScreen={true}
           loading="lazy"
         />
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-8">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-4 md:gap-8">
           <div>
             <p className="font-semibold text-base text-primary opacity-50 uppercase">
               Office hours

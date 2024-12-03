@@ -48,8 +48,8 @@ const RequestCallbackForm = () => {
 
   return (
     <section className="flex flex-col items-center">
-      <div className="mb-12 max-w-[765px] flex flex-col items-center">
-        <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
+      <div className="md-6 md:mb-12 max-w-[765px] flex flex-col items-center">
+        <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-2 md:mb-3 text-center">
           Request a Callback
         </h4>
         <p className="text-primary text-base md:text-xl text-center">

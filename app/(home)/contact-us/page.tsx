@@ -36,7 +36,7 @@ const ContactUs = async () => {
         </div>
       </div>
       <div className="p-5 md:p-10 flex flex-col items-center">
-        <p className="mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic">
+        <p className="mt-6 md:mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic">
           We’re here to help with all your cleaning needs. Whether you have
           questions about our services, need a quote, or want to schedule a
           cleaning, feel free to reach out to us. Our friendly team is ready to

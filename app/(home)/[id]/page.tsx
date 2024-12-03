@@ -37,7 +37,7 @@ const Services = async ({ params }: { params: { id: number } }) => {
         </div>
       </div>
       <div className="w-full p-5 md:p-10 flex flex-col items-center">
-        <p className="mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic line-clamp-4">
+        <p className="mt-6 md:mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic line-clamp-4">
           {serviceData?.long_description}
         </p>
         <Divider />

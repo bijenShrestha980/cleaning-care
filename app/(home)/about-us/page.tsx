@@ -37,7 +37,7 @@ const AboutUs = async () => {
         </div>
       </div>
       <div className="p-5 md:p-10 flex flex-col items-center">
-        <p className="mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic">
+        <p className="mt-6 md:mt-14 font-medium text-base md:text-xl text-[#191919] opacity-60 text-center max-w-[1078px] font-montserratItalic">
           {aboutUsData?.description}
         </p>
         <Divider />
