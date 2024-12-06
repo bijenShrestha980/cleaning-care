@@ -10,7 +10,7 @@ const WhyChooseUsSection = async () => {
       <>
         <section className="flex flex-col items-center">
           <div className="mb-12 max-w-[765px] flex flex-col items-center">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center line-clamp-2">
+            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
               {whyChooseUs?.find((item) => item.type === "chooseus")?.title}
             </h4>
             <p className="text-[#191919] opacity-60 text-base md:text-xl text-center line-clamp-4">
@@ -20,7 +20,7 @@ const WhyChooseUsSection = async () => {
               }
             </p>
           </div>
-          <div className="flex flex-wrap justify-center items-center gap-x-56 gap-y-12 md:gap-y-20">
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-x-8 gap-y-6 md:gap-y-8">
             {whyChooseUs
               ?.find((item) => item.type === "chooseus")
               ?.features?.map((item, index) => (

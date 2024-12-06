@@ -51,13 +51,8 @@ export const Navbar = async () => {
               <span className="SmallText-Reg-Cap">Menu</span>
             </NavigationMenuTrigger>
             <NavigationMenuContent className="m-0 flex flex-col w-[200px]">
-              <Link
-                href="/about-us"
-                legacyBehavior
-                passHref
-                className="h-11 w-full"
-              >
-                <NavigationMenuLink className="px-4 py-2 h-11 w-full font-medium text-xl">
+              <Link href="/about-us" legacyBehavior passHref className="w-full">
+                <NavigationMenuLink className="px-4 py-2 w-full font-medium text-base">
                   About us
                 </NavigationMenuLink>
               </Link>
@@ -65,9 +60,9 @@ export const Navbar = async () => {
                 href="/contact-us"
                 legacyBehavior
                 passHref
-                className="h-11 w-full"
+                className="w-full"
               >
-                <NavigationMenuLink className="px-4 py-2 h-11 w-full font-medium text-xl">
+                <NavigationMenuLink className="px-4 py-2 w-full font-medium text-base">
                   Contact
                 </NavigationMenuLink>
               </Link>
@@ -76,7 +71,7 @@ export const Navbar = async () => {
                   value="item-1"
                   className="no-underline focus:no-underline border-none"
                 >
-                  <AccordionTrigger className="no-underline focus:no-underline px-4 py-2 font-medium text-xl">
+                  <AccordionTrigger className="no-underline focus:no-underline px-4 py-2 font-medium text-base">
                     Services
                   </AccordionTrigger>
                   <AccordionContent>

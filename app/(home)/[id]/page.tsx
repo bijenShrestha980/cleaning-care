@@ -1,9 +1,51 @@
+import type { Metadata, ResolvingMetadata } from "next";
 import Divider from "@/components/ui/divider";
 import { CustomImage } from "@/components/ui/custom-image";
-import { banner1 } from "@/constants/images";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 import WhyChooseUsServiceSection from "@/features/why-choose-us-heading/components/why-choose-us-service-section";
 import { fetchServiceByCategoryId } from "@/features/services/api/use-service";
+
+type Props = {
+  params: Promise<{ id: number }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const id = (await params).id;
+
+  // fetch data
+  const service = await fetchServiceByCategoryId(id);
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: service.service_name,
+    description: service.short_description,
+    keywords: [
+      service.service_name,
+      service.serviceitems?.map((item) => item.item_name).join(", ") || "",
+    ],
+    openGraph: {
+      images: [
+        ...(service.banner_image_url
+          ? [
+              {
+                url: service.banner_image_url,
+                width: 1200,
+                height: 630,
+                alt: service.service_name,
+              },
+            ]
+          : []),
+        ...previousImages,
+      ],
+    },
+  };
+}
 
 const Services = async ({ params }: { params: { id: number } }) => {
   const serviceData = await fetchServiceByCategoryId(params.id);
@@ -21,7 +63,7 @@ const Services = async ({ params }: { params: { id: number } }) => {
         />
         <div className="w-full h-full absolute top-0 -z-10 bg-transbg" />
         <div className="w-full h-full absolute top-5 left-0 flex flex-col justify-center items-center text-center px-4">
-          <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[64px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3 line-clamp-1">
+          <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[64px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3 line-clamp-2">
             {serviceData?.service_name}
           </h1>
           <p className="text-primary-foreground text-md md:text-2xl mb-9 line-clamp-3">
@@ -43,7 +85,7 @@ const Services = async ({ params }: { params: { id: number } }) => {
         <Divider />
         <section className="w-full flex flex-col xl:flex-row items-end lg:items-start justify-between gap-4 lg:gap-16">
           <div className="w-full flex flex-col gap-3">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold line-clamp-2">
+            <h4 className="text-primary text-3xl md:text-[42px] font-semibold">
               {serviceData?.section_one_title}
             </h4>
             <p className="text-[#191919] opacity-60 text-base md:text-xl">
@@ -63,7 +105,7 @@ const Services = async ({ params }: { params: { id: number } }) => {
         {/* Overview of Services */}
         <section className="w-full flex flex-col items-center">
           <div className="mb-12 max-w-[765px] flex flex-col items-center">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center line-clamp-1">
+            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
               {serviceData?.section_two_title}
             </h4>
             <p className="text-[#191919] opacity-60 text-base md:text-xl text-center line-clamp-3">
@@ -78,7 +120,7 @@ const Services = async ({ params }: { params: { id: number } }) => {
                   className="w-[252px] p-2 flex flex-col items-center gap-2 md:gap-4"
                 >
                   <CustomImage
-                    src={service.icon_url || banner1}
+                    src={service.icon_url || ""}
                     alt="Residential Cleaning"
                     fill
                     sizes="252px"
