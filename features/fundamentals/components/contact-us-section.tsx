@@ -19,7 +19,12 @@ const ContactUsSection = async () => {
       <div className="grid lg:grid-cols-2 items-center gap-8 md:gap-[72px] w-full">
         <iframe
           src={fundamentalData?.google_map?.split("src=")[1]?.split(`"`)[1]}
-          style={{ border: 0, width: "100%", height: "450px" }}
+          style={{
+            border: 0,
+            width: "100%",
+            height: "450px",
+            borderRadius: "12px",
+          }}
           allowFullScreen={true}
           loading="lazy"
         />

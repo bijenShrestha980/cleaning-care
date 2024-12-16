@@ -29,7 +29,11 @@ const Privacy = async () => {
             Get in Touch
           </p>
           <Link href={"/contact-us"}>
-            <Button variant="success" size="lg">
+            <Button
+              variant="success"
+              size="lg"
+              className="h-10 rounded-xl transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105 hover:-translate-y-1"
+            >
               Call for Inquires
             </Button>
           </Link>

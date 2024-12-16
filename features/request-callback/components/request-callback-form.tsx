@@ -59,65 +59,84 @@ const RequestCallbackForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full md:w-[615px] p-6 space-y-6 flex flex-col justify-center"
+          className="w-full md:w-[615px] pt-6 md:pt-0 space-y-8 flex flex-col justify-center"
         >
-          <FormField
-            control={form.control}
-            name="first_name"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-[#191919]">First name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter first name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="last_name"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-[#191919]">Last name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter last name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-[#191919]">Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter email" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-[#191919]">Phone no.</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter phone" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="gap-4 grid md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="first_name"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-[#191919]">First name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter first name"
+                      className="rounded-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="last_name"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-[#191919]">Last name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter last name"
+                      className="rounded-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-[#191919]">Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter email"
+                      className="rounded-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-[#191919]">Phone no.</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter phone"
+                      className="rounded-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <Button
             type="submit"
             variant={"success"}
             size={"lg"}
             disabled={createIsPending}
+            className="w-full h-[46px] rounded-xl"
           >
             {createIsPending ? (
               <LoaderCircle className="animate-spin" width={20} height={20} />

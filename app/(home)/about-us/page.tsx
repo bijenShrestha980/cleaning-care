@@ -30,7 +30,11 @@ const AboutUs = async () => {
             {aboutUsData?.short_description}
           </p>
           <Link href="/contact-us">
-            <Button variant="success" size="lg">
+            <Button
+              variant="success"
+              size="lg"
+              className="h-10 rounded-xl transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105 hover:-translate-y-1"
+            >
               Call for Inquires
             </Button>
           </Link>
@@ -56,7 +60,7 @@ const AboutUs = async () => {
             fill
             sizes="376px"
             containerClassName="w-full md:w-[376px] h-full md:h-[277px] hidden md:block"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain rounded-xl"
           />
         </section>
         <Divider />
@@ -67,7 +71,7 @@ const AboutUs = async () => {
             fill
             sizes="581px"
             containerClassName="lg:w-[581px] lg:h-[431px]"
-            className="lg:w-[581px] lg:h-[431px] object-cover"
+            className="lg:w-[581px] lg:h-[431px] object-cover rounded-xl"
           />
 
           <div className="w-full">
@@ -88,7 +92,7 @@ const AboutUs = async () => {
             fill
             sizes="606px"
             containerClassName="lg:w-[606px] lg:h-[543px]"
-            className="w-full lg:max-w-[606px] h-full lg:max-h-[543px] object-cover"
+            className="w-full lg:max-w-[606px] h-full lg:max-h-[543px] object-cover rounded-xl"
           />
 
           <div className="w-full">

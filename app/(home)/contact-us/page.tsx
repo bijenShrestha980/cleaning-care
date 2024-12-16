@@ -28,7 +28,12 @@ const ContactUs = async () => {
           <p className="text-primary-foreground text-md md:text-2xl mb-9">
             Get in Touch
           </p>
-          <Button variant="success" size="lg" asChild>
+          <Button
+            variant="success"
+            size="lg"
+            className="h-10 rounded-xl transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105 hover:-translate-y-1"
+            asChild
+          >
             <a href={`tel:${fundamentalData.contact_number1}`}>
               Call for Inquires
             </a>

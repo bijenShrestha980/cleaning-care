@@ -22,7 +22,7 @@ const Banner = ({
 }) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
+  const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
 
   useEffect(() => {
     if (!api) {
@@ -63,7 +63,7 @@ const Banner = ({
             <div className="w-full h-full absolute top-0 -z-10 bg-transbg" />
 
             <div className="max-w-[316px] md:max-w-[816px] absolute top-[187px] left-[40px] sm:left-[55px]">
-              <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[72px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3 line-clamp-2">
+              <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[72px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3">
                 {item.title}
               </h1>
               <p className="text-primary-foreground text-md md:text-2xl mb-9 line-clamp-4">

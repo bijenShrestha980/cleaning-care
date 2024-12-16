@@ -28,7 +28,7 @@ const Footer = () => {
               Using our simple booking form you can have your clean booked in
               under 60 seconds.
             </p>
-            <div className="mb-4">
+            <div className="my-4">
               <QuoteDialogue />
             </div>
             <p className="font-semibold text-primary-foreground text-2xl ms:text-4xl text-center leading-[30px] md:leading-[43px]">
@@ -39,7 +39,11 @@ const Footer = () => {
               team.
             </p>
             <Link href="/contact-us">
-              <Button variant="outline" size="lg">
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-10 rounded-xl transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105 hover:-translate-y-1"
+              >
                 Contact us
               </Button>
             </Link>

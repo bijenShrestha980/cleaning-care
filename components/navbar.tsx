@@ -104,7 +104,7 @@ export const Navbar = async () => {
           <NavigationMenuItem>
             <NavigationMenuTrigger>Services</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-1 ">
+              <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-1">
                 {servicesData.map((component) => (
                   <ListItem
                     key={component.id}
@@ -129,7 +129,7 @@ export const Navbar = async () => {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          <NavigationMenuItem className="hidden lg:block">
+          <NavigationMenuItem className="hidden lg:block pl-3">
             <QuoteDialogue />
           </NavigationMenuItem>
         </NavigationMenuList>

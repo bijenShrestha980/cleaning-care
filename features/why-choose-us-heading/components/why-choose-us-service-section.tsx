@@ -22,7 +22,7 @@ const WhyChooseUsServiceSection = async () => {
       )}
       {(whyChooseUs?.find((item) => item.type === "bookservice")?.features
         ?.length ?? 0) > 0 && (
-        <div className="w-full shrink-1 bg-[#F2FAFF] px-4 py-5">
+        <div className="w-full shrink-1 bg-[#F2FAFF] px-4 py-5 rounded-xl">
           {whyChooseUs
             ?.find((item) => item.type === "bookservice")
             ?.features?.map((item, index) => (

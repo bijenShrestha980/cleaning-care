@@ -98,7 +98,7 @@ const Services = async ({ params }: { params: { id: number } }) => {
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 100vw (max-width: 1024px) 100vw"
             containerClassName="w-full lg:w-[524px] h-full lg:h-[460px]"
-            className="w-full lg:w-[524px] h-full lg:h-[460px] object-cover rounded-3xl"
+            className="w-full h-full object-cover rounded-xl"
           />
         </section>
         <Divider />
