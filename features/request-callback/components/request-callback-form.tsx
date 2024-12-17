@@ -47,7 +47,7 @@ const RequestCallbackForm = () => {
   }
 
   return (
-    <section className="flex flex-col items-center">
+    <section className="w-full flex flex-col items-center">
       <div className="md-6 md:mb-12 max-w-[765px] flex flex-col items-center">
         <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-2 md:mb-3 text-center">
           Request a Callback
@@ -59,7 +59,7 @@ const RequestCallbackForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full md:w-[615px] pt-6 md:pt-0 space-y-8 flex flex-col justify-center"
+          className="w-full md:max-w-[900px] pt-6 md:pt-0 space-y-8 flex flex-col justify-center"
         >
           <div className="gap-4 grid md:grid-cols-2">
             <FormField

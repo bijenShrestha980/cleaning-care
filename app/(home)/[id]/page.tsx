@@ -105,7 +105,7 @@ const Services = async ({ params }: { params: { id: number } }) => {
         {/* Overview of Services */}
         <section className="w-full flex flex-col items-center">
           <div className="mb-12 max-w-[765px] flex flex-col items-center">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
+            <h4 className="text-primary text-3xl md:text-[42px] leading-none font-semibold mb-3 text-center">
               {serviceData?.section_two_title}
             </h4>
             <p className="text-[#191919] opacity-60 text-base md:text-xl text-center line-clamp-3">
