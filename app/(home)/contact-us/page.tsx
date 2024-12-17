@@ -28,7 +28,7 @@ const ContactUs = async () => {
           <p className="text-primary-foreground text-md md:text-2xl mb-9">
             Get in Touch
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
             <Button
               variant="success"
               size="lg"
@@ -39,7 +39,7 @@ const ContactUs = async () => {
                 Call for Inquires
               </a>
             </Button>
-            <p className="text-white">or</p>
+            <p className="text-white hidden sm:block">or</p>
             <Button
               variant="success"
               size="lg"

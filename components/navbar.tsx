@@ -25,7 +25,7 @@ import { fetchAllServices } from "@/features/services/api/use-service";
 export const Navbar = async () => {
   const servicesData = await fetchAllServices();
   return (
-    <div className="max-w-full flex items-center justify-between py-3 px-10">
+    <div className="max-w-full flex items-center justify-between py-3 px-5 sm:px-10">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
