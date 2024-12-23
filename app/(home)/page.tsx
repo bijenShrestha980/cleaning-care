@@ -38,7 +38,7 @@ const Home = async () => {
         {/* Why Choose Us */}
         <WhyChooseUsSection />
         {/* Customer Review */}
-        <Review />
+        <Review reviews={reviews?.result?.reviews} />
         <Divider />
         {/* Contsct Us */}
         <ContactUs />

@@ -1,15 +1,40 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
 import { Star } from "lucide-react";
+import Autoplay from "embla-carousel-autoplay";
+
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import { CustomImage } from "@/components/ui/custom-image";
-import { fetchReviews } from "../api/use-reviews";
 
-const Review = async () => {
-  const reviews = await fetchReviews();
+const Review = ({
+  reviews,
+}: {
+  reviews: {
+    author_name: string;
+    profile_photo_url: string;
+    rating: number;
+    text: string;
+  }[];
+}) => {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
 
-  // Shuffle the reviews array and take the first 4 items
-  const shuffledReviews = reviews?.result?.reviews.sort(
-    () => 0.5 - Math.random()
-  );
-  const randomReviews = shuffledReviews.slice(0, 4);
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
 
   return (
     <section className="flex flex-col items-center">
@@ -22,36 +47,52 @@ const Review = async () => {
           services.
         </p>
       </div>
-      <div className="grid lg:grid-cols-2 items-center gap-8 md:gap-[72px]">
-        {randomReviews.map((review, index) => (
-          <div key={index} className="px-4 w-full flex flex-row gap-2 md:gap-4">
-            <CustomImage
-              src={review.profile_photo_url}
-              alt={review.author_name}
-              containerClassName="w-[64px] h-[64px] shrink-0"
-              fill
-              sizes="64px"
-              className="object-cover object-center rounded-full"
-            />
-            <div className="flex flex-col gap-1">
-              <h5 className="text-primary text-base md:text-xl font-semibold line-clamp-1">
-                {review.author_name}
-              </h5>
-              <p className="text-primary line-clamp-4">{review.text}</p>
-              <div className="flex gap-1">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <Star
-                    size={15}
-                    stroke="#fabb05"
-                    key={index}
-                    fill={index < review.rating ? "#fabb05" : "transparent"}
-                  />
-                ))}
+      <Carousel
+        setApi={setApi}
+        plugins={[plugin.current]}
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+        orientation="horizontal"
+        className="h-full w-full relative cursor-pointer select-none"
+      >
+        <CarouselContent>
+          {reviews?.map((review, index) => (
+            <CarouselItem
+              key={index}
+              className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-4 lg:pl-8 flex flex-col items-center sm:items-start gap-2"
+            >
+              <CustomImage
+                src={review.profile_photo_url}
+                alt={review.author_name}
+                containerClassName="w-[64px] h-[64px] shrink-0"
+                fill
+                sizes="64px"
+                className="object-cover object-center rounded-full"
+              />
+              <div className="flex flex-col gap-1">
+                <h5 className="text-primary text-base md:text-xl text-center sm:text-start font-semibold line-clamp-1">
+                  {review.author_name}
+                </h5>
+                <p className="text-center sm:text-start text-primary line-clamp-4">
+                  {review.text}
+                </p>
+                <div className="flex justify-center sm:justify-start gap-1">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <Star
+                      size={15}
+                      stroke="#fabb05"
+                      key={index}
+                      fill={index < review.rating ? "#fabb05" : "transparent"}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </section>
   );
 };
