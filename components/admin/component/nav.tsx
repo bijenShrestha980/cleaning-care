@@ -19,7 +19,7 @@ import {
 import { CustomImage } from "@/components/ui/custom-image";
 import SidebarToggle from "./sidebar-toggle";
 
-import { logoColor } from "@/constants/icons";
+import { logoColor } from "@/constants/images";
 import { axiosLocal } from "@/lib/axios";
 import { useLogout } from "@/features/logout/api/use-logout";
 import NotificationButton from "@/features/notification/components/notification-button";

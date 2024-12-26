@@ -1,12 +1,4 @@
-import {
-  Faq,
-  HeroSection,
-  Quote,
-  Service,
-  Testimonial,
-  Type,
-} from "@/components/admin/data/schema";
-import { user_1, user_2, user_3, user_4 } from "./images";
+import { Faq, Type } from "@/components/admin/data/schema";
 
 const typeData: Type[] = [
   {
@@ -55,37 +47,6 @@ const typeData: Type[] = [
   },
 ];
 
-const testimonialData: Testimonial[] = [
-  {
-    id: 1,
-    name: "Niggy Lois, Founder chairman",
-    image: user_1,
-    testimonial:
-      "Coat-genix is filling the huge gap between seller and customer.",
-  },
-  {
-    id: 2,
-    name: "Niggy Lois, Founder chairman",
-    image: user_2,
-    testimonial:
-      "Coat-genix is filling the huge gap between seller and customer.",
-  },
-  {
-    id: 3,
-    name: "Niggy Lois, Founder chairman",
-    image: user_3,
-    testimonial:
-      "Coat-genix is filling the huge gap between seller and customer.",
-  },
-  {
-    id: 4,
-    name: "Niggy Lois, Founder chairman",
-    image: user_4,
-    testimonial:
-      "Coat-genix is filling the huge gap between seller and customer.",
-  },
-];
-
 const faqData: Faq[] = [
   {
     category: "General",
@@ -110,4 +71,4 @@ const faqData: Faq[] = [
   },
 ];
 
-export { typeData, testimonialData, faqData };
+export { typeData, faqData };

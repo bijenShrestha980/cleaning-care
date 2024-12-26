@@ -13,7 +13,7 @@ const Footer = () => {
           src={banner1}
           alt="footer"
           fill
-          priority={true}
+          loading="lazy"
           sizes="100vw"
           containerClassName="h-[530px] -z-20 absolute top-0 w-full"
           className=" object-cover"

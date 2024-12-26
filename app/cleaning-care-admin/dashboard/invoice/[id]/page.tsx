@@ -17,7 +17,7 @@ import { useAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import InvoiceGenerate from "@/features/invoice/components/invoice-generate";
 import { useDeleteInvoice } from "@/features/invoice/api/use-delete-invoice";
 import { useBankAccountDetails } from "@/features/bank/api/use-bank";
-import { logoColor } from "@/constants/icons";
+import { logoColor } from "@/constants/images";
 import { toast } from "@/hooks/use-toast";
 
 const ViewInvoice = ({ params }: { params: { id: number } }) => {

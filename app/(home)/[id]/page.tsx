@@ -123,6 +123,7 @@ const Services = async ({ params }: { params: { id: number } }) => {
                     src={service.icon_url || ""}
                     alt="Residential Cleaning"
                     fill
+                    loading="lazy"
                     sizes="252px"
                     containerClassName="w-[149px] h-[149px]"
                     className="rounded-full w-[149px] h-[149px] object-cover object-center"

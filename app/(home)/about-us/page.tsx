@@ -91,6 +91,7 @@ const AboutUs = async () => {
             alt="our team image"
             fill
             sizes="606px"
+            loading="lazy"
             containerClassName="lg:w-[606px] lg:h-[543px]"
             className="w-full lg:max-w-[606px] h-full lg:max-h-[543px] object-cover rounded-xl"
           />

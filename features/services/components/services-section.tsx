@@ -15,6 +15,7 @@ const ServicesSection = async () => {
             src={service?.banner_image_url || ""}
             alt="Residential Cleaning"
             fill
+            loading="lazy"
             sizes="225px"
             containerClassName="w-[175px] h-[175px] lg:w-[225px] lg:h-[225px]"
             className="rounded-full w-full h-full object-cover object-center"

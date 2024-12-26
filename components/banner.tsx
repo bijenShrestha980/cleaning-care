@@ -55,7 +55,8 @@ const Banner = ({
               src={item.hero_image_url || ""}
               alt={item.title}
               fill
-              priority={true}
+              priority={index === 0 ? true : false}
+              loading={index === 0 ? "eager" : "lazy"}
               sizes="calc(100vw + 16px)"
               containerClassName="h-[740px] w-full absolute top-0 -z-20"
               className="h-full w-full object-cover object-center"
