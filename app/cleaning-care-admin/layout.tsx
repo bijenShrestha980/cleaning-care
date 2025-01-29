@@ -1,9 +1,9 @@
-// import SidebarProvider from "@/providers/sidebar-provider";
+ import SidebarProvider from "@/providers/sidebar-provider";
 
-// export default function RootLayout({
-//   // children,
-// }: {
-//   // children: React.ReactNode;
-// }) {
-//   return <SidebarProvider>{children}</SidebarProvider>;
-// }
+ export default function RootLayout({
+ children,
+ }: {
+ children: React.ReactNode;
+}) {
+   return <SidebarProvider>{children}</SidebarProvider>;
+}
