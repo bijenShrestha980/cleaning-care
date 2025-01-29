@@ -68,10 +68,14 @@ export default function RootLayout({
         className={`${fontInter.variable} ${montserratSans.variable} ${montserratItalic.variable} ${bricolageGrotesqueSans.variable} min-h-screen bg-background antialiased`}
       >
 {/* Google Tag Manager (noscript) */}
-    <noscript>
-      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XRHMQ22"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
+    noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-5XRHMQ22"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
 {/*     End Google Tag Manager (noscript)      */}
   <TanstackProvider>
           <TooltipProvider>{children}</TooltipProvider>
