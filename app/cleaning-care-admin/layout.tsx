@@ -3,7 +3,7 @@
  export default function RootLayout({
 //  children,
  }: {
-//  children: React.ReactNode;
+ children: React.ReactNode;
 }) {
-    return <SidebarProvider></SidebarProvider>;
+    return <SidebarProvider>{children}</SidebarProvider>;
  }
