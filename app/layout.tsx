@@ -42,7 +42,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
+      <Head>
 {/*         Google Tag Manager  */}
           <Script id="gtm" strategy="afterInteractive">
           {`
@@ -63,7 +63,7 @@ export default function RootLayout({
             gtag('config', 'G-QMPK2W9W6E');
           `}
         </Script>
-      </head>
+      </Head>
       <body
         className={`${fontInter.variable} ${montserratSans.variable} ${montserratItalic.variable} ${bricolageGrotesqueSans.variable} min-h-screen bg-background antialiased`}
       >
