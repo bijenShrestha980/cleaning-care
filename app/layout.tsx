@@ -44,7 +44,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <!-- Google Tag Manager -->
-        <script>
+        <Script>
           {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -52,7 +52,7 @@ export default function RootLayout({
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-5XRHMQ22');
         `}
-        </script>
+        </Script>
       <!-- End Google Tag Manager -->
         <Script id="google-analytics">
           {`
@@ -69,7 +69,6 @@ export default function RootLayout({
       >
            <!-- Google Tag Manager (noscript) -->
     <noscript>
-      
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XRHMQ22"
     height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
