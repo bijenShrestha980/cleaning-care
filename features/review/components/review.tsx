@@ -1,15 +1,17 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Star } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 
 import {
   Carousel,
-  CarouselApi,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
 import { CustomImage } from "@/components/ui/custom-image";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { google_logo } from "@/constants/images";
 
 const Review = ({
   reviews,
@@ -21,24 +23,11 @@ const Review = ({
     text: string;
   }[];
 }) => {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
   const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
 
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-    setCurrent(api.selectedScrollSnap() + 1);
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api]);
-
   return (
-    <section className="flex flex-col items-center">
-      <div className="mb-12 max-w-[765px] flex flex-col items-center">
+    <section className="flex flex-col items-center gap-12">
+      <div className="max-w-[765px] flex flex-col items-center">
         <h4 className="text-primary text-3xl md:text-[42px] font-semibold mb-3 text-center">
           Customer Reviews
         </h4>
@@ -48,7 +37,6 @@ const Review = ({
         </p>
       </div>
       <Carousel
-        setApi={setApi}
         plugins={[plugin.current]}
         opts={{
           align: "start",
@@ -93,6 +81,17 @@ const Review = ({
           ))}
         </CarouselContent>
       </Carousel>
+      <Link href="https://g.page/r/CR1GKE_DpYo-EAE/review">
+        <Button className="py-6 bg-[#fcfafb] hover:bg-[#f0f0f0] text-[#46485b] font-semibold flex items-center gap-2">
+          <CustomImage
+            src={google_logo}
+            alt="Google Logo"
+            width={24}
+            height={24}
+          />
+          Write a Review
+        </Button>
+      </Link>
     </section>
   );
 };
