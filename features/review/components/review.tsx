@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/carousel";
 import { CustomImage } from "@/components/ui/custom-image";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { google_logo } from "@/constants/images";
 
 const Review = ({
@@ -81,7 +80,11 @@ const Review = ({
           ))}
         </CarouselContent>
       </Carousel>
-      <Link href="https://g.page/r/CR1GKE_DpYo-EAE/review">
+      <a
+        href="https://g.page/r/CR1GKE_DpYo-EAE/review"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Button className="py-6 bg-[#fcfafb] hover:bg-[#f0f0f0] text-[#46485b] font-semibold flex items-center gap-2">
           <CustomImage
             src={google_logo}
@@ -91,7 +94,7 @@ const Review = ({
           />
           Write a Review
         </Button>
-      </Link>
+      </a>
     </section>
   );
 };
