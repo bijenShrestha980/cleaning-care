@@ -80,7 +80,12 @@ export const Navbar = async () => {
                         <ListItem
                           key={component.id}
                           title={component.service_name}
-                          href={component.service_category_id?.toString()}
+                          href={`${component.service_name
+                            ?.toString()
+                            .replace(
+                              /\//g,
+                              " "
+                            )}-${component.service_category_id.toString()}`}
                         />
                       ))}
                     </ul>
@@ -109,7 +114,12 @@ export const Navbar = async () => {
                   <ListItem
                     key={component.id}
                     title={component.service_name}
-                    href={component.service_category_id?.toString()}
+                    href={`${component.service_name
+                      ?.toString()
+                      .replace(
+                        /\//g,
+                        " "
+                      )}-${component.service_category_id.toString()}`}
                   />
                 ))}
               </ul>

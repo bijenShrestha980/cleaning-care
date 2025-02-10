@@ -23,7 +23,6 @@ const Review = ({
   }[];
 }) => {
   const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
-
   return (
     <section className="flex flex-col items-center gap-12">
       <div className="max-w-[765px] flex flex-col items-center">

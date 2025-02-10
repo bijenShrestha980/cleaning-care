@@ -16,9 +16,12 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // read route params
   const id = (await params).id;
+  const serviceId = Number(
+    id.toString().split("-")[id.toString().split("-").length - 1]
+  );
 
   // fetch data
-  const service = await fetchServiceByCategoryId(id);
+  const service = await fetchServiceByCategoryId(serviceId);
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
 
@@ -48,7 +51,11 @@ export async function generateMetadata(
 }
 
 const Services = async ({ params }: { params: { id: number } }) => {
-  const serviceData = await fetchServiceByCategoryId(params.id);
+  const serviceId = Number(
+    params.id.toString().split("-")[params.id.toString().split("-").length - 1]
+  );
+  const serviceData = await fetchServiceByCategoryId(serviceId);
+
   return (
     <main className="-translate-y-[104px]">
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">
@@ -117,7 +124,7 @@ const Services = async ({ params }: { params: { id: number } }) => {
               serviceData?.serviceitems.map((service, index) => (
                 <div
                   key={index}
-                  className="w-[252px] p-2 flex flex-col items-center gap-2 md:gap-4"
+                  className="w-[252px] p-2 flex flex-col items-center gap-2 md:gap-4 cursor-pointer relative group"
                 >
                   <CustomImage
                     src={service.icon_url || ""}
@@ -131,9 +138,11 @@ const Services = async ({ params }: { params: { id: number } }) => {
                   <h5 className="text-[#191919] opacity-60 text-base md:text-xl font-semibold text-center">
                     {service.item_name}
                   </h5>
-                  <p className="text-sm md:text-base text-[#191919] opacity-60 text-center line-clamp-5">
-                    {service.short_description}
-                  </p>
+                  <div className="h-[120px]">
+                    <p className="w-[252px] py-5 px-4 rounded-xl text-sm md:text-base text-[#646464] text-center line-clamp-5 group-hover:absolute left-0 group-hover:line-clamp-none  group-hover:bg-[#F2FAFF] transition-all duration-300">
+                      {service.short_description}
+                    </p>
+                  </div>
                 </div>
               ))}
           </div>
