@@ -133,7 +133,7 @@ const Services = async ({ params }: { params: { slug: string } }) => {
                     {service.item_name}
                   </h5>
                   <div className="h-[120px]">
-                    <p className="w-[252px] py-5 px-4 rounded-xl text-sm md:text-base text-[#646464] text-center line-clamp-5 group-hover:absolute left-0 group-hover:line-clamp-none  group-hover:bg-[#F2FAFF] transition-all duration-300">
+                    <p className="w-[252px] py-5 px-4 rounded-xl text-sm md:text-base text-[#646464] text-center z-10 line-clamp-5 group-hover:absolute left-0 group-hover:line-clamp-none  group-hover:bg-[#F2FAFF] transition-all duration-300">
                       {service.short_description}
                     </p>
                   </div>
