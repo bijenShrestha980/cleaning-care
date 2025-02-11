@@ -228,6 +228,7 @@ export const serviceSchema = z.object({
       })
     )
     .optional(),
+  service_slug: z.string().optional(),
   // sectionThree: z
   //   .strictObject({
   //     title: z.string(),

@@ -80,3 +80,19 @@ export const fetchServiceByCategoryId = async (id: number) => {
   }
   return data.data as Service;
 };
+
+export const fetchServiceByCategorySlug = async (slug: string) => {
+  const response = await fetch(
+    `${process.env.url}/api/get-service-by-category/${slug}`,
+    {
+      next: {
+        revalidate: 60,
+      },
+    }
+  );
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  return data.data as Service;
+};

@@ -3,10 +3,13 @@ import Divider from "@/components/ui/divider";
 import { CustomImage } from "@/components/ui/custom-image";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 import WhyChooseUsServiceSection from "@/features/why-choose-us-heading/components/why-choose-us-service-section";
-import { fetchServiceByCategoryId } from "@/features/services/api/use-service";
+import {
+  fetchServiceByCategoryId,
+  fetchServiceByCategorySlug,
+} from "@/features/services/api/use-service";
 
 type Props = {
-  params: Promise<{ id: number }>;
+  params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
@@ -15,13 +18,9 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const id = (await params).id;
-  const serviceId = Number(
-    id.toString().split("-")[id.toString().split("-").length - 1]
-  );
-
+  const slug = (await params).slug;
   // fetch data
-  const service = await fetchServiceByCategoryId(serviceId);
+  const service = await fetchServiceByCategorySlug(slug);
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
 
@@ -50,12 +49,8 @@ export async function generateMetadata(
   };
 }
 
-const Services = async ({ params }: { params: { id: number } }) => {
-  const serviceId = Number(
-    params.id.toString().split("-")[params.id.toString().split("-").length - 1]
-  );
-  const serviceData = await fetchServiceByCategoryId(serviceId);
-
+const Services = async ({ params }: { params: { slug: string } }) => {
+  const serviceData = await fetchServiceByCategorySlug(params.slug);
   return (
     <main className="-translate-y-[104px]">
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">
@@ -109,7 +104,6 @@ const Services = async ({ params }: { params: { id: number } }) => {
           />
         </section>
         <Divider />
-        {/* Overview of Services */}
         <section className="w-full flex flex-col items-center">
           <div className="mb-12 max-w-[765px] flex flex-col items-center">
             <h4 className="text-primary text-3xl md:text-[42px] leading-none font-semibold mb-3 text-center">
