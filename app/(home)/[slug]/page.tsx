@@ -118,7 +118,7 @@ const Services = async ({ params }: { params: { slug: string } }) => {
               serviceData?.serviceitems.map((service, index) => (
                 <div
                   key={index}
-                  className="w-[252px] p-2 flex flex-col items-center gap-2 md:gap-4 cursor-pointer relative group"
+                  className="w-[252px] p-2 flex flex-col items-center gap-2 md:gap-4 cursor-pointer relative"
                 >
                   <CustomImage
                     src={service.icon_url || ""}

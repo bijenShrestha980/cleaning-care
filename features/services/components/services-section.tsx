@@ -9,7 +9,7 @@ const ServicesSection = async () => {
       {services.map((service, index) => (
         <div
           key={index}
-          className="w-full md:w-[470px] p-2 md:p-4 lg:p-6 flex flex-col items-center gap-4 lg:gap-6 cursor-pointer relative group"
+          className="w-full md:w-[470px] p-2 md:p-4 lg:p-6 flex flex-col items-center gap-4 lg:gap-6 cursor-pointer relative"
         >
           <CustomImage
             src={service?.banner_image_url || ""}
