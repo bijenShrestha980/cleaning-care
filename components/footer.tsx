@@ -21,9 +21,9 @@ const Footer = () => {
         <div className="w-full h-full absolute top-0 -z-10 bg-[#06060680]" />
         <div className="p-8 md:p-12 flex justify-center">
           <div className="max-w-[684px] flex flex-col items-center">
-            <h1 className="font-semibold text-primary-foreground text-3xl md:text-[54px] leading-[30px] md:leading-[65px] text-center font-bricolageGrotesqueSans mb-2">
+            <h2 className="font-semibold text-primary-foreground text-3xl md:text-[54px] leading-[30px] md:leading-[65px] text-center font-bricolageGrotesqueSans mb-2">
               Book the cleaning service now online!
-            </h1>
+            </h2>
             <p className="text-primary-foreground text-base md:text-xl text-center mb-2">
               Using our simple booking form you can have your clean booked in
               under 60 seconds.

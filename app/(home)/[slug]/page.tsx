@@ -1,62 +1,86 @@
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Divider from "@/components/ui/divider";
 import { CustomImage } from "@/components/ui/custom-image";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 import WhyChooseUsServiceSection from "@/features/why-choose-us-heading/components/why-choose-us-service-section";
 import {
-  fetchServiceByCategoryId,
+  fetchAllServices,
   fetchServiceByCategorySlug,
 } from "@/features/services/api/use-service";
+import { Faq } from "@/components/seo/faq";
+import { JsonLd } from "@/lib/seo/JsonLd";
+import {
+  breadcrumbSchema,
+  serviceSchema,
+} from "@/lib/seo/schema";
+import { buildMetadata } from "@/lib/seo/metadata";
+import { getBusinessInfo } from "@/lib/seo/business";
+import { getFaqsForService } from "@/lib/seo/faqs";
 
 type Props = {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: { slug: string };
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  // read route params
-  const slug = (await params).slug;
-  // fetch data
-  const service = await fetchServiceByCategorySlug(slug);
-  // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
-
-  return {
-    title: service.service_name,
-    description: service.short_description,
-    keywords: [
-      service.service_name,
-      service.serviceitems?.map((item) => item.item_name).join(", ") || "",
-    ],
-    openGraph: {
-      images: [
-        ...(service.banner_image_url
-          ? [
-              {
-                url: service.banner_image_url,
-                width: 1200,
-                height: 630,
-                alt: service.service_name,
-              },
-            ]
-          : []),
-        ...previousImages,
-      ],
-    },
-  };
+export async function generateStaticParams() {
+  try {
+    const services = await fetchAllServices();
+    return services
+      .filter((s) => s.service_slug)
+      .map((s) => ({ slug: s.service_slug as string }));
+  } catch {
+    return [];
+  }
 }
 
-const Services = async ({ params }: { params: { slug: string } }) => {
-  const serviceData = await fetchServiceByCategorySlug(params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  try {
+    const service = await fetchServiceByCategorySlug(params.slug);
+    if (!service) return buildMetadata({ path: `/${params.slug}` });
+    const items =
+      service.serviceitems
+        ?.map((item) => item.item_name)
+        .filter(Boolean)
+        .slice(0, 8) ?? [];
+    return buildMetadata({
+      title: `${service.service_name} | Cleaning Services Australia`,
+      description:
+        service.short_description ||
+        `Professional ${service.service_name} services across Australia by fully insured, police-checked cleaners.`,
+      path: `/${params.slug}`,
+      image: service.banner_image_url,
+      imageAlt: service.service_name,
+      keywords: service.service_name
+        ? [
+            service.service_name,
+            `${service.service_name} australia`,
+            `${service.service_name} near me`,
+            ...items,
+          ]
+        : items,
+    });
+  } catch {
+    return buildMetadata({ path: `/${params.slug}` });
+  }
+}
+
+const Services = async ({ params }: Props) => {
+  const [serviceData, business] = await Promise.all([
+    fetchServiceByCategorySlug(params.slug).catch(() => null),
+    getBusinessInfo(),
+  ]);
+
+  if (!serviceData) notFound();
+
+  const serviceName = serviceData.service_name ?? "Cleaning Service";
+  const faqs = getFaqsForService(params.slug);
+
   return (
     <main className="-translate-y-[104px]">
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">
         <CustomImage
           src={serviceData?.banner_image_url || ""}
-          alt={"banner"}
+          alt={`${serviceName} — banner`}
           priority={true}
           containerClassName="h-[530px]"
           sizes="calc(100vw + 16px)"
@@ -66,7 +90,7 @@ const Services = async ({ params }: { params: { slug: string } }) => {
         <div className="w-full h-full absolute top-0 -z-10 bg-transbg" />
         <div className="w-full h-full absolute top-5 left-0 flex flex-col justify-center items-center text-center px-4">
           <h1 className="font-extrabold text-primary-foreground text-3xl md:text-[64px] leading-10 md:leading-[72px] font-bricolageGrotesqueSans mb-3 line-clamp-2">
-            {serviceData?.service_name}
+            {serviceName}
           </h1>
           <p className="text-primary-foreground text-md md:text-2xl mb-9 line-clamp-3">
             {serviceData?.short_description}
@@ -85,30 +109,42 @@ const Services = async ({ params }: { params: { slug: string } }) => {
           {serviceData?.long_description}
         </p>
         <Divider />
-        <section className="w-full flex flex-col xl:flex-row items-end lg:items-start justify-between gap-4 lg:gap-16">
+        <section
+          className="w-full flex flex-col xl:flex-row items-end lg:items-start justify-between gap-4 lg:gap-16"
+          aria-labelledby="service-section-one"
+        >
           <div className="w-full flex flex-col gap-3">
-            <h4 className="text-primary text-3xl md:text-[42px] font-semibold">
+            <h2
+              id="service-section-one"
+              className="text-primary text-3xl md:text-[42px] font-semibold"
+            >
               {serviceData?.section_one_title}
-            </h4>
+            </h2>
             <p className="text-[#191919] opacity-60 text-base md:text-xl">
               {serviceData?.section_one_description}
             </p>
           </div>
           <CustomImage
             src={serviceData?.section_one_image_url || ""}
-            alt="logo"
+            alt={`${serviceName} — ${serviceData?.section_one_title ?? "details"}`}
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 100vw (max-width: 1024px) 100vw"
+            sizes="(max-width: 1024px) 100vw, 524px"
             containerClassName="w-full lg:w-[524px] h-full lg:h-[460px]"
             className="w-full h-full object-cover rounded-xl"
           />
         </section>
         <Divider />
-        <section className="w-full flex flex-col items-center">
+        <section
+          className="w-full flex flex-col items-center"
+          aria-labelledby="service-section-two"
+        >
           <div className="mb-12 max-w-[765px] flex flex-col items-center">
-            <h4 className="text-primary text-3xl md:text-[42px] leading-none font-semibold mb-3 text-center">
+            <h2
+              id="service-section-two"
+              className="text-primary text-3xl md:text-[42px] leading-none font-semibold mb-3 text-center"
+            >
               {serviceData?.section_two_title}
-            </h4>
+            </h2>
             <p className="text-[#191919] opacity-60 text-base md:text-xl text-center line-clamp-3">
               {serviceData?.section_two_description}
             </p>
@@ -122,16 +158,16 @@ const Services = async ({ params }: { params: { slug: string } }) => {
                 >
                   <CustomImage
                     src={service.icon_url || ""}
-                    alt="Residential Cleaning"
+                    alt={service.item_name || `${serviceName} option ${index + 1}`}
                     fill
                     loading="lazy"
                     sizes="252px"
                     containerClassName="w-[149px] h-[149px]"
                     className="rounded-full w-[149px] h-[149px] object-cover object-center"
                   />
-                  <h5 className="text-[#191919] opacity-60 text-base md:text-xl font-semibold text-center">
+                  <h3 className="text-[#191919] opacity-60 text-base md:text-xl font-semibold text-center">
                     {service.item_name}
-                  </h5>
+                  </h3>
                   <div className="h-[120px]">
                     <p className="w-[252px] py-5 px-4 rounded-xl text-sm md:text-base text-[#646464] text-center z-10 line-clamp-5 group-hover:absolute left-0 group-hover:line-clamp-none  group-hover:bg-[#F2FAFF] transition-all duration-300">
                       {service.short_description}
@@ -143,7 +179,23 @@ const Services = async ({ params }: { params: { slug: string } }) => {
         </section>
         <Divider />
         <WhyChooseUsServiceSection />
+        <Divider />
+        <Faq
+          heading={`${serviceName} — FAQs`}
+          subheading="Common questions about this service"
+          items={faqs}
+        />
       </div>
+      <JsonLd
+        data={[
+          serviceSchema(serviceData, business),
+          breadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Services", url: "/" },
+            { name: serviceName, url: `/${params.slug}` },
+          ]),
+        ]}
+      />
     </main>
   );
 };

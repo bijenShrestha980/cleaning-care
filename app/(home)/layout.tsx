@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <Script id="google-tag-manager" strategy="afterInteractive">
+      <Script id="google-tag-manager" strategy="lazyOnload">
         {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -13,11 +13,10 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
         })(window,document,'script','dataLayer','GTM-5XRHMQ22');`}
       </Script>
       <Script
-        async
         src="https://www.googletagmanager.com/gtag/js?id=G-QMPK2W9W6E"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       />
-      <Script id="google-analytics" strategy="afterInteractive">
+      <Script id="google-analytics" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
@@ -31,7 +30,8 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
           height="0"
           width="0"
           style={{ display: "none", visibility: "hidden" }}
-        ></iframe>
+          title="Google Tag Manager"
+        />
       </noscript>
       <div className="min-h-screen min-w-full font-montserratSans">
         <Navbar />

@@ -1,9 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CustomImage } from "@/components/ui/custom-image";
 import CustomEditor from "@/components/editor";
 import { fetchAllFundamental } from "@/features/fundamentals/api/use-fundamental";
 import { banner1 } from "@/constants/images";
+import { buildMetadata } from "@/lib/seo/metadata";
+
+export const metadata: Metadata = buildMetadata({
+  title: "License",
+  description: "Cleaning Care licensing information.",
+  path: "/license",
+  noindex: true,
+});
 
 const License = async () => {
   const fundamentalData = await fetchAllFundamental();
@@ -12,7 +21,7 @@ const License = async () => {
       <div className="min-h-[380px] md:min-h-[530px] w-full relative">
         <CustomImage
           src={banner1}
-          alt={"banner"}
+          alt="Cleaning Care licensing"
           fill
           priority={true}
           sizes="calc(100vw + 16px)"
@@ -25,7 +34,7 @@ const License = async () => {
             License
           </h1>
           <p className="text-primary-foreground text-md md:text-2xl mb-9">
-            Get in Touch
+            Our licensing and accreditation
           </p>
           <Link href={"/contact-us"}>
             <Button
@@ -33,7 +42,7 @@ const License = async () => {
               size="lg"
               className="h-10 rounded-xl transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105 hover:-translate-y-1"
             >
-              Call for Inquires
+              Call for Inquiries
             </Button>
           </Link>
         </div>

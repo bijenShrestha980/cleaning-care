@@ -1,9 +1,15 @@
- import SidebarProvider from "@/providers/sidebar-provider";
+import type { Metadata } from "next";
+import SidebarProvider from "@/providers/sidebar-provider";
 
- export default function RootLayout({
- children,
- }: {
- children: React.ReactNode;
+export const metadata: Metadata = {
+  title: "Admin",
+  robots: { index: false, follow: false, nocache: true },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
 }) {
-    return <SidebarProvider>{children}</SidebarProvider>;
- }
+  return <SidebarProvider>{children}</SidebarProvider>;
+}

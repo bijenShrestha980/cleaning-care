@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(robots)",
+      "Bash(manifest\")",
+      "Bash(xargs grep *)",
+      "Bash(pnpm build *)",
+      "Bash(pnpm add *)",
+      "Bash(pnpm start *)",
+      "Bash(curl -s http://localhost:3000/robots.txt)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Read(//c/Users/sbije/OneDrive/Desktop/cleaningcare/cleaning-care/**)",
+      "Bash(curl -s http://localhost:3000/ -o /tmp/home.html)",
+      "Read(//tmp/**)",
+      "Bash(curl -sv http://localhost:3000/)"
+    ]
+  }
+}

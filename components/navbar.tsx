@@ -21,6 +21,7 @@ import { CustomImage } from "@/components/ui/custom-image";
 import { logo } from "@/constants/images";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
 import { fetchAllServices } from "@/features/services/api/use-service";
+import { LOCATIONS, locationPath } from "@/lib/seo/locations";
 
 export const Navbar = async () => {
   const servicesData = await fetchAllServices();
@@ -30,10 +31,10 @@ export const Navbar = async () => {
         <NavigationMenuList>
           <NavigationMenuItem>
             <Link href="/" legacyBehavior passHref>
-              <NavigationMenuLink>
+              <NavigationMenuLink aria-label="Cleaning Care home">
                 <CustomImage
                   src={logo}
-                  alt="Logo"
+                  alt="Cleaning Care logo"
                   priority
                   fill
                   sizes="(max-width: 640px) 55px, 77px"
@@ -50,7 +51,7 @@ export const Navbar = async () => {
             <NavigationMenuTrigger className="flex sm:gap-2 items-center hover:bg-transparent">
               <span className="SmallText-Reg-Cap">Menu</span>
             </NavigationMenuTrigger>
-            <NavigationMenuContent className="m-0 flex flex-col w-[200px]">
+            <NavigationMenuContent className="m-0 flex flex-col w-[240px]">
               <Link href="/about-us" legacyBehavior passHref className="w-full">
                 <NavigationMenuLink className="px-4 py-2 w-full font-medium text-base">
                   About us
@@ -80,12 +81,31 @@ export const Navbar = async () => {
                         <ListItem
                           key={component.id}
                           title={component.service_name}
-                          href={component.service_slug}
+                          href={`/${component.service_slug}`}
                         />
                       ))}
                     </ul>
                   </AccordionContent>
                 </AccordionItem>
+                {/* <AccordionItem
+                  value="item-2"
+                  className="no-underline focus:no-underline border-none"
+                >
+                  <AccordionTrigger className="no-underline focus:no-underline px-4 py-2 font-medium text-base">
+                    Service Areas
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul className="grid w-full gap-1 px-1 md:grid-cols-1">
+                      {LOCATIONS.map((l) => (
+                        <ListItem
+                          key={l.slug}
+                          title={`Cleaning Services ${l.city}`}
+                          href={locationPath(l.slug)}
+                        />
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem> */}
               </Accordion>
             </NavigationMenuContent>
           </NavigationMenuItem>
@@ -109,12 +129,28 @@ export const Navbar = async () => {
                   <ListItem
                     key={component.id}
                     title={component.service_name}
-                    href={component.service_slug}
+                    href={`/${component.service_slug}`}
                   />
                 ))}
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
+          {/* <NavigationMenuItem>
+            <NavigationMenuTrigger>Service Areas</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[480px] gap-2 p-4 md:grid-cols-2">
+                {LOCATIONS.map((l) => (
+                  <ListItem
+                    key={l.slug}
+                    title={`Cleaning Services ${l.city}`}
+                    href={locationPath(l.slug)}
+                  >
+                    {l.stateName}
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem> */}
           <NavigationMenuItem>
             <Link href="/about-us" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -149,7 +185,7 @@ const ListItem = React.forwardRef<
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:text-accent-foreground",
-            className
+            className,
           )}
           {...props}
         >
