@@ -8,6 +8,7 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import { Badge } from "@/components/ui/badge";
 import { confirmations } from "@/constants/table-data";
 import { QuoteTableRowActions } from "./quote-table-row-actions";
+import { formatDate } from "@/hooks/use-format-date";
 
 export const quoteColumns: ColumnDef<Quote>[] = [
   {
@@ -87,7 +88,7 @@ export const quoteColumns: ColumnDef<Quote>[] = [
     ),
     cell: ({ row }) => {
       const confirmation = confirmations.find(
-        (status) => status.value === row.getValue("confirmation")
+        (status) => status.value === row.getValue("confirmation"),
       );
 
       if (!confirmation) {
@@ -99,6 +100,22 @@ export const quoteColumns: ColumnDef<Quote>[] = [
           <span>{confirmation.label}</span>
         </Badge>
       );
+    },
+  },
+  {
+    accessorKey: "created_at",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Created At" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex w-[180px] items-center">
+          <span>{formatDate(row.original.created_at)}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
     },
   },
   {

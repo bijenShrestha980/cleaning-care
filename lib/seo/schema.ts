@@ -229,6 +229,45 @@ export const faqSchema = (items: FaqItem[]) => ({
   })),
 });
 
+export type BlogForSchema = {
+  id?: number;
+  title: string;
+  slug?: string;
+  short_description?: string;
+  content?: string;
+  author_name?: string;
+  author_image_url?: string;
+  image_url?: string;
+  published_at?: string;
+  updated_at?: string;
+};
+
+export const articleSchema = (blog: BlogForSchema, b: BusinessInfo) => ({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": blog.slug
+    ? `${SITE.url}/blog/${blog.slug}#article`
+    : `${SITE.url}/blog#article`,
+  headline: blog.title,
+  description: blog.short_description ?? "",
+  ...(blog.image_url ? { image: blog.image_url } : {}),
+  ...(blog.published_at ? { datePublished: blog.published_at } : {}),
+  ...(blog.updated_at ? { dateModified: blog.updated_at } : {}),
+  author: {
+    "@type": "Person",
+    name: blog.author_name ?? b.name,
+    ...(blog.author_image_url ? { image: blog.author_image_url } : {}),
+  },
+  publisher: {
+    "@type": "Organization",
+    name: b.name,
+    logo: { "@type": "ImageObject", url: b.logo },
+  },
+  mainEntityOfPage: blog.slug
+    ? absoluteUrl(`/blog/${blog.slug}`)
+    : absoluteUrl(`/blog`),
+});
+
 export const aggregateRatingSchema = (
   ratingValue: number,
   reviewCount: number

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Divider from "@/components/ui/divider";
 import { CustomImage } from "@/components/ui/custom-image";
 import QuoteDialogue from "@/features/quote/components/quote-dialogue";
+import ServiceItemCard from "@/features/services/components/service-item-card";
 import WhyChooseUsServiceSection from "@/features/why-choose-us-heading/components/why-choose-us-service-section";
 import {
   fetchAllServices,
@@ -10,10 +11,7 @@ import {
 } from "@/features/services/api/use-service";
 import { Faq } from "@/components/seo/faq";
 import { JsonLd } from "@/lib/seo/JsonLd";
-import {
-  breadcrumbSchema,
-  serviceSchema,
-} from "@/lib/seo/schema";
+import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { getBusinessInfo } from "@/lib/seo/business";
 import { getFaqsForService } from "@/lib/seo/faqs";
@@ -149,31 +147,16 @@ const Services = async ({ params }: Props) => {
               {serviceData?.section_two_description}
             </p>
           </div>
-          <div className="w-full flex flex-wrap items-center justify-center gap-4 md:gap-12">
+          <div className="w-full flex flex-wrap items-stretch justify-center gap-5 md:gap-8">
             {serviceData?.serviceitems &&
               serviceData?.serviceitems.map((service, index) => (
-                <div
+                <ServiceItemCard
                   key={index}
-                  className="w-[252px] p-2 flex flex-col items-center gap-2 md:gap-4 cursor-pointer relative"
-                >
-                  <CustomImage
-                    src={service.icon_url || ""}
-                    alt={service.item_name || `${serviceName} option ${index + 1}`}
-                    fill
-                    loading="lazy"
-                    sizes="252px"
-                    containerClassName="w-[149px] h-[149px]"
-                    className="rounded-full w-[149px] h-[149px] object-cover object-center"
-                  />
-                  <h3 className="text-[#191919] opacity-60 text-base md:text-xl font-semibold text-center">
-                    {service.item_name}
-                  </h3>
-                  <div className="h-[120px]">
-                    <p className="w-[252px] py-5 px-4 rounded-xl text-sm md:text-base text-[#646464] text-center z-10 line-clamp-5 group-hover:absolute left-0 group-hover:line-clamp-none  group-hover:bg-[#F2FAFF] transition-all duration-300">
-                      {service.short_description}
-                    </p>
-                  </div>
-                </div>
+                  iconUrl={service.icon_url}
+                  itemName={service.item_name}
+                  shortDescription={service.short_description}
+                  fallbackAlt={`${serviceName} option ${index + 1}`}
+                />
               ))}
           </div>
         </section>

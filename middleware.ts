@@ -19,7 +19,7 @@ export default async function middleware(req: NextRequest) {
   // 4. Redirect to /cleaning-care-admin/dashboard if the user is authenticated and on a public route
   if (isPublicRoute && session?.data) {
     return NextResponse.redirect(
-      new URL("/cleaning-care-admin/dashboard", req.nextUrl)
+      new URL("/cleaning-care-admin/dashboard", req.nextUrl),
     );
   }
 

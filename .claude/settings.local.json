@@ -12,7 +12,9 @@
       "Read(//c/Users/sbije/OneDrive/Desktop/cleaningcare/cleaning-care/**)",
       "Bash(curl -s http://localhost:3000/ -o /tmp/home.html)",
       "Read(//tmp/**)",
-      "Bash(curl -sv http://localhost:3000/)"
+      "Bash(curl -sv http://localhost:3000/)",
+      "WebFetch(domain:api.cleaningcare.au)",
+      "Bash(npx tsc *)"
     ]
   }
 }

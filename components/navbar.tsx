@@ -67,6 +67,11 @@ export const Navbar = async () => {
                   Contact
                 </NavigationMenuLink>
               </Link>
+              <Link href="/blog" legacyBehavior passHref className="w-full">
+                <NavigationMenuLink className="px-4 py-2 w-full font-medium text-base">
+                  Blog
+                </NavigationMenuLink>
+              </Link>
               <Accordion type="single" collapsible>
                 <AccordionItem
                   value="item-1"
@@ -162,6 +167,13 @@ export const Navbar = async () => {
             <Link href="/contact-us" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 Contact
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="/blog" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Blog
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

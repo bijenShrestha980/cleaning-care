@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { RequestCallback } from "../data/schema";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { RequestCallbackTableRowActions } from "./request-callback-table-row-actions";
+import { formatDate } from "@/hooks/use-format-date";
 
 export const requestCallbackColumns: ColumnDef<RequestCallback>[] = [
   {
@@ -64,6 +65,22 @@ export const requestCallbackColumns: ColumnDef<RequestCallback>[] = [
       return (
         <div className="flex w-[80%] items-center">
           <span>{row.getValue("phone")}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: "created_at",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Created At" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex w-[180px] items-center">
+          <span>{formatDate(row.original.created_at)}</span>
         </div>
       );
     },

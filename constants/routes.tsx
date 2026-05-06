@@ -2,6 +2,7 @@ import {
   HandPlatter,
   LayoutDashboard,
   MessageCircleQuestion,
+  Newspaper,
   Quote,
   ReceiptText,
   Settings,
@@ -58,6 +59,22 @@ const adminRoutes = [
         name: "Invoice",
         path: "/invoice",
         sidebar: true,
+      },
+      {
+        icon: <Newspaper width={20} height={20} />,
+        name: "Blog",
+        path: "/blog",
+        sidebar: true,
+        level: true,
+        notification: false,
+        sub: [
+          {
+            name: "Blog List",
+            path: "/blog-list",
+            sidebar: true,
+            notificationCount: 0,
+          },
+        ],
       },
       {
         icon: <MessageCircleQuestion width={20} height={20} />,
