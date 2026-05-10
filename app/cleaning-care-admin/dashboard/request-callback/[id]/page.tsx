@@ -31,6 +31,7 @@ const ViewQuote = ({ params }: { params: { id: number } }) => {
       <p className="font-medium mb-4">View quote</p>
       <QuotActionForm
         quote={{
+          created_at: quoteData?.created_at,
           full_name: quoteData?.full_name,
           email: quoteData?.email,
           phone_number: quoteData?.phone_number,
